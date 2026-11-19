@@ -18,12 +18,17 @@ Namespace EwEImportHelper
     ''' true Jet3 files). Runs the same, unmodified EwECore import logic, just from an x86 process.
     ''' </summary>
     ''' <remarks>
-    ''' Two modes, chosen by the first argument:
+    ''' Three modes, chosen by the first argument:
     '''
     ''' "version" &lt;source path&gt;
     '''   Prints the real Ecopath version number (invariant culture) to stdout as the only line, exit
     '''   code 0. On failure: nothing on stdout, a brief reason on stderr, exit code 1. Run hidden, with
     '''   stdout redirected - see cEwEAccessDatabase.TryGetLegacyVersionViaX86Helper, the only caller.
+    '''
+    ''' "models" &lt;source path&gt;
+    '''   Non-interactive model listing: first stdout line is the number of models, then one
+    '''   "N&lt;TAB&gt;name" line per model (N is 1-based, as in the import prompt). Exit code 0, or 1 with
+    '''   a reason on stderr. Used by the test automation to choose a test route per model.
     '''
     ''' "import" &lt;source path&gt; &lt;output folder&gt; &lt;result file path&gt; [--force]
     '''   Lists the model(s) in the source, prompts interactively if there is more than one, creates the
@@ -49,6 +54,7 @@ Namespace EwEImportHelper
 
             If args.Length = 0 Then
                 Console.Error.WriteLine("Usage: EwEImportHelper.exe version ""<source>""")
+                Console.Error.WriteLine("       EwEImportHelper.exe models ""<source>""")
                 Console.Error.WriteLine("       EwEImportHelper.exe import ""<source>"" ""<output folder>"" ""<result file>""")
                 iExitCode = 1
 
@@ -63,6 +69,14 @@ Namespace EwEImportHelper
                             iExitCode = RunVersionCheck(args(1))
                         End If
 
+                    Case "models"
+                        If args.Length <> 2 Then
+                            Console.Error.WriteLine("Usage: EwEImportHelper.exe models ""<source>""")
+                            iExitCode = 1
+                        Else
+                            iExitCode = RunListModels(args(1))
+                        End If
+
                     Case "import"
                         Dim strImportUsage As String = "Usage: EwEImportHelper.exe import ""<source>"" ""<output folder>"" ""<result file>"" [--force]"
                         If args.Length = 4 Then
@@ -75,7 +89,7 @@ Namespace EwEImportHelper
                         End If
 
                     Case Else
-                        Console.Error.WriteLine($"Unknown mode '{args(0)}'. Expected 'version' or 'import'.")
+                        Console.Error.WriteLine($"Unknown mode '{args(0)}'. Expected 'version', 'models' or 'import'.")
                         iExitCode = 1
 
                 End Select
@@ -124,6 +138,49 @@ Namespace EwEImportHelper
         End Function
 
 #End Region ' version mode
+
+#Region " models mode "
+
+        Private Function RunListModels(strPath As String) As Integer
+
+            Try
+                If Not File.Exists(strPath) Then
+                    Console.Error.WriteLine($"File not found: {strPath}")
+                    Return 1
+                End If
+
+                Using core As New cCore()
+
+                    Dim dbImp As IModelImporter = cModelImporterFactory.GetModelImporter(core, strPath, New cPluginManager())
+                    If dbImp Is Nothing OrElse Not dbImp.Open(strPath) Then
+                        Console.Error.WriteLine($"Could not open '{strPath}' for import.")
+                        Return 1
+                    End If
+
+                    Dim models() As cExternalModelInfo = dbImp.Models
+                    dbImp.Close()
+
+                    If models Is Nothing Then
+                        Console.WriteLine("0")
+                        Return 0
+                    End If
+
+                    Console.WriteLine(models.Length.ToString(CultureInfo.InvariantCulture))
+                    For i As Integer = 0 To models.Length - 1
+                        Console.WriteLine($"{i + 1}{vbTab}{models(i).Name}")
+                    Next
+                    Return 0
+
+                End Using
+
+            Catch ex As Exception
+                Console.Error.WriteLine($"Unexpected error listing models in '{strPath}': {ex.Message}")
+                Return 1
+            End Try
+
+        End Function
+
+#End Region ' models mode
 
 #Region " import mode "
 

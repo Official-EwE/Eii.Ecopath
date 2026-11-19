@@ -1,7 +1,7 @@
 <#
 .SYNOPSIS
-    Runs every test runner in this toolkit (Run-StagingTests, Run-CrashRecoveryTests,
-    Run-MultiInstanceTests) once for x64 and once for x86, with one combined summary at the end
+    Runs every test runner in this toolkit (Run-ConversionHandlingTests, Run-StagingTests,
+    Run-CrashRecoveryTests, Run-MultiInstanceTests, Run-NoStagingCallerTests) once for x64 and once for x86, with one combined summary at the end
     covering all six runs, each test labeled with the platform it ran under.
 
 .PARAMETER Platforms
@@ -25,7 +25,11 @@ param(
 # next runner starts.
 $overallStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
+# Run-ConversionHandlingTests.ps1 goes first on purpose: on a machine with no
+# .conversion-test-config.txt yet, its prerequisite check asks (once) for the models folder, so that
+# the question comes up-front and the rest of the run is unattended.
 $runners = @(
+    "Run-ConversionHandlingTests.ps1",
     "Run-StagingTests.ps1",
     "Run-CrashRecoveryTests.ps1",
     "Run-MultiInstanceTests.ps1",

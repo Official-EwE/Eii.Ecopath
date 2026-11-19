@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Prerequisite check for the legacy-model conversion tests (Run-ConversionTests.ps1, and
+    Prerequisite check for the legacy-model conversion tests (Run-ConversionHandlingTests.ps1, and
     Run-AllTests.ps1 when it includes them). Dot-sourced; defines Confirm-ConversionTestPrerequisites.
 
 .DESCRIPTION

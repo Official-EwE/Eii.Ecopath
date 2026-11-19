@@ -1,0 +1,449 @@
+<#
+.SYNOPSIS
+    Shared building blocks for the legacy-model conversion test scripts (Run-ConversionHandlingTests.ps1
+    and Run-ConversionTests.ps1). Dot-sourced AFTER TestHelpers.ps1; not meant to be run directly.
+
+.DESCRIPTION
+    Expects the dot-sourcing script to define these script-level variables (the functions read them
+    from the caller's scope): $Platform, $MainWindowTimeoutSeconds and $startInstanceScript.
+#>
+
+# Launches the app with the legacy file DIRECTLY as its command-line argument (Start-TestInstance's
+# own -SourceModelPath) rather than starting with a safe default model and opening the real target
+# via the UI afterward - confirmed via manual testing that this is simpler and works fine: the app
+# opens straight into the response window (e.g. the import helper's console) with no separate
+# "open" step needed at all.
+#
+# No pre-open idle baseline is taken here, unlike Open-LegacyModelAndWait - there IS no safe idle
+# moment to capture one: the response window can already be open by the time Start-TestInstance.ps1
+# itself returns, since the import starts as part of normal startup, not as a separate later step.
+# Wait-ForWindowByName (a plain name search, no "is this NEW" comparison) sidesteps that race
+# entirely. The baseline used for the later Assert-NoNewDialogs check is captured only ONCE that
+# window is confirmed present - deliberately INCLUDING it, not excluding it: closing it later isn't
+# "new" relative to this baseline either way, while anything that shows up AFTER this point (like
+# gulfmexico's follow-up "Import failed" error dialog, which only appears once the outcome is known)
+# is correctly still caught as unexpected.
+function Open-LegacyModelDirectly {
+    param(
+        [Parameter(Mandatory = $true)][string]$ModelPath,
+        [string]$ExpectedWindowName = "Importing legacy Ecopath 5 model...",
+        [int]$WaitTimeoutSeconds = 30
+    )
+    # No pre-launch cleanup of earlier conversion output needed: Start-TestInstance copies the model
+    # into a fresh, uniquely-named EwE-TestRun\<random> folder every run, so the conversion output
+    # always lands in an empty folder (and that folder is cleaned up afterwards).
+    Write-Host "  Starting a disposable instance (model opened directly via the command line):"
+    # -SkipMainWindowWait: CONFIRMED (user's own run) that the ordinary main-window wait never
+    # reliably completes for this launch - the import console/wizard that appears instead isn't
+    # recognized by .NET as the process's main window, so that wait just hard-times-out at 90s
+    # doing nothing useful, and along the way can also false-positive-click an unidentified
+    # same-titled "Yes" dialog that isn't actually the one it's meant for. We go straight to
+    # waiting for the specific window we actually care about by name instead (below).
+    $instance = & $startInstanceScript -Platform $Platform -SourceModelPath $ModelPath -MainWindowTimeoutSeconds $MainWindowTimeoutSeconds -SkipMainWindowWait
+    Write-InstanceStarted -ProcessId $instance.Process.Id -Label "conversion test instance"
+
+    $firstWindow = Write-Step "Waiting for the response window" {
+        Wait-ForWindowByName -ProcessId $instance.Process.Id -Name $ExpectedWindowName -TimeoutSeconds $WaitTimeoutSeconds
+    }
+    if ($null -eq $firstWindow) {
+        Stop-TestInstance -ProcessId $instance.Process.Id -Label "conversion test instance (no response window)"
+        throw "No window named '$ExpectedWindowName' appeared within $WaitTimeoutSeconds seconds after launching directly with '$ModelPath'."
+    }
+    $baseline = Get-WindowBaseline -ProcessId $instance.Process.Id
+
+    [PSCustomObject]@{ Instance = $instance; Baseline = $baseline; FirstWindow = $firstWindow }
+}
+
+# ===========================================================================
+# Import-x64Helper - fully automated (well characterized from real screenshots: the console's
+# title, its Edit-control log text, the "Continue" button, and the secondary "Import failed." OK
+# dialog on failure are all directly confirmed, not guessed).
+# ===========================================================================
+
+# A conversion test using the x64 helper ALWAYS expects success - there is no "expected failure"
+# variant. gulfmexico.MDB currently fails this (a real SalinityForcingShapeID import bug, not a
+# test-harness issue) and that's exactly right: this test SHOULD fail until that bug is fixed, the
+# same way any other regression test would. No special-casing of the specific error text, and no
+# dismissing the follow-up "Import failed. See log file: ..." dialog that appears on failure - left
+# alone, Assert-NoNewDialogs (called by every caller of this function, same as every other test in
+# this suite) already catches it as an unexpected leftover window, which is a perfectly good reason
+# for the test to fail on its own if the success assertion somehow didn't already catch it first.
+function Test-HelperImportSucceeds {
+    param([Parameter(Mandatory = $true)]$Setup)
+    $console = $Setup.FirstWindow
+    Assert-True ($console.Name -eq "Importing legacy Ecopath 5 model...") `
+        "Expected the legacy-import helper's console window (title 'Importing legacy Ecopath 5 model...'), got '$($console.Name)' ($($console.ControlType))."
+
+    $consoleElement = Get-WindowElementByHandle -Handle $console.NativeWindowHandle
+    # "--- Process exited" (success or failure both end this way, confirmed via screenshot) is the
+    # generic completion marker - just enough to know the console is actually done, not partway
+    # through printing. Whether it succeeded is then judged on the exact success string alone.
+    $finalText = Write-Step "Waiting for the import to finish" {
+        Wait-ForEditControlText -WindowElement $consoleElement -ContainsAnyOf @("--- Process exited") -TimeoutSeconds 120
+    }
+
+    Write-Step "Dismissing the import console (Continue)" { Invoke-ButtonByName -WindowElement $consoleElement -Name "Continue" }
+    # Assert-NoNewDialogs (run by the caller right after this returns) does a single immediate
+    # check with no settle time of its own - give the app a moment to actually finish whatever
+    # clicking Continue kicks off (closing the console, bringing up its real main window) before
+    # that check runs, so a transient loading window mid-transition isn't mistaken for something
+    # unexpected.
+    Start-Sleep -Milliseconds 1000
+
+    # Only the last 5 lines, not the whole console log - the full text can run to hundreds of
+    # lines for a large model (confirmed: 27000+ characters for gulfmexico), and the last few
+    # lines are exactly where the real failure (or success) marker lives either way - the rest is
+    # just noise once something has already failed.
+    $finalLines = @($finalText -split "`r?`n" | Where-Object { $_ -ne "" })
+    # Guarded explicitly, not left to the range operator alone: PowerShell's ".." counts DOWNWARD
+    # when the end is less than the start (e.g. "0..-1" is two elements, 0 and -1 - and -1 as an
+    # array INDEX means "last element", so an empty $finalLines would otherwise silently produce
+    # garbage instead of an obviously-empty result.
+    $lastLines = if ($finalLines.Count -eq 0) {
+        "<empty>"
+    } else {
+        $finalLines[[Math]::Max(0, $finalLines.Count - 5)..($finalLines.Count - 1)] -join "`n"
+    }
+    Assert-True ($finalText -like "*Import completed successfully*") "Expected the import to succeed, got (last 5 lines):`n$lastLines"
+}
+
+# ===========================================================================
+# TooOld - fully automated (characterized from real Accessibility Insights screenshots): a
+# standard MessageBox-style dialog, titled "Ecopath with Ecosim" - genuinely ControlType.Text for
+# the message (unlike the import console, no ClassName workaround needed here - this one exposes
+# cleanly) and a genuine ControlType.Button named "OK" (ditto). No conversion is attempted at all
+# for this tag family, so no output files to clean up beforehand.
+#
+# Title alone is NOT enough to confirm this is the right dialog: CONFIRMED (via the earlier
+# Wait-ForMainWindow bug) that "Ecopath with Ecosim" is reused as this app's generic title across
+# several different dialogs - so after finding a window with that name, the message TEXT is also
+# checked against known marker phrases before treating it as the real thing and clicking OK.
+# The dialog's own title, set in code (frmEwE6.SendMessage strTitle -> cMessage.Title; resource
+# PROMPT_ERROR_IMPORT_EWE5_TOO_OLD_CAPTION, English text below). Previously it shared the generic
+# "Ecopath with Ecosim" caption with the splash screen and main window, which made it impossible
+# to tell apart by title - the splash was matched first. Must match the resx value exactly.
+$ReferralDialogCaption = "Outdated Ecopath 5 database"
+
+function Test-ReferralDialogAppears {
+    param(
+        [Parameter(Mandatory = $true)]$Setup,
+        [Parameter(Mandatory = $true)][string[]]$ExpectedTextMarkers
+    )
+    $dialog = $Setup.FirstWindow
+    Assert-True ($dialog.Name -eq $ReferralDialogCaption) `
+        "Expected the EwE5-referral dialog (title '$ReferralDialogCaption'), got '$($dialog.Name)' ($($dialog.ControlType))."
+
+    $dialogElement = Get-WindowElementByHandle -Handle $dialog.NativeWindowHandle
+    $textCondition = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::Text)
+    $textElement = $null
+    try { $textElement = $dialogElement.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $textCondition) } catch { }
+    $messageText = if ($null -ne $textElement) { try { $textElement.Current.Name } catch { "" } } else { "" }
+
+    $matchedMarker = $false
+    foreach ($marker in $ExpectedTextMarkers) {
+        if ($messageText -like "*$marker*") { $matchedMarker = $true; break }
+    }
+    Assert-True $matchedMarker `
+        "Expected the dialog's text to mention one of: $($ExpectedTextMarkers -join ', ') - the title matched but the content didn't match the one expected here. Got: '$messageText'"
+
+    Write-Step "Dismissing the EwE5-referral dialog (OK)" { Invoke-ButtonByName -WindowElement $dialogElement -Name "OK" }
+}
+
+# Whole scenario for a file the app refers to EwE5 (TooOld): launch with the model on the command
+# line, expect the "Outdated Ecopath 5 database" dialog, dismiss it, check for unexpected dialogs.
+function Invoke-ReferralDialogTest {
+    param(
+        [Parameter(Mandatory = $true)][string]$ModelPath,
+        [string]$Label = "EwE5-referral test instance"
+    )
+    $setup = Open-LegacyModelDirectly -ModelPath $ModelPath -ExpectedWindowName $ReferralDialogCaption
+    try {
+        Test-ReferralDialogAppears -Setup $setup -ExpectedTextMarkers @(
+            "outdated version of Ecopath 5",
+            "not supported by the EwE6 import process"
+        )
+        Assert-NoNewDialogs -ProcessId $setup.Instance.Process.Id -Baseline $setup.Baseline
+    } finally {
+        Stop-TestInstance -ProcessId $setup.Instance.Process.Id -Label $Label
+    }
+}
+
+# ===========================================================================
+# Import wizard (dlgImportDatabase, window title "Model conversion utility") - characterized from
+# real Accessibility Insights screenshots. Flow: intro page -> Next -> "Select model(s) to import"
+# page (a grid whose checkbox cells are NOT exposed individually) -> select the first model ->
+# Next -> progress page (list + progress bar) -> OK becomes enabled when finished.
+#
+# The error case (e.g. the NoNullAllowedException "Import failed..." dialog) is deliberately NOT
+# detected by caption here: while the conversion runs, the wizard is polled for NEW windows
+# (Assert-NoNewDialogs against the baseline) and the test fails with that dialog's own text.
+
+# Selects the model at -Index (0 = first, 1 = second, ...) in the wizard's grid. The checkbox itself isn't addressable, so (as
+# confirmed manually) clicking the top-left corner of the grid's value pane toggles it. That pane is
+# the first Pane sibling right after the grid's scroll bar in the UIA tree.
+function Write-UiaTreeDump {
+    param(
+        [Parameter(Mandatory = $true)]$Element,
+        [int]$MaxDepth = 8,
+        [int]$MaxNodes = 120
+    )
+    $walker = [System.Windows.Automation.TreeWalker]::ControlViewWalker
+    $script:uiaDumpCount = 0
+    function Write-UiaNode {
+        param($Node, [int]$Depth)
+        if ($script:uiaDumpCount -ge $MaxNodes -or $Depth -gt $MaxDepth) { return }
+        $script:uiaDumpCount++
+        $type = try { $Node.Current.ControlType.ProgrammaticName -replace '^ControlType\.', '' } catch { "?" }
+        $name = try { $Node.Current.Name } catch { "?" }
+        $cls = try { $Node.Current.ClassName } catch { "?" }
+        $rect = try { $Node.Current.BoundingRectangle } catch { "?" }
+        $focusable = try { $Node.Current.IsKeyboardFocusable } catch { "?" }
+        Write-Host ("    {0}{1} name='{2}' class='{3}' rect={4} focusable={5}" -f ("  " * $Depth), $type, $name, $cls, $rect, $focusable) -ForegroundColor DarkGray
+        $child = $walker.GetFirstChild($Node)
+        while ($null -ne $child) {
+            Write-UiaNode -Node $child -Depth ($Depth + 1)
+            $child = $walker.GetNextSibling($child)
+        }
+    }
+    Write-UiaNode -Node $Element -Depth 0
+}
+
+# Selects the model at -Index (0 = first, 1 = second, ...) in the wizard's grid. The checkbox itself isn't addressable, so (as
+# confirmed manually) clicking the top-left corner of the grid's value pane toggles it. That pane is
+# the first Pane sibling right after the grid's scroll bar in the UIA tree. Prints what it found and
+# where it clicks; on any failure dumps the wizard's UIA tree so the real structure can be seen.
+# For Index 0: one click on the first row's cell selects it. For Index > 0: that same click selects
+# the first model, a second click (after the double-click interval has passed) deselects it again,
+# then - with the grid still focused - Down moves to the next row and Space ticks it.
+function Select-WizardModel {
+    param(
+        [Parameter(Mandatory = $true)]$WizardElement,
+        [int]$Index = 0
+    )
+    # CONFIRMED via the tree dump: PowerShell's UIA client exposes the grid's scroll bar as a Pane
+    # (not ControlType.ScrollBar), identifiable by ClassName "WindowsForms10.SCROLLBAR...".
+    $paneCondition = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::Pane)
+    $scrollBar = $null
+    $deadline = (Get-Date).AddSeconds(10)
+    while ($null -eq $scrollBar -and (Get-Date) -lt $deadline) {
+        foreach ($candidate in $WizardElement.FindAll([System.Windows.Automation.TreeScope]::Descendants, $paneCondition)) {
+            $candidateClass = try { $candidate.Current.ClassName } catch { "" }
+            if ($candidateClass -like "*SCROLLBAR*") { $scrollBar = $candidate; break }
+        }
+        if ($null -eq $scrollBar) { Start-Sleep -Milliseconds 300 }
+    }
+    if ($null -eq $scrollBar) {
+        Write-Host "`n    [diagnostic] No ScrollBar descendant found. Wizard UIA tree:" -ForegroundColor Yellow
+        Write-UiaTreeDump -Element $WizardElement
+        throw "Could not find the model grid (its scroll bar) on the wizard's model-selection page after ~10 seconds (UIA tree dumped above)."
+    }
+    Write-Host "`n    [diagnostic] ScrollBar found, rect=$($scrollBar.Current.BoundingRectangle)" -ForegroundColor DarkGray
+
+    $walker = [System.Windows.Automation.TreeWalker]::ControlViewWalker
+    $parent = $walker.GetParent($scrollBar)
+    Write-Host "    [diagnostic] Scroll bar's parent and its children:" -ForegroundColor DarkGray
+    $child = $walker.GetFirstChild($parent)
+    while ($null -ne $child) {
+        $ct = try { $child.Current.ControlType.ProgrammaticName } catch { "?" }
+        Write-Host "      $ct name='$($child.Current.Name)' class='$($child.Current.ClassName)' rect=$($child.Current.BoundingRectangle) focusable=$($child.Current.IsKeyboardFocusable)" -ForegroundColor DarkGray
+        $child = $walker.GetNextSibling($child)
+    }
+
+    $sibling = $walker.GetNextSibling($scrollBar)
+    while ($null -ne $sibling -and $sibling.Current.ControlType -ne [System.Windows.Automation.ControlType]::Pane) {
+        $sibling = $walker.GetNextSibling($sibling)
+    }
+    if ($null -eq $sibling) {
+        Write-Host "    [diagnostic] No Pane after the scroll bar. Wizard UIA tree:" -ForegroundColor Yellow
+        Write-UiaTreeDump -Element $WizardElement
+        throw "Could not find the grid's value pane next to its scroll bar (UIA tree dumped above)."
+    }
+
+    $rect = $sibling.Current.BoundingRectangle
+    $clickX = [int]($rect.X) + 5
+    $clickY = [int]($rect.Y) + 5
+    Write-Host "    [diagnostic] Chosen pane rect=$rect; clicking at ($clickX, $clickY)" -ForegroundColor DarkGray
+    [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point($clickX, $clickY)
+    Start-Sleep -Milliseconds 150
+    $actual = [System.Windows.Forms.Cursor]::Position
+    Write-Host "    [diagnostic] Cursor is now at ($($actual.X), $($actual.Y))" -ForegroundColor DarkGray
+    [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTDOWN, 0, 0, 0, [UIntPtr]::Zero)
+    [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTUP, 0, 0, 0, [UIntPtr]::Zero)
+    Start-Sleep -Milliseconds 300
+
+    if ($Index -gt 0) {
+        # Wait out the system double-click interval so the second click is a separate click.
+        Start-Sleep -Milliseconds 800
+        Write-Host "    [diagnostic] Clicking again to deselect the first model, then Down x$Index + Space" -ForegroundColor DarkGray
+        [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTDOWN, 0, 0, 0, [UIntPtr]::Zero)
+        [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTUP, 0, 0, 0, [UIntPtr]::Zero)
+        Start-Sleep -Milliseconds 300
+        for ($i = 0; $i -lt $Index; $i++) {
+            [System.Windows.Forms.SendKeys]::SendWait("{DOWN}")
+            Start-Sleep -Milliseconds 200
+        }
+        [System.Windows.Forms.SendKeys]::SendWait(" ")
+        Start-Sleep -Milliseconds 300
+    }
+}
+
+# Progress percentage (0-100) from the wizard's progress bar, or $null if it can't be read.
+function Get-WizardProgressPercent {
+    param([Parameter(Mandatory = $true)]$WizardElement)
+    try {
+        $barCondition = New-Object System.Windows.Automation.PropertyCondition(
+            [System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::ProgressBar)
+        $bar = $WizardElement.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $barCondition)
+        if ($null -eq $bar) { return $null }
+        try {
+            $valueText = $bar.GetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern).Current.Value
+            if ($valueText -match '(\d+(\.\d+)?)') { return [double]$Matches[1] }
+        } catch { }
+        try {
+            $range = $bar.GetCurrentPattern([System.Windows.Automation.RangeValuePattern]::Pattern).Current
+            if ($range.Maximum -gt $range.Minimum) {
+                return 100.0 * ($range.Value - $range.Minimum) / ($range.Maximum - $range.Minimum)
+            }
+        } catch { }
+    } catch { }
+    $null
+}
+
+# Polls until the wizard's OK button is enabled (and progress, if readable, is 100%) - throwing
+# immediately if any unexpected new window (e.g. an import-failure dialog) shows up meanwhile.
+function Wait-ForWizardConversion {
+    param(
+        [Parameter(Mandatory = $true)]$WizardElement,
+        [Parameter(Mandatory = $true)]$Setup,
+        [int]$TimeoutSeconds = 180
+    )
+    $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+    $lastPrint = Get-Date
+    while ((Get-Date) -lt $deadline) {
+        Assert-NoNewDialogs -ProcessId $Setup.Instance.Process.Id -Baseline $Setup.Baseline
+
+        $percent = Get-WizardProgressPercent -WizardElement $WizardElement
+        $okEnabled = $false
+        try {
+            $okButton = Find-ByNameAndType -Root $WizardElement -Name "OK" -ControlType ([System.Windows.Automation.ControlType]::Button)
+            if ($null -ne $okButton) { $okEnabled = [bool]$okButton.Current.IsEnabled }
+        } catch { }
+
+        if ($okEnabled -and ($null -eq $percent -or $percent -ge 100)) { return }
+
+        if (((Get-Date) - $lastPrint).TotalSeconds -ge 3) {
+            $shown = if ($null -ne $percent) { "$percent%" } else { "?" }
+            Write-Host "`n    [waiting] progress: $shown  OK enabled: $okEnabled" -NoNewline -ForegroundColor DarkGray
+            $lastPrint = Get-Date
+        }
+        Start-Sleep -Milliseconds 500
+    }
+    throw "The wizard's conversion did not finish (OK enabled) within $TimeoutSeconds seconds."
+}
+
+function Test-WizardImportSucceeds {
+    param(
+        [Parameter(Mandatory = $true)]$Setup,
+        [int]$ModelIndex = 0
+    )
+    $wizardHandle = $Setup.FirstWindow.NativeWindowHandle
+    $wizardElement = Get-WindowElementByHandle -Handle $wizardHandle
+
+    Write-Step "Intro page: Next" { Invoke-ButtonByName -WindowElement $wizardElement -Name "Next" }
+    Start-Sleep -Milliseconds 500
+    Write-Step "Selecting model #$($ModelIndex + 1)" { Select-WizardModel -WizardElement $wizardElement -Index $ModelIndex }
+    Write-Step "Model-selection page: Next" { Invoke-ButtonByName -WindowElement $wizardElement -Name "Next" }
+    Write-Host "  Converting (watching for unexpected dialogs)..." -NoNewline
+    Wait-ForWizardConversion -WizardElement $wizardElement -Setup $Setup
+    Write-Host " done" -ForegroundColor Green
+    Write-Step "Finishing the wizard (OK)" { Invoke-ButtonByName -WindowElement $wizardElement -Name "OK" }
+    Start-Sleep -Milliseconds 1000
+}
+
+# Whole scenario for a menu-based wizard import: launch with the model on the command line, step
+# through the wizard selecting model number -ModelNumber (1-based: 1 = first row, 2 = second, ...),
+# wait for the conversion to finish, then check for unexpected dialogs. Number N means N-1 presses
+# of Down in the grid (see Select-WizardModel).
+function Invoke-WizardMenuImportTest {
+    param(
+        [Parameter(Mandatory = $true)][string]$ModelPath,
+        [Parameter(Mandatory = $true)][int]$ModelNumber,
+        [string]$Label = "wizard import test instance"
+    )
+    $setup = Open-LegacyModelDirectly -ModelPath $ModelPath -ExpectedWindowName "Model conversion utility"
+    try {
+        Test-WizardImportSucceeds -Setup $setup -ModelIndex ($ModelNumber - 1)
+        Assert-NoNewDialogs -ProcessId $setup.Instance.Process.Id -Baseline $setup.Baseline
+    } finally {
+        Stop-TestInstance -ProcessId $setup.Instance.Process.Id -Label $Label
+    }
+}
+
+# ===========================================================================
+# GBR_Linked_ecosystem.MDB on x64: the legacy-import helper's console lists the 16 submodels and
+# asks for a number ("Please enter the model number and press Enter." input box, prompt
+# "Enter a number (1-16):" in the log). Type 1 + Enter, then it's the same flow as every other helper
+# import: wait for "--- Process exited ---", evaluate the log, Continue.
+function Submit-HelperModelChoice {
+    param(
+        [Parameter(Mandatory = $true)]$ConsoleElement,
+        [Parameter(Mandatory = $true)][string]$Choice
+    )
+    $promptText = "Enter a number"
+    $log = Wait-ForEditControlText -WindowElement $ConsoleElement -ContainsAnyOf @($promptText) -TimeoutSeconds 60
+    if ($log -notlike "*$promptText*") { throw "The helper never asked for a model number within 60 seconds. Console text: '$log'" }
+
+    # The input box: matched by its accessible name, whatever ControlType PowerShell's UIA client
+    # reports for it (Insights shows Edit; this client has sometimes reported EDIT-class controls
+    # as Pane instead).
+    $inputName = "Please enter the model number and press Enter."
+    $inputBox = $null
+    foreach ($candidate in $ConsoleElement.FindAll([System.Windows.Automation.TreeScope]::Descendants, [System.Windows.Automation.Condition]::TrueCondition)) {
+        $candidateName = try { $candidate.Current.Name } catch { "" }
+        if ($candidateName -eq $inputName) {
+            $inputBox = $candidate
+            $candidateType = try { $candidate.Current.ControlType.ProgrammaticName } catch { "?" }
+            Write-Host "`n    [diagnostic] Input box found: $candidateType class='$($candidate.Current.ClassName)' rect=$($candidate.Current.BoundingRectangle)" -ForegroundColor DarkGray
+            if ($candidateType -like "*Edit*") { break }
+        }
+    }
+    if ($null -eq $inputBox) {
+        Write-Host "`n    [diagnostic] Input box not found by name. Console UIA tree:" -ForegroundColor Yellow
+        Write-UiaTreeDump -Element $ConsoleElement
+        throw "Could not find the model-number input box ('$inputName')."
+    }
+    Invoke-ElementClick -Element $inputBox
+    Start-Sleep -Milliseconds 300
+    [System.Windows.Forms.SendKeys]::SendWait($Choice)
+    Start-Sleep -Milliseconds 200
+    [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
+}
+
+# Whole scenario for a menu-based legacy-import-helper import: launch with the model on the command
+# line, answer the helper's "Enter a number" prompt with -ModelNumber (1-based, as listed in the
+# console), then evaluate the log like every other helper import and check for unexpected dialogs.
+# -ModelCount: how many models the file holds. A file with exactly ONE model gets no prompt at all
+# from the helper ("One model found: ..." and it carries on), so nothing is typed in that case;
+# 0 (default) means "unknown - assume the prompt appears".
+function Invoke-HelperMenuImportTest {
+    param(
+        [Parameter(Mandatory = $true)][string]$ModelPath,
+        [Parameter(Mandatory = $true)][int]$ModelNumber,
+        [int]$ModelCount = 0,
+        [string]$Label = "helper import test instance"
+    )
+    $setup = Open-LegacyModelDirectly -ModelPath $ModelPath
+    try {
+        $consoleElement = Get-WindowElementByHandle -Handle $setup.FirstWindow.NativeWindowHandle
+        if ($ModelCount -ne 1) {
+            Write-Step "Choosing submodel $ModelNumber" { Submit-HelperModelChoice -ConsoleElement $consoleElement -Choice "$ModelNumber" }
+        }
+        Test-HelperImportSucceeds -Setup $setup
+        Assert-NoNewDialogs -ProcessId $setup.Instance.Process.Id -Baseline $setup.Baseline
+    } finally {
+        Stop-TestInstance -ProcessId $setup.Instance.Process.Id -Label $Label
+    }
+}
+
