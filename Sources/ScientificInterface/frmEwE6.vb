@@ -974,7 +974,7 @@ Public Class frmEwE6
 
 #Region " Messages "
 
-    Private Delegate Sub SendMessageDelegate(strMsg As String, importance As eMessageImportance, component As eCoreComponentType)
+    Private Delegate Sub SendMessageDelegate(strMsg As String, importance As eMessageImportance, component As eCoreComponentType, strHyperlink As String, strCaption As String)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -983,20 +983,26 @@ Public Class frmEwE6
     ''' <param name="strMsg">Message text to send.</param>
     ''' <param name="importance">Message importance.</param>
     ''' <param name="component">Core component to represent as message origin.</param>
+    ''' <param name="strHyperlink">Optional hyperlink to include with the message.</param>
+    ''' <param name="strCaption">Optional dialog/message box caption to use for this message,
+    ''' overriding the default main-window-caption title. Leave empty to fall back to
+    ''' the normal title.</param>
     ''' -----------------------------------------------------------------------
     Public Sub SendMessage(strMsg As String,
                            Optional importance As eMessageImportance = eMessageImportance.Warning,
                            Optional component As eCoreComponentType = eCoreComponentType.External,
-                           Optional strHyperlink As String = "")
+                           Optional strHyperlink As String = "",
+                           Optional strCaption As String = "")
 
         If Me.InvokeRequired() Then
             Me.Invoke(New SendMessageDelegate(AddressOf Me.SendMessage),
-                                              New Object() {strMsg, importance, component})
+                                              New Object() {strMsg, importance, component, strHyperlink, strCaption})
             Return
         End If
 
         Dim msg As New cMessage(strMsg, eMessageType.Any, component, importance)
         msg.Hyperlink = strHyperlink
+        msg.Caption = strCaption
 
         Me.Core.Messages.SendMessage(msg)
 
@@ -1471,7 +1477,8 @@ Public Class frmEwE6
             Case cEwEDatabase.eCompatibilityTypes.TooOld
                 strModelKindTag = "TooOld-" & strDetectionPath
                 Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD, links.GetURL(cWebLinks.eLinkType.Home)),
-                               strHyperlink:=links.GetURL(cWebLinks.eLinkType.Home))
+                               strHyperlink:=links.GetURL(cWebLinks.eLinkType.Home),
+                               strCaption:=My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD_CAPTION)
 
             Case cEwEDatabase.eCompatibilityTypes.Importable
 

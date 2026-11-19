@@ -161,6 +161,20 @@ Public Class cMessage
     Public Property Hyperlink() As String
 
     ''' <summary>
+    ''' Get/set an optional caption to use for this message's dialog or message
+    ''' box, overriding the default main-window-caption title. Leave empty (the
+    ''' default) to fall back to the normal title.
+    ''' </summary>
+    ''' <remarks>
+    ''' Several dialogs in this app otherwise share the generic main-window
+    ''' caption as their title (e.g. "Ecopath with Ecosim"), which makes them
+    ''' indistinguishable by title alone - both to users with several EwE
+    ''' windows open, and to UI-automation tooling. Giving a message its own
+    ''' specific caption avoids that ambiguity.
+    ''' </remarks>
+    Public Property Caption() As String = ""
+
+    ''' <summary>
     ''' Helper method, compares this message to another object.
     ''' </summary>
     ''' <param name="obj">The object to compare to</param>

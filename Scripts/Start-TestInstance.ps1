@@ -47,7 +47,20 @@ param(
     [string]$Configuration = "Debug",
     [string]$SourceModelPath,
     [string]$WorkFolder,
-    [int]$MainWindowTimeoutSeconds = 90
+    [int]$MainWindowTimeoutSeconds = 90,
+    # Added for the legacy-conversion tests: CONFIRMED those launches never reliably populate
+    # $proc.MainWindowHandle at all within any reasonable timeout - the window that actually
+    # appears first (the x64 helper's import console, or the import wizard) apparently isn't
+    # recognized by .NET as "the" main window the way a normal model-open is, so the ordinary
+    # Wait-ForMainWindow wait below just hard-times-out doing nothing useful for that flow. Worse,
+    # along the way it can ALSO false-positive-match its own "Ecopath with Ecosim" database-upgrade
+    # detection against some OTHER same-titled dialog that isn't the upgrade prompt at all (that
+    # title/shape is reused by several unrelated confirmations in this app, confirmed via the
+    # lock-contention dialog sharing it already) and click an unidentified "Yes" button blind - not
+    # something to do for a flow whose actual dialog sequence isn't characterized yet. Callers for
+    # that flow should pass this switch and do their OWN waiting (by window name, not handle) once
+    # this function returns right after launch.
+    [switch]$SkipMainWindowWait
 )
 
 if (-not $SourceModelPath) {
@@ -112,26 +125,32 @@ $proc = Start-Process -FilePath $exePath -ArgumentList "`"$workingModelPath`"" -
 # via Accessibility Insights: Name="Ecopath with Ecosim", ControlType=Window, with Yes/No buttons),
 # watched for here since the usual FromHandle(MainWindowHandle) approach isn't available yet -
 # searching the whole desktop, scoped to this process's own PID, instead.
-Write-Host "Waiting for the main window to appear (watching for a database-upgrade prompt too)..."
-Wait-ForMainWindow -Proc $proc -TimeoutSeconds $MainWindowTimeoutSeconds
+if ($SkipMainWindowWait) {
+    Write-Host "Skipping the main-window wait (-SkipMainWindowWait) - returning right after launch; the caller does its own waiting by window name." -ForegroundColor DarkGray
+    Write-Host "Ready (unconfirmed) - PID $($proc.Id), model folder: $WorkFolder" -ForegroundColor Green
+    $stagedCopyPath = $null
+} else {
+    Write-Host "Waiting for the main window to appear (watching for a database-upgrade prompt too)..."
+    Wait-ForMainWindow -Proc $proc -TimeoutSeconds $MainWindowTimeoutSeconds
 
-Write-Host "Ready - PID $($proc.Id), model folder: $WorkFolder" -ForegroundColor Green
+    Write-Host "Ready - PID $($proc.Id), model folder: $WorkFolder" -ForegroundColor Green
 
-# Confirmed NEW since the baseline taken before launch - not re-derived later by matching
-# Get-StagedCopies against a filename pattern. CONFIRMED that re-matching by name later is
-# unreliable: if an old, unrelated staged copy with the same fixture name is still sitting in the
-# folder (e.g. a leftover from an earlier run whose own process was never fully cleaned up), a
-# later name-based lookup can silently pick THAT one instead of this instance's own - the exact
-# same GUID reappeared across two separate runs, which is what exposed this.
-$stagedCopyPath = $null
-$stagedDeadline = (Get-Date).AddSeconds(30)
-while ($null -eq $stagedCopyPath -and (Get-Date) -lt $stagedDeadline) {
-    $newMatch = Get-StagedCopies | Where-Object { $_.Name -like "Temp$baseName*" -and $_.FullName -notin $copiesBefore } | Select-Object -First 1
-    if ($newMatch) { $stagedCopyPath = $newMatch.FullName }
-    else { Start-Sleep -Milliseconds 300 }
-}
-if (-not $stagedCopyPath) {
-    Write-Host "Could not confirm a NEW staged copy for '$baseName' within 30 seconds - StagedCopyPath will be `$null." -ForegroundColor Yellow
+    # Confirmed NEW since the baseline taken before launch - not re-derived later by matching
+    # Get-StagedCopies against a filename pattern. CONFIRMED that re-matching by name later is
+    # unreliable: if an old, unrelated staged copy with the same fixture name is still sitting in
+    # the folder (e.g. a leftover from an earlier run whose own process was never fully cleaned
+    # up), a later name-based lookup can silently pick THAT one instead of this instance's own -
+    # the exact same GUID reappeared across two separate runs, which is what exposed this.
+    $stagedCopyPath = $null
+    $stagedDeadline = (Get-Date).AddSeconds(30)
+    while ($null -eq $stagedCopyPath -and (Get-Date) -lt $stagedDeadline) {
+        $newMatch = Get-StagedCopies | Where-Object { $_.Name -like "Temp$baseName*" -and $_.FullName -notin $copiesBefore } | Select-Object -First 1
+        if ($newMatch) { $stagedCopyPath = $newMatch.FullName }
+        else { Start-Sleep -Milliseconds 300 }
+    }
+    if (-not $stagedCopyPath) {
+        Write-Host "Could not confirm a NEW staged copy for '$baseName' within 30 seconds - StagedCopyPath will be `$null." -ForegroundColor Yellow
+    }
 }
 
 return [PSCustomObject]@{

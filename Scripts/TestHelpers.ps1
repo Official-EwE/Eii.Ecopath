@@ -88,7 +88,16 @@ function Register-DialogCheck {
 function Invoke-Test {
     param(
         [Parameter(Mandatory = $true)][string]$Name,
-        [Parameter(Mandatory = $true)][scriptblock]$Test
+        # Named $TestBody, NOT $Test: CONFIRMED root cause of the "call depth overflow" bug - a
+        # caller like "Invoke-Test $Name { & $Test $modelPath }" passes a plain, non-closure
+        # scriptblock whose own "$Test" is resolved dynamically against the CALLING scope at
+        # invocation time, not captured lexically where it was written. Once that scriptblock was
+        # bound to this function's OWN parameter (which used to be named $Test too), invoking it
+        # via "& $Test" below made its inner "$Test" resolve to itself - a single scriptblock
+        # calling itself forever, which is exactly what the repeated identical
+        # "Run-ConversionTests.ps1: line 80" stack frame showed. Renaming this parameter removes
+        # the collision entirely, regardless of what any caller happens to name its own variables.
+        [Parameter(Mandatory = $true)][scriptblock]$TestBody
     )
     # Set by a runner's own -Only parameter, if given - a substring match (case-insensitive) against
     # the test name, letting a single test run in isolation (e.g. to tell apart a genuine bug from
@@ -102,7 +111,7 @@ function Invoke-Test {
     $script:PendingDialogChecks = [System.Collections.Generic.List[object]]::new()
     $sw = [System.Diagnostics.Stopwatch]::StartNew()
     try {
-        & $Test
+        & $TestBody
 
         # Only run once the test body itself has already succeeded - if it already failed, that
         # failure is reported as-is, rather than risking this check's own result masking it.
@@ -120,6 +129,25 @@ function Invoke-Test {
         $sw.Stop()
         Add-TestResult -Name $Name -Result "FAIL" -DurationMs $sw.ElapsedMilliseconds -Reason $_.Exception.Message
         Write-Host "FAIL ($($sw.ElapsedMilliseconds) ms): $($_.Exception.Message)" -ForegroundColor Red
+        # Printed separately from the one-line summary above, and wrapped in its own try/catch:
+        # for a genuine recursion bug (e.g. "call depth overflow") or any other real engine/COM
+        # exception, ScriptStackTrace is exactly what pinpoints which function was calling which -
+        # a one-line Exception.Message alone can't show that. But NOT printed for a plain
+        # Assert-True failure (the common case - most test failures are just "expected X, got Y"):
+        # its top frame is always "at Assert-True, ...", every single time, by construction - it
+        # never says anything a reader couldn't already tell from the assertion message itself, so
+        # printing it is pure noise for the single most common kind of failure there is. Some
+        # terminating errors don't populate a stack trace at all, so this stays silent rather than
+        # throwing a second, more confusing error on top of the real one.
+        try {
+            $isPlainAssertionFailure = $_.ScriptStackTrace -and ($_.ScriptStackTrace -split "`r?`n")[0].TrimStart() -like "at Assert-True,*"
+            if ($_.ScriptStackTrace -and -not $isPlainAssertionFailure) {
+                Write-Host "--- ScriptStackTrace ---" -ForegroundColor DarkYellow
+                Write-Host $_.ScriptStackTrace -ForegroundColor DarkYellow
+                Write-Host "------------------------" -ForegroundColor DarkYellow
+            }
+        } catch {
+        }
     }
 }
 
@@ -336,6 +364,12 @@ function Get-StagedCopies {
 # nobody clicking it. Shared by every launch site in this toolkit (Start-TestInstance.ps1 and
 # Run-MultiInstanceTests.ps1's own second-instance launcher) after this gap showed up in one but not
 # the other.
+# Caption of the "your model database will be updated to a newer version" Yes/No prompt. Set in code
+# (cCore: cFeedbackMessage.Caption <- CoreMessages.DATABASE_UPDATE_PROMPT_CAPTION) so it no longer
+# shares the generic "Ecopath with Ecosim" caption with the main window, splash and other dialogs.
+# Must match the English resx value exactly.
+$DatabaseUpgradePromptCaption = "Update model database"
+
 function Wait-ForMainWindow {
     param(
         [Parameter(Mandatory = $true)][System.Diagnostics.Process]$Proc,
@@ -347,7 +381,7 @@ function Wait-ForMainWindow {
     # the legacy IAccessible/MSAA proxy (AutomationId is a raw numeric Win32 control ID).
     $upgradeDialogCondition = New-Object System.Windows.Automation.AndCondition(@(
         (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ProcessIdProperty, $Proc.Id)),
-        (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::NameProperty, "Ecopath with Ecosim")),
+        (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::NameProperty, $DatabaseUpgradePromptCaption)),
         (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::Window))
     ))
     $yesCondition = New-Object System.Windows.Automation.PropertyCondition(
@@ -359,8 +393,25 @@ function Wait-ForMainWindow {
         $upgradeDialog = $root.FindFirst([System.Windows.Automation.TreeScope]::Children, $upgradeDialogCondition)
         if ($null -ne $upgradeDialog) {
             if (-not $upgradeDialogSeen) {
-                Write-Host "Database-upgrade prompt detected - clicking Yes..." -NoNewline
                 $upgradeDialogSeen = $true
+                # Printed ONCE per detection, not every poll iteration - enough identifying detail
+                # to cross-reference against Accessibility Insights (NativeWindowHandle is the
+                # most direct match: Insights shows it in hex under the element's advanced
+                # properties, sometimes labeled "HWND" - same value, just formatted differently
+                # here). Wrapped property-by-property, not as one big try/catch, so one property
+                # throwing (some do, on some control types) doesn't hide every other one that
+                # would have worked fine.
+                $diagName = try { $upgradeDialog.Current.Name } catch { "<unavailable>" }
+                $diagAutomationId = try { $upgradeDialog.Current.AutomationId } catch { "<unavailable>" }
+                $diagClassName = try { $upgradeDialog.Current.ClassName } catch { "<unavailable>" }
+                $diagHandle = try { $upgradeDialog.Current.NativeWindowHandle } catch { 0 }
+                $diagHandleHex = try { "0x" + $diagHandle.ToString("X8") } catch { "<unavailable>" }
+                $diagRect = try { $upgradeDialog.Current.BoundingRectangle } catch { "<unavailable>" }
+                $diagPid = try { $upgradeDialog.Current.ProcessId } catch { "<unavailable>" }
+                Write-Host "  [diagnostic] Matched element - Name: '$diagName'  AutomationId: '$diagAutomationId'  ClassName: '$diagClassName'" -ForegroundColor DarkYellow
+                Write-Host "  [diagnostic] NativeWindowHandle: $diagHandle (hex $diagHandleHex)  ProcessId: $diagPid  BoundingRectangle: $diagRect" -ForegroundColor DarkYellow
+                Write-Host "  [diagnostic] In Accessibility Insights: hover/select the window at that position, or match its 'HWND'/Native Window Handle property against the hex value above." -ForegroundColor DarkYellow
+                Write-Host "Database-upgrade prompt detected - clicking Yes..." -NoNewline
             } else {
                 Write-Host "." -NoNewline
             }
@@ -547,7 +598,7 @@ function Open-ModelViaUI {
     # initial launch, which is the only reason that search was needed there). Same Name-only match
     # for the Yes button too (ControlType.Pane, not Button - confirmed earlier this session).
     $upgradeDialogCondition = New-Object System.Windows.Automation.AndCondition(
-        (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::NameProperty, "Ecopath with Ecosim")),
+        (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::NameProperty, $DatabaseUpgradePromptCaption)),
         (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::Window))
     )
     $yesCondition = New-Object System.Windows.Automation.PropertyCondition(
@@ -800,4 +851,238 @@ function Wait-ForStagedCopy {
         Start-Sleep -Milliseconds 300
     }
     $copies
+}
+
+# ===========================================================================
+# Conversion-test helpers (legacy Ecopath 5 model detection/import flow)
+# ===========================================================================
+
+# Opens a model via the File menu, same navigation as Open-ModelViaUI, but WITHOUT that function's
+# own built-in wait for the generic "database will be updated" upgrade dialog at the end: the
+# conversion tests need to wait for a DIFFERENT, and not-yet-fixed, set of possible windows instead
+# (the EwE5-referral message, the import wizard, or the x64 helper's console) - baked-in waiting for
+# the wrong dialog here would just cost 5 real seconds on every single conversion test for nothing.
+function Open-LegacyModelViaUI {
+    param(
+        [Parameter(Mandatory = $true)][System.Diagnostics.Process]$Proc,
+        [Parameter(Mandatory = $true)][string]$Path
+    )
+    Set-AppForeground -Proc $Proc
+    $window = Get-AppWindow -Proc $Proc
+    $fileMenu = Find-ByNameAndType -Root $window -Name "File" -ControlType ([System.Windows.Automation.ControlType]::MenuItem)
+    if ($null -eq $fileMenu) { throw "Could not find the File menu." }
+    $fileMenu.GetCurrentPattern([System.Windows.Automation.ExpandCollapsePattern]::Pattern).Expand()
+    Start-Sleep -Milliseconds 400
+    $openItem = Find-ByNameAndType -Root $window -Name "Open Model..." -ControlType ([System.Windows.Automation.ControlType]::MenuItem)
+    if ($null -eq $openItem) { throw "Could not find 'Open Model...' - the real menu item name may differ; confirm via Accessibility Insights." }
+    Invoke-ElementClick -Element $openItem
+
+    $dialogCondition = New-Object System.Windows.Automation.AndCondition(
+        (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::NameProperty, "Open")),
+        (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::Window))
+    )
+    $dialog = $null
+    for ($i = 0; $i -lt 30; $i++) {
+        $dialog = $window.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $dialogCondition)
+        if ($null -ne $dialog) { break }
+        Start-Sleep -Milliseconds 200
+    }
+    if ($null -eq $dialog) { throw "'Open' dialog did not appear - its real Name may differ from the assumed 'Open'." }
+
+    $label = Find-ByNameAndType -Root $dialog -Name "File name:" -ControlType ([System.Windows.Automation.ControlType]::Text)
+    if ($null -eq $label) { throw "Could not find the 'File name:' label in the Open dialog." }
+    $labelRect = $label.Current.BoundingRectangle
+    [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point([int]($labelRect.X + $labelRect.Width + 10), [int]($labelRect.Y + $labelRect.Height / 2))
+    Start-Sleep -Milliseconds 150
+    [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTDOWN, 0, 0, 0, [UIntPtr]::Zero)
+    [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTUP, 0, 0, 0, [UIntPtr]::Zero)
+    Start-Sleep -Milliseconds 150
+
+    [System.Windows.Forms.SendKeys]::SendWait("^a")
+    Start-Sleep -Milliseconds 100
+    [System.Windows.Forms.SendKeys]::SendWait((ConvertTo-SendKeysLiteral $Path))
+    Start-Sleep -Milliseconds 100
+    [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
+    Start-Sleep -Milliseconds 500
+}
+
+# Polls until a window NOT present in Baseline (from Get-WindowBaseline) appears, or times out.
+# Deliberately generic (no assumption about which of the three conversion-flow outcomes - the
+# EwE5-referral message, the import wizard, or the x64 helper's console - is about to show up):
+# the caller inspects the returned record's Name/ControlType/TextContent to tell them apart.
+# Returns $null on timeout rather than throwing, so the caller can decide what "nothing appeared
+# at all" means for its own test (usually itself a failure, but worth a distinct message from
+# "the wrong window appeared").
+function Wait-ForNewWindow {
+    param(
+        [Parameter(Mandatory = $true)][int]$ProcessId,
+        [Parameter(Mandatory = $true)][long[]]$Baseline,
+        [int]$TimeoutSeconds = 30
+    )
+    $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+    while ((Get-Date) -lt $deadline) {
+        $current = Get-OpenWindows -ProcessId $ProcessId
+        $newOnes = @($current | Where-Object { $_.NativeWindowHandle -notin $Baseline })
+        if ($newOnes.Count -gt 0) {
+            # Prefer a genuinely top-level-looking window (reasonable size) over an incidental
+            # nested pane that might also be new - same spirit as DialogChecker's own
+            # ControlType.Window filtering, applied here to PICK one when several are new at once.
+            return @($newOnes | Sort-Object { $_.Width * $_.Height } -Descending)[0]
+        }
+        Start-Sleep -Milliseconds 300
+    }
+    $null
+}
+
+# Polls for a window with an EXACT Name, for a process, with no baseline involved at all - unlike
+# Wait-ForNewWindow, which only works when there's a safe moment to snapshot "before" state first.
+# Needed for a model passed directly on the command line (e.g. a legacy Ecopath 5 .MDB opened via
+# -SourceModelPath): its response window (the import helper's console, say) can already be open by
+# the time Start-TestInstance.ps1 even returns - there's no idle moment left to baseline against
+# before it appears, so a diff-based wait would race it and could miss it outright.
+function Wait-ForWindowByName {
+    param(
+        [Parameter(Mandatory = $true)][int]$ProcessId,
+        [Parameter(Mandatory = $true)][string]$Name,
+        [int]$TimeoutSeconds = 30
+    )
+    $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+    while ((Get-Date) -lt $deadline) {
+        $current = Get-OpenWindows -ProcessId $ProcessId
+        $match = @($current | Where-Object { $_.Name -eq $Name })
+        if ($match.Count -gt 0) { return $match[0] }
+        Start-Sleep -Milliseconds 300
+    }
+    $null
+}
+
+# Live AutomationElement for a window already known by its NativeWindowHandle (e.g. from
+# Wait-ForNewWindow/Get-OpenWindows) - same FromHandle technique Get-AppWindow already uses for the
+# main window, just generalized to any handle. PowerShell's own UIA client talks directly to the
+# real window from here; DialogChecker.exe is only ever used for the generic
+# has-anything-new-appeared check, never for the actual interaction.
+function Get-WindowElementByHandle {
+    param([Parameter(Mandatory = $true)][long]$Handle)
+    [System.Windows.Automation.AutomationElement]::FromHandle([IntPtr]$Handle)
+}
+
+# Reads the live Value of the first Edit-control descendant of a window element - the import
+# helper's console keeps its whole scrollback there (confirmed via Accessibility Insights
+# screenshot: ControlType.Edit(50004), not a Text element), not in any element's Name.
+function Get-EditControlValue {
+    param([Parameter(Mandatory = $true)]$WindowElement)
+
+    # Diagnostic trail for this ONE call, read by Wait-ForEditControlText's own periodic status
+    # line - not returned as part of the normal string result, so every existing caller is
+    # unaffected, but it means the NEXT run shows exactly which path actually fired instead of just
+    # an empty/non-empty string with no way to tell why.
+    $script:LastEditControlValueDiagnostic = "not run yet"
+
+    # Preferred path: a genuine ControlType.Edit exposing a working, NON-EMPTY ValuePattern.
+    # Deliberately requires non-empty before returning - CONFIRMED (the live test run still showing
+    # length=0 for 24+ seconds straight, well past any plausible startup race) that this app can
+    # have SOME other, unrelated, genuinely empty ControlType.Edit element elsewhere in the window
+    # (not the log console at all) that matches this condition and supports ValuePattern just
+    # fine - returning ITS (always-empty) value immediately, without ever reaching the fallback
+    # below that would have found the real one. An empty value here is therefore NOT trusted as
+    # final - treated the same as "nothing found", falling through instead.
+    $editCondition = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::Edit)
+    # ALL matching Edit elements are considered, and the LONGEST non-empty value wins: some windows
+    # (e.g. the legacy-import console while it asks "Please enter the model number and press
+    # Enter") hold BOTH the big log and a small separate input box, and the log is always the longer.
+    $bestValue = ""
+    try {
+        foreach ($editElement in $WindowElement.FindAll([System.Windows.Automation.TreeScope]::Descendants, $editCondition)) {
+            try {
+                $viaValue = $editElement.GetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern).Current.Value
+                if ($viaValue.Length -gt $bestValue.Length) { $bestValue = $viaValue }
+            } catch { }
+        }
+    } catch { }
+    if (-not [string]::IsNullOrEmpty($bestValue)) {
+        $script:LastEditControlValueDiagnostic = "via ControlType.Edit + ValuePattern (non-empty, longest)"
+        return $bestValue
+    }
+
+    # Fallback: CONFIRMED via Debug-EditControlText.ps1's own dump that this app's import-log
+    # console is NOT exposed to PowerShell's System.Windows.Automation client as ControlType.Edit
+    # with a working ValuePattern at all - unlike what Accessibility Insights' own (different) UIA
+    # client stack showed. From here it shows up as plain ControlType.Pane, whose underlying Win32
+    # window class name contains "EDIT" (WindowsForms10.EDIT.*), with the control's ENTIRE text
+    # sitting directly in its own Name property instead of behind any pattern. Matched by
+    # ClassName, not by searching for known log text (that would be circular - the log text IS the
+    # Name here), and deliberately not scoped to any one ControlType, since ControlType.Edit is
+    # exactly what this control turned out NOT to report as. Also requires non-empty before
+    # returning, for the same reason as above - and keeps scanning past an empty-Name match rather
+    # than stopping at the first ClassName hit, in case more than one element matches.
+    try {
+        $all = $WindowElement.FindAll([System.Windows.Automation.TreeScope]::Descendants, [System.Windows.Automation.Condition]::TrueCondition)
+        $classNameMatches = 0
+        $bestName = ""
+        foreach ($el in $all) {
+            $className = try { $el.Current.ClassName } catch { "" }
+            if ($className -like "*EDIT*") {
+                $classNameMatches++
+                $viaName = try { $el.Current.Name } catch { "" }
+                # Longest wins (see the primary path's note): the separate small input box is named
+                # after its prompt, while the log's Name is the whole log text.
+                if ($viaName.Length -gt $bestName.Length) { $bestName = $viaName }
+            }
+        }
+        if (-not [string]::IsNullOrEmpty($bestName)) {
+            $script:LastEditControlValueDiagnostic = "via ClassName-contains-EDIT fallback ($classNameMatches match(es), longest non-empty)"
+            return $bestName
+        }
+        $script:LastEditControlValueDiagnostic = "found $($all.Count) descendant(s), $classNameMatches ClassName-EDIT match(es), none had non-empty text"
+    } catch {
+        $script:LastEditControlValueDiagnostic = "FindAll(Descendants) threw: $($_.Exception.Message)"
+    }
+    ""
+}
+
+# Polls a log-console window's Edit value until it contains one of the given marker substrings
+# (e.g. "Import completed successfully" / "Import failed"), or times out. Returns the final text
+# either way - the caller decides what "timed out, here's what it said" means for its own test.
+function Wait-ForEditControlText {
+    param(
+        [Parameter(Mandatory = $true)]$WindowElement,
+        [Parameter(Mandatory = $true)][string[]]$ContainsAnyOf,
+        [int]$TimeoutSeconds = 60
+    )
+    $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+    $text = ""
+    # Printed every ~3s (not every 500ms poll - that would spam), so a run that stalls here shows
+    # LIVE, in the normal test output, without needing a separate debug script afterward: whether
+    # Get-EditControlValue is returning nothing at all (length staying 0 the whole time - the
+    # retrieval itself is still broken), returning text that's growing normally but never matching
+    # any marker (a marker-text mismatch, not a retrieval problem), or genuinely not changing after
+    # some point (the import itself may be stuck, not this script).
+    $lastPrint = Get-Date
+    while ((Get-Date) -lt $deadline) {
+        $text = Get-EditControlValue -WindowElement $WindowElement
+        foreach ($marker in $ContainsAnyOf) {
+            if ($text -like "*$marker*") { return $text }
+        }
+        if (((Get-Date) - $lastPrint).TotalSeconds -ge 3) {
+            $tail = if ($text.Length -gt 0) { $text.Substring([Math]::Max(0, $text.Length - 60)).Replace("`r", "").Replace("`n", " / ") } else { "<empty>" }
+            Write-Host "`n    [waiting] text length=$($text.Length)  tail: $tail  ($script:LastEditControlValueDiagnostic)" -NoNewline -ForegroundColor DarkGray
+            $lastPrint = Get-Date
+        }
+        Start-Sleep -Milliseconds 500
+    }
+    $text
+}
+
+# Finds and clicks a button by its exact Name within a window element - thin wrapper over the same
+# Find-ByNameAndType + Invoke-ElementClick pattern used throughout this file, named explicitly for
+# conversion-test call sites (clicking "Continue" on the import console, "OK" on a message dialog).
+function Invoke-ButtonByName {
+    param(
+        [Parameter(Mandatory = $true)]$WindowElement,
+        [Parameter(Mandatory = $true)][string]$Name
+    )
+    $button = Find-ByNameAndType -Root $WindowElement -Name $Name -ControlType ([System.Windows.Automation.ControlType]::Button)
+    if ($null -eq $button) { throw "Could not find a '$Name' button in this window." }
+    Invoke-ElementClick -Element $button
 }

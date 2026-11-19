@@ -3188,8 +3188,9 @@ Public Class cCore
 
             If dbUpd.HasDatabaseUpdates(db, ver) Then
 
-                Dim fmsg As New cFeedbackMessage("To continue, your model database will be updated to a newer version. This means that you will not be able to open the model in older versions of EwE. Do you want to continue?", eCoreComponentType.DataSource,
+                Dim fmsg As New cFeedbackMessage(My.Resources.CoreMessages.DATABASE_UPDATE_PROMPT, eCoreComponentType.DataSource,
                                            eMessageType.NotSet, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+                fmsg.Caption = My.Resources.CoreMessages.DATABASE_UPDATE_PROMPT_CAPTION
                 fmsg.Reply = eMessageReply.YES
                 Me.m_publisher.SendMessage(fmsg)
                 If (fmsg.Reply <> eMessageReply.YES) Then Return False

@@ -7,7 +7,9 @@ namespace DialogChecker
     // Given a process ID, lists every window currently open for that process - one per line,
     // tab-separated: Name, ControlType, NativeWindowHandle, X, Y, Width, Height, IsOffscreen,
     // TextContent (the Name of the first ControlType.Text descendant found, if any - the dialog's
-    // own message text, for MessageBox-style dialogs).
+    // own message text, for MessageBox-style dialogs; falling back to the Value of the first Edit
+    // descendant's ValuePattern when no Text descendant has anything - a log-console window like
+    // the legacy-import helper's progress dialog keeps its whole scrollback there instead).
     //
     // Two scopes are combined to catch every kind of window this toolkit has encountered:
     //   1. Top-level windows belonging to this PID, directly under the desktop root - catches the
@@ -101,24 +103,55 @@ namespace DialogChecker
 
                 foreach (var window in results)
                 {
-                    string name = SafeGetString(() => window.Current.Name);
-                    string controlType = SafeGetString(() => window.Current.ControlType.ProgrammaticName);
-                    long handle = SafeGetLong(() => window.Current.NativeWindowHandle);
-                    var rect = window.Current.BoundingRectangle;
-                    bool isOffscreen = SafeGetBool(() => window.Current.IsOffscreen);
-
-                    string textContent = "";
+                    // The WHOLE per-window body is wrapped here, not just the individually-risky
+                    // calls below: CONFIRMED (a real run against gulfmexico.MDB, where the import
+                    // fails fast and the console window can close out from under this enumeration
+                    // mid-poll) that a window captured into "results" above can become stale by the
+                    // time its OWN properties are read here, a few lines later - "the parent window
+                    // has closed" surfaces from the UI Automation proxy layer itself
+                    // (MS.Internal.AutomationProxies...) on a property that looked no different from
+                    // any other up to that point (BoundingRectangle, in the case that was actually
+                    // hit - previously read unprotected, unlike Name/ControlType/handle/IsOffscreen
+                    // which were already behind SafeGetXXX). One stale window used to take down the
+                    // ENTIRE call (exit code 2, nothing printed for ANY window, including ones that
+                    // were perfectly fine) - now it's skipped on its own, with the rest of the
+                    // windows still reported normally.
                     try
                     {
-                        var textElement = window.FindFirst(TreeScope.Descendants, textTypeCondition);
-                        if (textElement != null) textContent = SafeGetString(() => textElement.Current.Name);
-                    }
-                    catch { }
+                        string name = SafeGetString(() => window.Current.Name);
+                        string controlType = SafeGetString(() => window.Current.ControlType.ProgrammaticName);
+                        long handle = SafeGetLong(() => window.Current.NativeWindowHandle);
+                        var rect = SafeGetRect(() => window.Current.BoundingRectangle);
+                        bool isOffscreen = SafeGetBool(() => window.Current.IsOffscreen);
 
-                    Console.WriteLine(string.Join("\t",
-                        Escape(name), controlType, handle,
-                        SafeNum(rect.X), SafeNum(rect.Y), SafeNum(rect.Width), SafeNum(rect.Height),
-                        isOffscreen, Escape(textContent)));
+                        string textContent = "";
+                        try
+                        {
+                            var textElement = window.FindFirst(TreeScope.Descendants, textTypeCondition);
+                            if (textElement != null) textContent = SafeGetString(() => textElement.Current.Name);
+                        }
+                        catch { }
+
+                        // Fallback: a multi-line log console (the legacy-import helper's progress
+                        // window) keeps its whole log in an Edit-shaped control's text, not any
+                        // element's Name via the ControlType.Text search above (which finds nothing
+                        // there at all). Only tried when the Text search came up empty, so an actual
+                        // MessageBox-style dialog's real message text (found above) is never
+                        // overwritten.
+                        if (string.IsNullOrEmpty(textContent))
+                        {
+                            textContent = SafeGetEditValue(window);
+                        }
+
+                        Console.WriteLine(string.Join("\t",
+                            Escape(name), controlType, handle,
+                            SafeNum(rect.X), SafeNum(rect.Y), SafeNum(rect.Width), SafeNum(rect.Height),
+                            isOffscreen, Escape(textContent)));
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.Error.WriteLine("(skipped one window - became stale while reading it: " + ex.Message + ")");
+                    }
                 }
                 return 0;
             }
@@ -170,6 +203,75 @@ namespace DialogChecker
             }
         }
 
+        // Finds the first Edit-control descendant's live Value (e.g. the full scrollback of a
+        // log-console window) and returns it. Tries a direct server-side PropertyCondition search
+        // first (the same kind of search that already works fine for ControlType.Text above); if
+        // that comes up empty, falls back to the client-side TrueCondition+filter approach this
+        // tool already relies on elsewhere for ControlType.Window, in case Edit hits the same
+        // provider-boundary gap that forced that fallback originally - cheap insurance, not yet
+        // confirmed to actually be needed for Edit specifically.
+        static string SafeGetEditValue(AutomationElement window)
+        {
+            try
+            {
+                var editCondition = new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Edit);
+                AutomationElement editElement = null;
+                try { editElement = window.FindFirst(TreeScope.Descendants, editCondition); } catch { }
+
+                if (editElement == null)
+                {
+                    try
+                    {
+                        var all = window.FindAll(TreeScope.Descendants, Condition.TrueCondition);
+                        foreach (AutomationElement el in all)
+                        {
+                            string ct = SafeGetString(() => el.Current.ControlType.ProgrammaticName);
+                            if (ct == "ControlType.Edit") { editElement = el; break; }
+                        }
+                    }
+                    catch { }
+                }
+
+                if (editElement != null)
+                {
+                    object patternObj;
+                    if (editElement.TryGetCurrentPattern(ValuePattern.Pattern, out patternObj))
+                    {
+                        var valuePattern = (ValuePattern)patternObj;
+                        string viaValue = SafeGetString(() => valuePattern.Current.Value);
+                        if (!string.IsNullOrEmpty(viaValue)) return viaValue;
+                    }
+                }
+
+                // Fallback: CONFIRMED (via the PowerShell-side Debug-EditControlText.ps1 diagnostic
+                // against this exact app) that this import-log console does NOT actually expose a
+                // ControlType.Edit element with a working ValuePattern at all through this process's
+                // own UI Automation client stack - Accessibility Insights sees it that way, but this
+                // app doesn't. What IS actually there is a plain ControlType.Pane whose underlying
+                // Win32 window class name contains "EDIT" (WindowsForms10.EDIT.*), with the
+                // control's entire text sitting directly in its own Name property instead of behind
+                // any pattern. Matched by ClassName (not by ControlType, since ControlType.Edit is
+                // exactly what this control doesn't report as, and not by searching for known log
+                // text, since the log text IS the Name here - that would be circular).
+                try
+                {
+                    var all = window.FindAll(TreeScope.Descendants, Condition.TrueCondition);
+                    foreach (AutomationElement el in all)
+                    {
+                        string className = SafeGetString(() => el.Current.ClassName);
+                        if (className.IndexOf("EDIT", StringComparison.OrdinalIgnoreCase) >= 0)
+                        {
+                            string viaName = SafeGetString(() => el.Current.Name);
+                            if (!string.IsNullOrEmpty(viaName)) return viaName;
+                        }
+                    }
+                }
+                catch { }
+            }
+            catch { }
+            return "";
+        }
+
         static void AddIfNew(AutomationElement element, List<AutomationElement> results, HashSet<long> seenHandles)
         {
             long handle = SafeGetLong(() => element.Current.NativeWindowHandle);
@@ -206,6 +308,11 @@ namespace DialogChecker
         static bool SafeGetBool(Func<bool> getter)
         {
             try { return getter(); } catch { return false; }
+        }
+
+        static System.Windows.Rect SafeGetRect(Func<System.Windows.Rect> getter)
+        {
+            try { return getter(); } catch { return new System.Windows.Rect(0, 0, 0, 0); }
         }
     }
 }
