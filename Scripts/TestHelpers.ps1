@@ -394,23 +394,6 @@ function Wait-ForMainWindow {
         if ($null -ne $upgradeDialog) {
             if (-not $upgradeDialogSeen) {
                 $upgradeDialogSeen = $true
-                # Printed ONCE per detection, not every poll iteration - enough identifying detail
-                # to cross-reference against Accessibility Insights (NativeWindowHandle is the
-                # most direct match: Insights shows it in hex under the element's advanced
-                # properties, sometimes labeled "HWND" - same value, just formatted differently
-                # here). Wrapped property-by-property, not as one big try/catch, so one property
-                # throwing (some do, on some control types) doesn't hide every other one that
-                # would have worked fine.
-                $diagName = try { $upgradeDialog.Current.Name } catch { "<unavailable>" }
-                $diagAutomationId = try { $upgradeDialog.Current.AutomationId } catch { "<unavailable>" }
-                $diagClassName = try { $upgradeDialog.Current.ClassName } catch { "<unavailable>" }
-                $diagHandle = try { $upgradeDialog.Current.NativeWindowHandle } catch { 0 }
-                $diagHandleHex = try { "0x" + $diagHandle.ToString("X8") } catch { "<unavailable>" }
-                $diagRect = try { $upgradeDialog.Current.BoundingRectangle } catch { "<unavailable>" }
-                $diagPid = try { $upgradeDialog.Current.ProcessId } catch { "<unavailable>" }
-                Write-Host "  [diagnostic] Matched element - Name: '$diagName'  AutomationId: '$diagAutomationId'  ClassName: '$diagClassName'" -ForegroundColor DarkYellow
-                Write-Host "  [diagnostic] NativeWindowHandle: $diagHandle (hex $diagHandleHex)  ProcessId: $diagPid  BoundingRectangle: $diagRect" -ForegroundColor DarkYellow
-                Write-Host "  [diagnostic] In Accessibility Insights: hover/select the window at that position, or match its 'HWND'/Native Window Handle property against the hex value above." -ForegroundColor DarkYellow
                 Write-Host "Database-upgrade prompt detected - clicking Yes..." -NoNewline
             } else {
                 Write-Host "." -NoNewline

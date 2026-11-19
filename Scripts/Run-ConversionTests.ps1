@@ -65,7 +65,6 @@ param(
 . (Join-Path $PSScriptRoot "ConversionTestHelpers.ps1")
 $script:TestNameFilter = $Only
 $startInstanceScript = Join-Path $PSScriptRoot "Start-TestInstance.ps1"
-$repoRoot = Split-Path -Parent $PSScriptRoot
 
 # Same thresholds as cEwEDatabase.CompatibilityFromVersion (cDBVERSION_EWE5_MIN / _MAX).
 $Ewe5MinVersion = 1.6
@@ -95,54 +94,6 @@ function Resolve-ModelsFolder {
         Write-Host "Not a folder: '$candidate'" -ForegroundColor Yellow
         $candidate = ""
         $Requested = ""
-    }
-}
-
-# ---------------------------------------------------------------------------------------------
-# The x86 import helper: build (cheap if up to date - this also picks up its `models` mode), locate.
-# ---------------------------------------------------------------------------------------------
-function Get-ImportHelperExe {
-    $proj = Join-Path $repoRoot "Tools\EwEImportHelper\Source\EwEImportHelper.vbproj"
-    if (-not (Test-Path $proj)) { throw "Project file not found: $proj" }
-    Write-Host "Building EwEImportHelper (Debug|x86)..."
-    $buildOutput = & dotnet build $proj -c Debug -p:Platform=x86 --nologo -v q 2>&1
-    if ($LASTEXITCODE -ne 0) {
-        $buildOutput | ForEach-Object { Write-Host $_ }
-        throw "Building EwEImportHelper failed (dotnet build exit code $LASTEXITCODE)."
-    }
-    $exe = Get-ChildItem -Path (Join-Path (Split-Path -Parent $proj) "bin") -Recurse -Filter "EwEImportHelper.exe" -File -ErrorAction SilentlyContinue |
-        Sort-Object LastWriteTime -Descending | Select-Object -First 1
-    if ($null -eq $exe) { throw "EwEImportHelper.exe not found under the project's bin folder after building." }
-    $exe.FullName
-}
-
-# Runs the helper hidden with output captured. Returns ExitCode, StdOut lines and StdErr text.
-function Invoke-ImportHelperQuery {
-    param(
-        [Parameter(Mandatory = $true)][string]$HelperExe,
-        [Parameter(Mandatory = $true)][string[]]$Arguments,
-        [int]$TimeoutSeconds = 120
-    )
-    $psi = New-Object System.Diagnostics.ProcessStartInfo
-    $psi.FileName = $HelperExe
-    $psi.UseShellExecute = $false
-    $psi.CreateNoWindow = $true
-    $psi.RedirectStandardOutput = $true
-    $psi.RedirectStandardError = $true
-    # Quote each argument (paths contain spaces and commas).
-    $psi.Arguments = ($Arguments | ForEach-Object { '"' + ($_ -replace '"', '\"') + '"' }) -join ' '
-    $proc = [System.Diagnostics.Process]::Start($psi)
-    # Read stderr asynchronously so a full pipe can't block the child while stdout is being read.
-    $stderrTask = $proc.StandardError.ReadToEndAsync()
-    $stdout = $proc.StandardOutput.ReadToEnd()
-    if (-not $proc.WaitForExit($TimeoutSeconds * 1000)) {
-        try { $proc.Kill() } catch { }
-        return [PSCustomObject]@{ ExitCode = -1; StdOut = @(); StdErr = "timed out after $TimeoutSeconds seconds" }
-    }
-    [PSCustomObject]@{
-        ExitCode = $proc.ExitCode
-        StdOut   = @($stdout -split "`r?`n" | Where-Object { $_ -ne "" })
-        StdErr   = $stderrTask.Result.Trim()
     }
 }
 
@@ -222,6 +173,7 @@ if ($files.Count -eq 0) {
 Write-Host "Found $($files.Count) .mdb file(s) in '$folder'."
 
 $helperExe = Get-ImportHelperExe
+$script:ImportHelperExe = $helperExe
 Write-Host "Using $helperExe`n"
 
 $plans = @()
@@ -283,7 +235,7 @@ foreach ($plan in $plans) {
                     $body = { Invoke-HelperMenuImportTest -ModelPath $script:SweepModelPath -ModelNumber $script:SweepModelNumber -ModelCount $script:SweepModelCount -Label $script:SweepLabel }
                 } else {
                     $testName = "Conversion sweep: $modelLabel imports via the wizard"
-                    $body = { Invoke-WizardMenuImportTest -ModelPath $script:SweepModelPath -ModelNumber $script:SweepModelNumber -Label $script:SweepLabel }
+                    $body = { Invoke-WizardMenuImportTest -ModelPath $script:SweepModelPath -ModelNumber $script:SweepModelNumber -ModelCount $script:SweepModelCount -Label $script:SweepLabel }
                 }
                 Invoke-Test $testName $body
             }

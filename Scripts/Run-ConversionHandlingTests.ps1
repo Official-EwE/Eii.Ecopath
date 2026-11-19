@@ -115,29 +115,30 @@ function Open-LegacyModelAndWait {
     [PSCustomObject]@{ Instance = $instance; Baseline = $baseline; FirstWindow = $firstWindow }
 }
 
-Invoke-ConversionTestEntry -Name "Conversion: Gironde estuary.MDB imports successfully (Import-x64Helper)" -FileName "Gironde estuary.MDB" -Test {
-    param($modelPath)
-    $setup = Open-LegacyModelDirectly -ModelPath $modelPath
-    try {
-        Test-HelperImportSucceeds -Setup $setup
-        Assert-NoNewDialogs -ProcessId $setup.Instance.Process.Id -Baseline $setup.Baseline
-    } finally {
-        Stop-TestInstance -ProcessId $setup.Instance.Process.Id -Label "Gironde estuary test instance"
+# Gironde and gulfmexico: single-model Jet3 files. On x64 they go through the x86 import helper's
+# console; on x86 the app imports Jet3 in-process, so the same files go through the import wizard
+# instead (the helper console never appears there).
+#
+# gulfmexico is currently expected to FAIL on both routes: it hits a real, reproducible
+# SalinityForcingShapeID import bug (not a test-harness issue) - the test will start passing once
+# that's fixed, like any other regression test for a known bug.
+if ($Platform -eq "x64") {
+    Invoke-ConversionTestEntry -Name "Conversion: Gironde estuary.MDB imports successfully (Import-x64Helper)" -FileName "Gironde estuary.MDB" -Test {
+        param($modelPath)
+        Invoke-HelperMenuImportTest -ModelPath $modelPath -ModelNumber 1 -ModelCount 1 -Label "Gironde estuary test instance"
     }
-}
-
-# Currently expected to FAIL: gulfmexico.MDB hits a real, reproducible SalinityForcingShapeID
-# import bug (not a test-harness issue) - this test will start passing again once that's fixed,
-# the same as any other regression test for a known bug. Same success-only check as every other
-# Import-x64Helper test, nothing special added for the known failure.
-Invoke-ConversionTestEntry -Name "Conversion: gulfmexico.MDB imports successfully (Import-x64Helper)" -FileName "gulfmexico.MDB" -Test {
-    param($modelPath)
-    $setup = Open-LegacyModelDirectly -ModelPath $modelPath
-    try {
-        Test-HelperImportSucceeds -Setup $setup
-        Assert-NoNewDialogs -ProcessId $setup.Instance.Process.Id -Baseline $setup.Baseline
-    } finally {
-        Stop-TestInstance -ProcessId $setup.Instance.Process.Id -Label "gulfmexico test instance"
+    Invoke-ConversionTestEntry -Name "Conversion: gulfmexico.MDB imports successfully (Import-x64Helper)" -FileName "gulfmexico.MDB" -Test {
+        param($modelPath)
+        Invoke-HelperMenuImportTest -ModelPath $modelPath -ModelNumber 1 -ModelCount 1 -Label "gulfmexico test instance"
+    }
+} else {
+    Invoke-ConversionTestEntry -Name "Conversion: Gironde estuary.MDB imports successfully (Import-Wizard32bitJet3)" -FileName "Gironde estuary.MDB" -Test {
+        param($modelPath)
+        Invoke-WizardMenuImportTest -ModelPath $modelPath -ModelNumber 1 -Label "Gironde estuary wizard test instance"
+    }
+    Invoke-ConversionTestEntry -Name "Conversion: gulfmexico.MDB imports successfully (Import-Wizard32bitJet3)" -FileName "gulfmexico.MDB" -Test {
+        param($modelPath)
+        Invoke-WizardMenuImportTest -ModelPath $modelPath -ModelNumber 1 -Label "gulfmexico wizard test instance"
     }
 }
 

@@ -1,3 +1,65 @@
+$script:ConversionRepoRoot = Split-Path -Parent $PSScriptRoot
+
+# ---------------------------------------------------------------------------------------------
+# The x86 import helper: build (cheap if up to date - this also picks up its `models` mode), locate.
+# ---------------------------------------------------------------------------------------------
+function Get-ImportHelperExe {
+    if ($script:ImportHelperExe -and (Test-Path $script:ImportHelperExe)) { return $script:ImportHelperExe }
+    $proj = Join-Path $script:ConversionRepoRoot "Tools\EwEImportHelper\Source\EwEImportHelper.vbproj"
+    if (-not (Test-Path $proj)) { throw "Project file not found: $proj" }
+    Write-Host "Building EwEImportHelper (Debug|x86)..."
+    $buildOutput = & dotnet build $proj -c Debug -p:Platform=x86 --nologo -v q 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        $buildOutput | ForEach-Object { Write-Host $_ }
+        throw "Building EwEImportHelper failed (dotnet build exit code $LASTEXITCODE)."
+    }
+    $exe = Get-ChildItem -Path (Join-Path (Split-Path -Parent $proj) "bin") -Recurse -Filter "EwEImportHelper.exe" -File -ErrorAction SilentlyContinue |
+        Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    if ($null -eq $exe) { throw "EwEImportHelper.exe not found under the project's bin folder after building." }
+    $script:ImportHelperExe = $exe.FullName
+    $script:ImportHelperExe
+}
+
+# Runs the helper hidden with output captured. Returns ExitCode, StdOut lines and StdErr text.
+function Invoke-ImportHelperQuery {
+    param(
+        [Parameter(Mandatory = $true)][string]$HelperExe,
+        [Parameter(Mandatory = $true)][string[]]$Arguments,
+        [int]$TimeoutSeconds = 120
+    )
+    $psi = New-Object System.Diagnostics.ProcessStartInfo
+    $psi.FileName = $HelperExe
+    $psi.UseShellExecute = $false
+    $psi.CreateNoWindow = $true
+    $psi.RedirectStandardOutput = $true
+    $psi.RedirectStandardError = $true
+    # Quote each argument (paths contain spaces and commas).
+    $psi.Arguments = ($Arguments | ForEach-Object { '"' + ($_ -replace '"', '\"') + '"' }) -join ' '
+    $proc = [System.Diagnostics.Process]::Start($psi)
+    # Read stderr asynchronously so a full pipe can't block the child while stdout is being read.
+    $stderrTask = $proc.StandardError.ReadToEndAsync()
+    $stdout = $proc.StandardOutput.ReadToEnd()
+    if (-not $proc.WaitForExit($TimeoutSeconds * 1000)) {
+        try { $proc.Kill() } catch { }
+        return [PSCustomObject]@{ ExitCode = -1; StdOut = @(); StdErr = "timed out after $TimeoutSeconds seconds" }
+    }
+    [PSCustomObject]@{
+        ExitCode = $proc.ExitCode
+        StdOut   = @($stdout -split "`r?`n" | Where-Object { $_ -ne "" })
+        StdErr   = $stderrTask.Result.Trim()
+    }
+}
+
+
+# Number of models in a legacy .mdb, via the helper's non-interactive `models` mode. 0 if unknown.
+function Get-LegacyModelCount {
+    param([Parameter(Mandatory = $true)][string]$ModelPath)
+    $result = Invoke-ImportHelperQuery -HelperExe (Get-ImportHelperExe) -Arguments @("models", $ModelPath)
+    $count = 0
+    if ($result.ExitCode -ne 0 -or $result.StdOut.Count -eq 0 -or -not [int]::TryParse($result.StdOut[0], [ref]$count)) { return 0 }
+    $count
+}
+
 <#
 .SYNOPSIS
     Shared building blocks for the legacy-model conversion test scripts (Run-ConversionHandlingTests.ps1
@@ -234,31 +296,53 @@ function Select-WizardModel {
         }
         if ($null -eq $scrollBar) { Start-Sleep -Milliseconds 300 }
     }
+    $sibling = $null
     if ($null -eq $scrollBar) {
-        Write-Host "`n    [diagnostic] No ScrollBar descendant found. Wizard UIA tree:" -ForegroundColor Yellow
-        Write-UiaTreeDump -Element $WizardElement
-        throw "Could not find the model grid (its scroll bar) on the wizard's model-selection page after ~10 seconds (UIA tree dumped above)."
-    }
-    Write-Host "`n    [diagnostic] ScrollBar found, rect=$($scrollBar.Current.BoundingRectangle)" -ForegroundColor DarkGray
+        # A grid with a single model (e.g. Gironde) has nothing to scroll, so the wizard shows no scroll
+        # bar at all. Fall back to the grid's value pane directly: the right-hand one of the grid's
+        # equally tall, side-by-side Panes (name column left, value column right), i.e. the tall Pane
+        # (100-400 px) with the largest X. Only meaningful for the first (only) model.
+        if ($Index -gt 0) {
+            Write-Host "`n    [diagnostic] No ScrollBar descendant found. Wizard UIA tree:" -ForegroundColor Yellow
+            Write-UiaTreeDump -Element $WizardElement
+            throw "Could not find the model grid (its scroll bar) on the wizard's model-selection page after ~10 seconds (UIA tree dumped above)."
+        }
+        $best = $null
+        foreach ($candidate in $WizardElement.FindAll([System.Windows.Automation.TreeScope]::Descendants, $paneCondition)) {
+            $r = try { $candidate.Current.BoundingRectangle } catch { continue }
+            if ($r.Height -lt 100 -or $r.Height -gt 400 -or $r.Width -lt 100 -or $r.Width -ge 400) { continue }
+            if ($null -eq $best -or $r.X -gt $best.Current.BoundingRectangle.X) { $best = $candidate }
+        }
+        if ($null -eq $best) {
+            Write-Host "`n    [diagnostic] No scroll bar and no grid value pane found. Wizard UIA tree:" -ForegroundColor Yellow
+            Write-UiaTreeDump -Element $WizardElement
+            throw "Could not find the model grid on the wizard's model-selection page (UIA tree dumped above)."
+        }
+        Write-Host "`n    [diagnostic] No scroll bar (single-model grid); using the value pane at $($best.Current.BoundingRectangle)" -ForegroundColor DarkGray
+        $sibling = $best
+    } else {
+        Write-Host "`n    [diagnostic] ScrollBar found, rect=$($scrollBar.Current.BoundingRectangle)" -ForegroundColor DarkGray
 
-    $walker = [System.Windows.Automation.TreeWalker]::ControlViewWalker
-    $parent = $walker.GetParent($scrollBar)
-    Write-Host "    [diagnostic] Scroll bar's parent and its children:" -ForegroundColor DarkGray
-    $child = $walker.GetFirstChild($parent)
-    while ($null -ne $child) {
-        $ct = try { $child.Current.ControlType.ProgrammaticName } catch { "?" }
-        Write-Host "      $ct name='$($child.Current.Name)' class='$($child.Current.ClassName)' rect=$($child.Current.BoundingRectangle) focusable=$($child.Current.IsKeyboardFocusable)" -ForegroundColor DarkGray
-        $child = $walker.GetNextSibling($child)
-    }
+        $walker = [System.Windows.Automation.TreeWalker]::ControlViewWalker
+        $parent = $walker.GetParent($scrollBar)
+        Write-Host "    [diagnostic] Scroll bar's parent and its children:" -ForegroundColor DarkGray
+        $child = $walker.GetFirstChild($parent)
+        while ($null -ne $child) {
+            $ct = try { $child.Current.ControlType.ProgrammaticName } catch { "?" }
+            Write-Host "      $ct name='$($child.Current.Name)' class='$($child.Current.ClassName)' rect=$($child.Current.BoundingRectangle) focusable=$($child.Current.IsKeyboardFocusable)" -ForegroundColor DarkGray
+            $child = $walker.GetNextSibling($child)
+        }
 
-    $sibling = $walker.GetNextSibling($scrollBar)
-    while ($null -ne $sibling -and $sibling.Current.ControlType -ne [System.Windows.Automation.ControlType]::Pane) {
-        $sibling = $walker.GetNextSibling($sibling)
-    }
-    if ($null -eq $sibling) {
-        Write-Host "    [diagnostic] No Pane after the scroll bar. Wizard UIA tree:" -ForegroundColor Yellow
-        Write-UiaTreeDump -Element $WizardElement
-        throw "Could not find the grid's value pane next to its scroll bar (UIA tree dumped above)."
+        $sibling = $walker.GetNextSibling($scrollBar)
+        while ($null -ne $sibling -and $sibling.Current.ControlType -ne [System.Windows.Automation.ControlType]::Pane) {
+            $sibling = $walker.GetNextSibling($sibling)
+        }
+        if ($null -eq $sibling) {
+            Write-Host "    [diagnostic] No Pane after the scroll bar. Wizard UIA tree:" -ForegroundColor Yellow
+            Write-UiaTreeDump -Element $WizardElement
+            throw "Could not find the grid's value pane next to its scroll bar (UIA tree dumped above)."
+        }
+
     }
 
     $rect = $sibling.Current.BoundingRectangle
@@ -346,14 +430,21 @@ function Wait-ForWizardConversion {
 function Test-WizardImportSucceeds {
     param(
         [Parameter(Mandatory = $true)]$Setup,
-        [int]$ModelIndex = 0
+        [int]$ModelIndex = 0,
+        # Number of models in the file. With exactly one the wizard pre-selects it (and shows no
+        # scroll bar), so the selection step is skipped and Next is pressed directly.
+        [int]$ModelCount = 0
     )
     $wizardHandle = $Setup.FirstWindow.NativeWindowHandle
     $wizardElement = Get-WindowElementByHandle -Handle $wizardHandle
 
     Write-Step "Intro page: Next" { Invoke-ButtonByName -WindowElement $wizardElement -Name "Next" }
     Start-Sleep -Milliseconds 500
-    Write-Step "Selecting model #$($ModelIndex + 1)" { Select-WizardModel -WizardElement $wizardElement -Index $ModelIndex }
+    if ($ModelCount -eq 1) {
+        Write-Host "  Single model in this file - already selected, not selecting anything."
+    } else {
+        Write-Step "Selecting model #$($ModelIndex + 1)" { Select-WizardModel -WizardElement $wizardElement -Index $ModelIndex }
+    }
     Write-Step "Model-selection page: Next" { Invoke-ButtonByName -WindowElement $wizardElement -Name "Next" }
     Write-Host "  Converting (watching for unexpected dialogs)..." -NoNewline
     Wait-ForWizardConversion -WizardElement $wizardElement -Setup $Setup
@@ -370,11 +461,14 @@ function Invoke-WizardMenuImportTest {
     param(
         [Parameter(Mandatory = $true)][string]$ModelPath,
         [Parameter(Mandatory = $true)][int]$ModelNumber,
+        # 0 = ask the import helper how many models the file has.
+        [int]$ModelCount = 0,
         [string]$Label = "wizard import test instance"
     )
+    if ($ModelCount -le 0) { $ModelCount = Get-LegacyModelCount -ModelPath $ModelPath }
     $setup = Open-LegacyModelDirectly -ModelPath $ModelPath -ExpectedWindowName "Model conversion utility"
     try {
-        Test-WizardImportSucceeds -Setup $setup -ModelIndex ($ModelNumber - 1)
+        Test-WizardImportSucceeds -Setup $setup -ModelIndex ($ModelNumber - 1) -ModelCount $ModelCount
         Assert-NoNewDialogs -ProcessId $setup.Instance.Process.Id -Baseline $setup.Baseline
     } finally {
         Stop-TestInstance -ProcessId $setup.Instance.Process.Id -Label $Label
