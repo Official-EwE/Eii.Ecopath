@@ -517,6 +517,11 @@ Public Class cMessageHistory
         If (msg Is Nothing) Then Return
         If (msg.Suppressed) Then Return
 
+        ' A message can carry its own title (e.g. to avoid colliding with the generic
+        ' main-window caption that several other dialogs in this app also use); fall
+        ' back to the generic caption when none was given.
+        If (Not String.IsNullOrEmpty(msg.Caption)) Then strCaption = msg.Caption
+
         ' Translate feedback style into .NET MessageBox style
         Select Case msg.ReplyStyle
             Case eMessageReplyStyle.OK_CANCEL
@@ -623,11 +628,17 @@ Public Class cMessageHistory
         Dim mbb As MessageBoxButtons = MessageBoxButtons.OK
         Dim mbi As MessageBoxIcon = MessageBoxIcon.Information
         Dim bError As Boolean = False
+        Dim strCaption As String = ""
 
         ' Sanity check
         If (msg IsNot Nothing) Then
 
             bError = Me.ToMessageBoxText(msg, strMessage)
+
+            ' A message can carry its own title (e.g. to avoid colliding with the generic
+            ' main-window caption that several other dialogs in this app also use); fall
+            ' back to the main window's caption when none was given.
+            strCaption = If(Not String.IsNullOrEmpty(msg.Caption), msg.Caption, Me.UIContext.FormMain.Text)
 
             ' Resolve what icon to show
             Select Case msg.Importance
@@ -657,7 +668,7 @@ Public Class cMessageHistory
                     ' Assume message will not be suppressed
                     Dim bSuppress As Boolean = False
                     ' Invoke the special message box
-                    cCustomMessageBox.Show(Me.UIContext, strMessage, Me.UIContext.FormMain.Text, mbb, mbi, bSuppress, My.Resources.PROMPT_MESSAGE_HIDE, Nothing)
+                    cCustomMessageBox.Show(Me.UIContext, strMessage, strCaption, mbb, mbi, bSuppress, My.Resources.PROMPT_MESSAGE_HIDE, Nothing)
                     ' Set suppressed state in administration
                     Me.m_msh.IsSuppressed(msg.Source, msg.Type) = bSuppress
                 End If
@@ -666,7 +677,7 @@ Public Class cMessageHistory
             Else
                 ' #No: show the message
                 ' The one and only static popup message box in EwE
-                MessageBox.Show(strMessage, Me.UIContext.FormMain.Text, mbb, mbi, MessageBoxDefaultButton.Button1)
+                MessageBox.Show(strMessage, strCaption, mbb, mbi, MessageBoxDefaultButton.Button1)
             End If
 
         End If

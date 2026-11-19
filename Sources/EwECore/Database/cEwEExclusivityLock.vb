@@ -13,7 +13,8 @@ Namespace Database
     ''' OS-level exclusivity guard, based on a lock file opened with
     ''' <see cref="FileShare.None"/>. Used both as the write-exclusivity
     ''' lock for a shared data file, and as the liveness marker for a
-    ''' session's local read-only copy of that file - see cEwEEFDatabase.
+    ''' session's local staged working copy of that file - see
+    ''' cEwEAccessDatabase.StageLocalWorkingCopy.
     ''' </summary>
     ''' <remarks>
     ''' <para>This deliberately does NOT use SQLite's own file locking

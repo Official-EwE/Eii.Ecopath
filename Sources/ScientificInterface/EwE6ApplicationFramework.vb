@@ -1,4 +1,4 @@
-﻿' SPDX-License-Identifier: EUPL-1.2
+' SPDX-License-Identifier: EUPL-1.2
 ' This file is part of Ecopath with Ecosim (EwE).
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
@@ -113,7 +113,7 @@ Module EwE6ApplicationFramework
         ' non-interactive consumers (e.g. EwERunConsole, via cCoreService)
         ' that never call Save() and would only pay staging's cost for no
         ' possible benefit. See cEwEDatabase.EnableLocalStaging's own doc
-        ' comment and USER_STORY_DIFFERENCES.md.
+        ' comment.
         cEwEDatabase.EnableLocalStaging = True
 
         Application.EnableVisualStyles()

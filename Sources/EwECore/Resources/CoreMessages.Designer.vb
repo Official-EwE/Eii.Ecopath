@@ -209,6 +209,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to To continue, your model database will be updated to a newer version. This means that you will not be able to open the model in older versions of EwE. Do you want to continue?.
+        '''</summary>
+        Public Shared ReadOnly Property DATABASE_UPDATE_PROMPT() As String
+            Get
+                Return ResourceManager.GetString("DATABASE_UPDATE_PROMPT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Update model database.
+        '''</summary>
+        Public Shared ReadOnly Property DATABASE_UPDATE_PROMPT_CAPTION() As String
+            Get
+                Return ResourceManager.GetString("DATABASE_UPDATE_PROMPT_CAPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to A backup copy of your model was made to &apos;{0}&apos;.
         '''</summary>
         Public Shared ReadOnly Property DATABASE_BACKUP_SUCCESS() As String
