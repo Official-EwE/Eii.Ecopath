@@ -6137,7 +6137,7 @@ Public Class cCore
 
         Dim bAllowValidationOrg As Boolean = parms.AllowValidation
         Dim bAvailable As Boolean = False
-        Dim ds As cEconomicDataSource = cEconomicDataSource.getInstance()
+        Dim ds As cEconomicDataSource = cEconomicDataSource.getInstance(Me)
 
         If (ds IsNot Nothing) Then
             bAvailable = ds.IsDataAvailable(New EwECore.cEcosimRunType)

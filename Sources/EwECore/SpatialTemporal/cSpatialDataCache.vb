@@ -32,6 +32,7 @@ Namespace SpatialData
 
         ''' <summary>Default spatial data cache instance.</summary>
         Private Shared s_default As cSpatialDataCache = Nothing
+        Private Shared ReadOnly s_defaultLock As New Object()
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -40,10 +41,15 @@ Namespace SpatialData
         ''' <returns>The default spatial data cache.</returns>
         ''' -------------------------------------------------------------------
         Public Shared Function DefaultDataCache() As cSpatialDataCache
-            If (s_default Is Nothing) Then
-                s_default = New cSpatialDataCache()
-            End If
-            Return s_default
+            Dim cache As cSpatialDataCache = System.Threading.Volatile.Read(s_default)
+            If (cache IsNot Nothing) Then Return cache
+
+            SyncLock s_defaultLock
+                If (s_default Is Nothing) Then
+                    System.Threading.Volatile.Write(s_default, New cSpatialDataCache())
+                End If
+                Return s_default
+            End SyncLock
         End Function
 
 #End Region ' Singleton
