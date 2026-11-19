@@ -1,2 +1,0 @@
-TestModelsFolder=D:\Downloads\EwE5 Databases
-SkipModels=
