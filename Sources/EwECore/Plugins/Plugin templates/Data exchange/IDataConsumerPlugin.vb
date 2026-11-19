@@ -15,8 +15,8 @@ Namespace Plugins.Data
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Interface to receive data originating from 
-        ''' <see cref="IDataBroadcaster.BroadcastData">IDataBroadcaster.BroadcastData</see>.
+        ''' Interface to receive data originating from
+        ''' <see cref="EwECore.Common.IDataBroadcaster.BroadcastData">IDataBroadcaster.BroadcastData</see>.
         ''' </summary>
         ''' <param name="strDataName">Name of the data that is being broadcasted.</param>
         ''' <param name="data">The <see cref="IPluginData">data</see> that is being 

@@ -117,7 +117,8 @@ Name: "{app}\Includes\GDAL\win64\gdalplugins\"
 
 [Files]
 Source: "..\LICENSE.txt"; DestDir: "{app}\Resources\"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\*.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
+Source: "{#DefRoot}{#DefSrc}\*.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#DefRoot}{#DefSrc}\plugins\*"; DestDir: "{app}\plugins"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#DefRoot}{#DefSrc}\ScientificInterface.exe"; DestDir: "{app}"; DestName: "{#MyAppExeName}"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\ScientificInterface.exe.config"; DestDir: "{app}"; DestName: "{#MyAppExeName}.config"; Flags: ignoreversion
 #ifdef GrafanaTokenFile
@@ -178,8 +179,8 @@ Source: "{#DefRoot}{#DefSrc}\UserGuide\EwE model from time step.pdf"; DestDir: "
 Source: "{#DefRoot}{#DefSrc}\UserGuide\EwEMultiSimPlugin.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion
 ; Source: "{#DefRoot}{#DefSrc}\EwEStepwiseFittingPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
 ; Source: "{#DefRoot}{#DefSrc}\EwEMSEPlugin.dll"; DestDir: "{app}\Plugins"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\LumenWorks.Framework.IO.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#DefRoot}{#DefSrc}\Troschuetz.Random.dll"; DestDir: "{app}"; Flags: ignoreversion
+; Source: "{#DefRoot}{#DefSrc}\LumenWorks.Framework.IO.dll"; DestDir: "{app}"; Flags: ignoreversion
+; Source: "{#DefRoot}{#DefSrc}\Troschuetz.Random.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; Source: "{#DefRoot}{#DefSrc}\EwEEcoSamplerPlugin.dll"; DestDir: "{app}\Plugins\"; Flags: ignoreversion
 Source: "{#DefRoot}{#DefSrc}\UserGuide\EcoSampler-user-manual.pdf"; DestDir: "{app}\UserGuide\"; Flags: ignoreversion
 

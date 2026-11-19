@@ -51,6 +51,7 @@ Namespace Controls
             End Set
         End Property
 
+        <CLSCompliant(False)>
         Public Property UIContext As cUIContext _
             Implements IUIElement.UIContext
             Get

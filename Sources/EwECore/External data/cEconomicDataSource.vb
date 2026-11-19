@@ -20,7 +20,7 @@ Namespace ExternalData
 
 #Region " Private vars "
 
-        Private Shared s_core As cCore = Nothing
+        Private m_core As cCore = Nothing
         Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEconomicDataSource)()
 
 #End Region ' Private vars
@@ -43,23 +43,24 @@ Namespace ExternalData
         ''' <summary>
         ''' Return the instance of this class created by the PluginManager
         ''' </summary>
-        ''' <returns>The only instance of cEconomicDataSource. Otherwise nothing</returns>
-        ''' <remarks>An instance of this class is loaded from the Core via the Plugin 
-        ''' manager. This allows classes in the core to retrieve an instance of 
-        ''' cEconomicDataSource for Economic data.</remarks>
+        ''' <param name="core">The core whose plugin manager owns the data source.</param>
+        ''' <returns>The instance of cEconomicDataSource loaded for the core, otherwise nothing.</returns>
+        ''' <remarks>An instance of this class is loaded from the core via its plugin 
+        ''' manager. Every core has its own instance.</remarks>
         ''' -----------------------------------------------------------------------
-        Public Shared Function getInstance() As cEconomicDataSource
+        Public Shared Function getInstance(core As cCore) As cEconomicDataSource
 
             Dim dataSource As cEconomicDataSource = Nothing
 
-            ' JS 12Dec10: Plug-in may not be initialized (yet) on purpose
-            If (cEconomicDataSource.s_core Is Nothing) Then Return Nothing
+            ' Plug-in may not be initialized (yet) on purpose
+            If (core Is Nothing) Then Return Nothing
+            If (core.PluginManager Is Nothing) Then Return Nothing
 
             Try
 
                 Dim plugins As ICollection(Of IPlugin)
 
-                plugins = s_core.PluginManager.GetPlugins(cEconomicDataSource.InternalName)
+                plugins = core.PluginManager.GetPlugins(cEconomicDataSource.InternalName)
                 For Each plugin As IPlugin In plugins
                     If TypeOf plugin Is cEconomicDataSource Then
                         dataSource = DirectCast(plugin, cEconomicDataSource)
@@ -78,7 +79,7 @@ Namespace ExternalData
 
         End Function
 
-#End Region ' Singleton 'Shared' interface
+        #End Region
 
 #Region " Public interfaces "
 
@@ -92,10 +93,12 @@ Namespace ExternalData
         Public Property EnableData(runtype As IRunType) As Boolean _
             Implements IExternalDataSource.EnableData
             Get
-                Return s_core.PluginManager.EnableData(GetType(IEconomicData), runtype)
+                If (Me.m_core?.PluginManager Is Nothing) Then Return False
+                Return Me.m_core.PluginManager.EnableData(GetType(IEconomicData), runtype)
             End Get
             Set(value As Boolean)
-                s_core.PluginManager.EnableData(GetType(IEconomicData), runtype) = value
+                If (Me.m_core?.PluginManager Is Nothing) Then Return
+                Me.m_core.PluginManager.EnableData(GetType(IEconomicData), runtype) = value
             End Set
         End Property
 
@@ -108,7 +111,8 @@ Namespace ExternalData
         ''' -----------------------------------------------------------------------
         Public Function IsDataAvailable(runtype As IRunType) As Boolean _
               Implements IExternalDataSource.IsDataAvailable
-            Return s_core.PluginManager.IsDataAvailable(GetType(IEconomicData), runtype)
+            If (Me.m_core?.PluginManager Is Nothing) Then Return False
+            Return Me.m_core.PluginManager.IsDataAvailable(GetType(IEconomicData), runtype)
         End Function
 
 #End Region ' Public interfaces
@@ -171,7 +175,7 @@ Namespace ExternalData
 
         Public Sub Initialize(core As Object) _
             Implements IPlugin.Initialize
-            s_core = DirectCast(core, cCore)
+            Me.m_core = DirectCast(core, cCore)
         End Sub
 
         Public ReadOnly Property Name() As String _

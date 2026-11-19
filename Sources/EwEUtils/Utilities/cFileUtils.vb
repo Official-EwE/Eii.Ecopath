@@ -274,7 +274,10 @@ Namespace Utilities
         ''' <seealso cref="PurgeTempFiles"/>
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Private Shared g_tempfiles As New List(Of String)
+        Private Shared ReadOnly g_tempfiles As New HashSet(Of String)
+
+        ''' <summary>Guards <see cref="g_tempfiles"/>; the registry is shared by all threads and cores.</summary>
+        Private Shared ReadOnly g_tempfilesLock As New Object
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -301,7 +304,9 @@ Namespace Utilities
             End If
             Dim strFile As String = Path.Combine(strPath, strFileName)
             ' Add to temp file registry
-            If Not cFileUtils.g_tempfiles.Contains(strFile) Then cFileUtils.g_tempfiles.Add(strFile)
+            SyncLock g_tempfilesLock
+                g_tempfiles.Add(strFile)
+            End SyncLock
             ' Done
             Return strFile
 
@@ -315,7 +320,10 @@ Namespace Utilities
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Shared Sub PurgeTempFiles()
-            Dim astrFiles As String() = cFileUtils.g_tempfiles.ToArray
+            Dim astrFiles As String()
+            SyncLock g_tempfilesLock
+                astrFiles = g_tempfiles.ToArray
+            End SyncLock
             For Each strTempFile As String In astrFiles
                 cFileUtils.PurgeTempFile(strTempFile)
             Next
@@ -332,7 +340,10 @@ Namespace Utilities
         Public Shared Sub PurgeTempFile(ByVal strTempFile As String)
             Try
                 If File.Exists(strTempFile) Then File.Delete(strTempFile)
-                cFileUtils.g_tempfiles.Remove(strTempFile)
+                ' Only unregister once the file is gone, so a failed delete can be retried
+                SyncLock g_tempfilesLock
+                    g_tempfiles.Remove(strTempFile)
+                End SyncLock
                 ' Console.WriteLine("Purged temp file " & strTempFile)
             Catch ex As Exception
                 ' Hmm

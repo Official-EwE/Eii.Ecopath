@@ -31,6 +31,7 @@ namespace EwECore.Tests.MSE
             BhalfT = new float[numGroups + 1];
             Rmax = new float[numGroups + 1];
             cvRec = new float[numGroups + 1];
+            RHalfB0Ratio = new float[numGroups + 1];
         }
 
         public int nGroups { get; set; }

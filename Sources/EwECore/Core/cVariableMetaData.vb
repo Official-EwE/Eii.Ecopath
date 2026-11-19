@@ -21,6 +21,9 @@ Public Class cVariableMetaData
 #Region "Private vars"
 
     Private Shared s_inst As cVariableMetaData = Nothing
+    Private Shared ReadOnly s_initLock As New Object()
+    ''' <summary>Set once the registry is completely populated.</summary>
+    Private Shared s_ready As Boolean = False
 
     ''' <summary>Shared registry of metadata definitions</summary>
     Private Shared s_metadata As Dictionary(Of eVarNameFlags, cVariableMetaData)
@@ -34,11 +37,24 @@ Public Class cVariableMetaData
 #Region "Singleton"
 
     Private Shared Function GetInstance() As cVariableMetaData
-        If (s_inst Is Nothing) Then
-            s_inst = New cVariableMetaData()
-            s_inst.Init()
-        End If
-        Return s_inst
+        If System.Threading.Volatile.Read(s_ready) Then Return s_inst
+
+        SyncLock s_initLock
+            ' Init() calls Get() re-entrantly on this thread and receives the instance under construction.
+            ' Other threads wait here until the registry is complete.
+            If (s_inst Is Nothing) Then
+                Try
+                    s_inst = New cVariableMetaData()
+                    s_inst.Init()
+                Catch
+                    s_inst = Nothing
+                    s_metadata = Nothing
+                    Throw
+                End Try
+                System.Threading.Volatile.Write(s_ready, True)
+            End If
+            Return s_inst
+        End SyncLock
     End Function
 
     Private Sub Init()

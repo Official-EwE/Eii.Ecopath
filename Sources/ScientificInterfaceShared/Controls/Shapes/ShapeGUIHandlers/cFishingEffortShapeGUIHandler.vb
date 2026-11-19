@@ -16,6 +16,7 @@ Namespace Controls
     Public Class cFishingEffortShapeGUIHandler
         Inherits cFishingBaseShapeGUIHandler
 
+        <CLSCompliant(False)>
         Public Sub New(uic As cUIContext)
             MyBase.New(uic)
         End Sub
@@ -53,6 +54,7 @@ Namespace Controls
             Return Me.Core.FishingEffortShapeManager
         End Function
 
+        <CLSCompliant(False)>
         Protected Overrides Function ScaleMode() As eAxisTickmarkDisplayModeTypes
             Return eAxisTickmarkDisplayModeTypes.Relative
         End Function

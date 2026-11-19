@@ -205,6 +205,7 @@ Namespace Properties
         ''' that spawned this property.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <CLSCompliant(False)>
         Public Property PropertyManager() As cPropertyManager
             Get
                 Return Me.m_pm
@@ -470,6 +471,7 @@ Namespace Properties
         ''' inheriting classes.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <CLSCompliant(False)>
         Protected MustOverride Property Style() As cStyleGuide.eStyleFlags
 
         ''' -------------------------------------------------------------------
@@ -477,6 +479,7 @@ Namespace Properties
         ''' Returns the <see cref="cStyleGuide.eStyleFlags">Style</see> of the property
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <CLSCompliant(False)>
         Public Function GetStyle() As cStyleGuide.eStyleFlags
             Return Me.Style
         End Function
@@ -499,6 +502,7 @@ Namespace Properties
         ''' <remarks>Be aware that Style flags set here are not passed down to the Core. Core status bits are exclusively
         ''' managed by the core itself. Rather, this method allows </remarks>
         ''' -------------------------------------------------------------------
+        <CLSCompliant(False)>
         Public Function SetStyle(newStyle As cStyleGuide.eStyleFlags,
                     Optional notify As TriState = TriState.False,
                     Optional BitSetMode As eBitSetMode = eBitSetMode.All) As Boolean
@@ -540,6 +544,7 @@ Namespace Properties
         ''' <param name="Style">Style to compare</param>
         ''' <returns>True if the Stylees are considered equal</returns>
         ''' -------------------------------------------------------------------
+        <CLSCompliant(False)>
         Protected MustOverride Function IsStyle(Style As cStyleGuide.eStyleFlags) As Boolean
 
         ''' -------------------------------------------------------------------

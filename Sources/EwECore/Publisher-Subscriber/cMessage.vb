@@ -98,7 +98,7 @@ Public Class cMessage
     ''' <returns></returns>
     Public Function HasVariable(Variable As cVariableStatus) As Boolean
         For Each vs As cVariableStatus In Me.Variables
-            If (ReferenceEquals(vs.Source, Variable.Source)) And
+            If (vs.Source = Variable.Source) And
                (vs.Index = Variable.Index) And
                (vs.Status = Variable.Status) And
                String.Compare(vs.Message, Variable.Message, True) = 0 Then

@@ -1508,7 +1508,7 @@ Namespace FitToTimeSeries
                 Next
 
             Catch ex As Exception
-                m_logger.LogError("cEcosimSearch.SetParsFromP", ex)
+                m_logger.LogError(ex, "cEcosimSearch.SetParsFromP")
                 Throw New ApplicationException("Fit to time series error.", ex)
             End Try
 

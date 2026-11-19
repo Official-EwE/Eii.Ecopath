@@ -148,6 +148,7 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         <Category("Thumbnails"),
          Description("The line style used to render the graph")>
+        <CLSCompliant(False)>
         Public Property SketchDrawMode() As eSketchDrawModeTypes
             Get
                 Return Me.m_sketchDrawMode
@@ -289,6 +290,7 @@ Namespace Controls
 
 #Region " IUIElement implementation "
 
+        <CLSCompliant(False)>
         Public Property UIContext() As cUIContext _
             Implements IUIElement.UIContext
             Get

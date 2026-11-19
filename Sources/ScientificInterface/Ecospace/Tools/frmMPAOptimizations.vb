@@ -419,16 +419,17 @@ Namespace Ecospace
         Private Sub OnConvertToMPA(sender As System.Object, e As System.EventArgs) _
             Handles m_btnConvertToMpa.Click
 
+            Dim iMPA As Integer = Me.SelectedMPA()
             Dim map As Integer(,) = Nothing
             Dim iNumResults As Integer = 0
 
             Select Case Me.SearchType
 
                 Case eMPAOptimizationModels.EcoSeed
-                    Me.SetLayer(Me.m_mapFeedback, Me.m_basemap.LayerMPA(Me.SelectedMPA()), Me.SelectedMPA())
+                    Me.SetLayer(Me.m_mapFeedback, Me.m_basemap.LayerMPA(iMPA), iMPA)
 
                 Case eMPAOptimizationModels.RandomSearch
-                    Me.m_manager.ConvertResultsToMPA(Me.SelectedBestPercentile(), Me.SelectedClosedPercentage())
+                    Me.m_manager.ConvertResultsToMPA(iMPA, Me.SelectedBestPercentile(), Me.SelectedClosedPercentage())
 
             End Select
 
@@ -447,9 +448,8 @@ Namespace Ecospace
             Handles m_btnSave.Click
 
             Dim cmdh As cCommandHandler = Me.CommandHandler
-            Dim cmd As cCommand = cmdh.GetCommand("ExportLayerData")
-            Dim lLayers As New List(Of cDisplayLayer)
-            Dim layerTmp As cDisplayLayer = Nothing
+            Dim cmd As cExportLayerCommand = CType(cmdh.GetCommand(cExportLayerCommand.cCOMMAND_NAME), cExportLayerCommand)
+            Dim lLayers As New List(Of cEcospaceLayer)
             Dim ldataTmp As cEcospaceLayerInteger = Nothing
             Dim iAreaClosed As Integer = 0
             Dim iNumResults As Integer = 0
@@ -465,15 +465,12 @@ Namespace Ecospace
                 ldataTmp = New cEcospaceLayerInteger(Me.UIContext.Core,
                                                      Me.m_manager.CellSelectedMap(100, iAreaClosed, iNumResults),
                                                      cStringUtils.Localize(My.Resources.ECOSPACE_LAYER_MPABESTCOUNT, iAreaClosed))
-                ' Wrap THIS in turn in a GUI layer, required by the exporter
-                layerTmp = New cDisplayLayerRaster(Me.UIContext, ldataTmp, Nothing, Nothing)
                 ' Add the layer to the stash to save
-                lLayers.Add(layerTmp)
+                lLayers.Add(ldataTmp)
 
             Next iLevel
 
-            cmd.Tag = lLayers.ToArray()
-            cmd.Invoke()
+            cmd.Invoke(lLayers.ToArray())
 
         End Sub
 

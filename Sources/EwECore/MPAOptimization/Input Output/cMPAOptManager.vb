@@ -445,16 +445,16 @@ Public Class cMPAOptManager
 
     End Function
 
-    Public Function ConvertResultsToMPA(TopPercentile As Single, PercentAreaClosedFilter As Integer) As Boolean
+    Public Function ConvertResultsToMPA(iMPA As Integer, TopPercentile As Single, PercentAreaClosedFilter As Integer) As Boolean
 
         Dim data As cMPAOptDataStructures = Me.m_core.MPAOptData
         Select Case data.SearchType
             Case eMPAOptimizationModels.RandomSearch
                 Dim i As Integer
                 Dim map As Integer(,) = Me.CellSelectedMap(TopPercentile, PercentAreaClosedFilter, i)
-                DirectCast(Me.m_MPASearch, cMPARandomSearch).ConvertToMPA(map, PercentAreaClosedFilter, data.iMPAtoUse)
+                DirectCast(Me.m_MPASearch, cMPARandomSearch).ConvertToMPA(map, PercentAreaClosedFilter, iMPA)
 
-                Dim layer As cEcospaceLayerMPA = Me.m_core.EcospaceBasemap.LayerMPA(data.iMPAtoUse)
+                Dim layer As cEcospaceLayerMPA = Me.m_core.EcospaceBasemap.LayerMPA(iMPA)
                 layer.Invalidate()
             Case Else
                 ' NOP

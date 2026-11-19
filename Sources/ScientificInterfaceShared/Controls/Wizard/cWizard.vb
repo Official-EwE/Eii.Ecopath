@@ -50,6 +50,7 @@ Namespace Controls.Wizard
         ''' <param name="content">Panel where wizard can display its content.</param>
         ''' <param name="nav">Navigator attached to this wizard.</param>
         ''' -------------------------------------------------------------------
+        <CLSCompliant(False)>
         Public Sub New(uic As cUIContext,
                        parent As Form,
                        content As Panel,
@@ -122,6 +123,7 @@ Namespace Controls.Wizard
         ''' </summary>
         ''' <param name="page">The page whose content changed.</param>
         ''' -------------------------------------------------------------------
+        <CLSCompliant(False)>
         Public Overridable Sub PageChanged(page As IWizardPage)
             ' Is this the current active page?
             If (ReferenceEquals(page, Me.m_page)) Then
@@ -137,6 +139,7 @@ Namespace Controls.Wizard
             End If
         End Sub
 
+        <CLSCompliant(False)>
         Public Property UIContext As cUIContext
             Get
                 Return Me.m_uic
@@ -166,6 +169,7 @@ Namespace Controls.Wizard
         ''' Get the active page in the wizard.
         ''' </summary>
         ''' -------------------------------------------------------------------
+        <CLSCompliant(False)>
         Protected ReadOnly Property ActivePage() As IWizardPage
             Get
                 Return Me.m_page

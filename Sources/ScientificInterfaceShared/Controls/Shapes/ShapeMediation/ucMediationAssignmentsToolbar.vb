@@ -32,6 +32,7 @@ Namespace Controls
 
 #Region " Properties "
 
+        <CLSCompliant(False)>
         Public Property Handler() As cMediationShapeGUIHandler
             Get
                 Return Me.m_handler
