@@ -99,7 +99,11 @@ Namespace DataSources
         ''' <returns></returns>
         ''' <remarks></remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetCompatibility(strDatabase As String, ByRef access As eDatasourceAccessType, Optional ByRef strDetectionPath As String = "") As cEwEDatabase.eCompatibilityTypes
+        Public Shared Function GetCompatibility(strDatabase As String, ByRef access As eDatasourceAccessType) As cEwEDatabase.eCompatibilityTypes
+            Dim detectionPath As String = ""
+            Return cDataSourceFactory.GetCompatibility(strDatabase, access, detectionPath)
+        End Function
+        Public Shared Function GetCompatibility(strDatabase As String, ByRef access As eDatasourceAccessType, ByRef strDetectionPath As String) As cEwEDatabase.eCompatibilityTypes
 
             Dim comp As cEwEDatabase.eCompatibilityTypes = cEwEDatabase.eCompatibilityTypes.Unknown
             Dim dst As eDataSourceTypes = cDataSourceFactory.GetSupportedType(strDatabase)
