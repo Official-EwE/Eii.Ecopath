@@ -39,6 +39,15 @@
     Run just the tests whose name contains this substring (case-insensitive). The classification
     still covers every file.
 
+.PARAMETER Ui
+    Drive the real app through the UI instead (the original behavior): the referral dialog test for
+    TooOld files, the helper console for Jet3 on x64, the import wizard otherwise. Slow - one app
+    instance per model. Without -Ui (the default) the sweep is HEADLESS: every importable model is
+    converted by running the helper's `import` mode directly and judging its result file; TooOld
+    files are only classified (the referral dialog itself is covered by
+    Run-ConversionHandlingTests.ps1, which keeps testing the user experience through the UI).
+    Headless always uses the x86 helper, so -Platform only matters together with -Ui.
+
 .PARAMETER PlanOnly
     Classify the files and print the plan (file, Jet3?, version, compatibility, models, test route),
     but do not run any test.
@@ -58,6 +67,7 @@ param(
     [string]$Platform = "x64",
     [string]$Only,
     [switch]$PlanOnly,
+    [switch]$Ui,
     [int]$MainWindowTimeoutSeconds = 90
 )
 
@@ -136,7 +146,7 @@ function Get-ModelFilePlan {
 
     if ($version -lt $Ewe5MinVersion) {
         $plan.Compatibility = "TooOld"
-        $plan.Route = "referral dialog"
+        $plan.Route = if ($Ui) { "referral dialog" } else { "classification only" }
         return [PSCustomObject]$plan
     }
     if ($version -gt $Ewe5MaxVersion) {
@@ -157,7 +167,7 @@ function Get-ModelFilePlan {
         if ($parts.Count -eq 2) { $models += [PSCustomObject]@{ Number = [int]$parts[0]; Name = $parts[1] } }
     }
     $plan.Models = $models
-    $plan.Route = if ($Platform -eq "x64" -and $isJet3) { "helper console menu" } else { "import wizard" }
+    $plan.Route = if (-not $Ui) { "headless helper import" } elseif ($Platform -eq "x64" -and $isJet3) { "helper console menu" } else { "import wizard" }
     [PSCustomObject]$plan
 }
 
@@ -208,6 +218,13 @@ foreach ($plan in $plans) {
 
     switch ($plan.Compatibility) {
         "TooOld" {
+            if (-not $Ui) {
+                if (-not $script:TestNameFilter -or "Conversion sweep: $fileName" -like "*$script:TestNameFilter*") {
+                    Write-Host "`nTooOld (version $($plan.Version)): $fileName - classified only; the referral dialog is covered by Run-ConversionHandlingTests.ps1 (or use -Ui)." -ForegroundColor DarkGray
+                    Add-TestResult -Name "Conversion sweep: $fileName" -Result "SKIP" -Reason "TooOld (version $($plan.Version)): classified only, no headless conversion"
+                }
+                continue
+            }
             $testName = "Conversion sweep: $fileName refers to EwE5 (TooOld)"
             $script:SweepModelPath = $modelPath
             $script:SweepLabel = "$fileName referral test instance"
@@ -230,7 +247,10 @@ foreach ($plan in $plans) {
                 $script:SweepModelNumber = $modelNumber
                 $script:SweepModelCount = $modelCount
                 $script:SweepLabel = "$modelLabel test instance"
-                if ($plan.Route -eq "helper console menu") {
+                if (-not $Ui) {
+                    $testName = "Conversion sweep (headless): $modelLabel imports"
+                    $body = { Test-HeadlessImportSucceeds -ModelPath $script:SweepModelPath -ModelNumber $script:SweepModelNumber -ModelCount $script:SweepModelCount }
+                } elseif ($plan.Route -eq "helper console menu") {
                     $testName = "Conversion sweep: $modelLabel imports via the helper console"
                     $body = { Invoke-HelperMenuImportTest -ModelPath $script:SweepModelPath -ModelNumber $script:SweepModelNumber -ModelCount $script:SweepModelCount -Label $script:SweepLabel }
                 } else {

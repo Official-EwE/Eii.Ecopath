@@ -7,11 +7,17 @@ function Get-ImportHelperExe {
     if ($script:ImportHelperExe -and (Test-Path $script:ImportHelperExe)) { return $script:ImportHelperExe }
     $proj = Join-Path $script:ConversionRepoRoot "Tools\EwEImportHelper\Source\EwEImportHelper.vbproj"
     if (-not (Test-Path $proj)) { throw "Project file not found: $proj" }
-    Write-Host "Building EwEImportHelper (Debug|x86)..."
-    $buildOutput = & dotnet build $proj -c Debug -p:Platform=x86 --nologo -v q 2>&1
-    if ($LASTEXITCODE -ne 0) {
-        $buildOutput | ForEach-Object { Write-Host $_ }
-        throw "Building EwEImportHelper failed (dotnet build exit code $LASTEXITCODE)."
+    # Same once-per-session table as Start-TestInstance.ps1 (new PowerShell session = rebuild).
+    if (-not $global:EwEBuiltProjects) { $global:EwEBuiltProjects = @{} }
+    $buildKey = "$proj|Debug|x86".ToLowerInvariant()
+    if (-not $global:EwEBuiltProjects[$buildKey]) {
+        Write-Host "Building EwEImportHelper (Debug|x86)..."
+        $buildOutput = & dotnet build $proj -c Debug -p:Platform=x86 --nologo -v q 2>&1
+        if ($LASTEXITCODE -ne 0) {
+            $buildOutput | ForEach-Object { Write-Host $_ }
+            throw "Building EwEImportHelper failed (dotnet build exit code $LASTEXITCODE)."
+        }
+        $global:EwEBuiltProjects[$buildKey] = $true
     }
     $exe = Get-ChildItem -Path (Join-Path (Split-Path -Parent $proj) "bin") -Recurse -Filter "EwEImportHelper.exe" -File -ErrorAction SilentlyContinue |
         Sort-Object LastWriteTime -Descending | Select-Object -First 1
@@ -541,3 +547,85 @@ function Invoke-HelperMenuImportTest {
     }
 }
 
+
+# ===========================================================================
+# Headless import: runs the helper's `import` mode directly (hidden, no app, no UI) in a throwaway
+# folder and judges the result file it writes. For files with more than one model the helper asks
+# for a number on stdin ("Enter a number (1-N):") - it is piped in here. Throws on failure, with
+# the reason from the result file (first line OK/EXISTS/FAIL, second line the target path or the
+# reason). Does NOT cover anything the app itself does (console window, wizard, dialogs).
+function Test-HeadlessImportSucceeds {
+    param(
+        [Parameter(Mandatory = $true)][string]$ModelPath,
+        [Parameter(Mandatory = $true)][int]$ModelNumber,
+        [int]$ModelCount = 0,
+        [int]$TimeoutSeconds = 600
+    )
+    $helperExe = Get-ImportHelperExe
+    $workFolder = Join-Path $env:TEMP "EwE-HeadlessImport\$(Get-Random)"
+    $outFolder = Join-Path $workFolder "out"
+    New-Item -ItemType Directory -Path $outFolder -Force | Out-Null
+    $resultFile = Join-Path $workFolder "result.txt"
+    $proc = $null
+    try {
+        $psi = New-Object System.Diagnostics.ProcessStartInfo
+        $psi.FileName = $helperExe
+        $psi.UseShellExecute = $false
+        $psi.CreateNoWindow = $true
+        $psi.RedirectStandardInput = $true
+        $psi.RedirectStandardOutput = $true
+        $psi.RedirectStandardError = $true
+        $psi.Arguments = (@("import", $ModelPath, $outFolder, $resultFile) | ForEach-Object { '"' + ($_ -replace '"', '\"') + '"' }) -join ' '
+        $proc = [System.Diagnostics.Process]::Start($psi)
+        $stderrTask = $proc.StandardError.ReadToEndAsync()
+        if ($ModelCount -ne 1) { $proc.StandardInput.WriteLine([string]$ModelNumber) }
+        $proc.StandardInput.Close()
+
+        # Read stdout line by line so progress can be shown while the import runs. The helper prints
+        # "[ 42%] message" lines for progress; the last few lines are kept for a failure report.
+        $recent = New-Object System.Collections.Generic.Queue[string]
+        $watch = [System.Diagnostics.Stopwatch]::StartNew()
+        $lastPercent = -1
+        $readTask = $proc.StandardOutput.ReadLineAsync()
+        while ($true) {
+            if ($readTask.Wait(1000)) {
+                $line = $readTask.Result
+                if ($null -eq $line) { break }   # end of stream: the helper has exited
+                if ($line.Trim() -ne "") {
+                    $recent.Enqueue($line)
+                    if ($recent.Count -gt 3) { [void]$recent.Dequeue() }
+                    if ($line -match '^\[\s*(\d+)%\]') { $lastPercent = [int]$Matches[1] }
+                }
+                $readTask = $proc.StandardOutput.ReadLineAsync()
+            }
+            $elapsed = [int]$watch.Elapsed.TotalSeconds
+            $percentText = if ($lastPercent -ge 0) { "$lastPercent%" } else { "starting..." }
+            Write-Host -NoNewline "`r  Importing: $percentText ($elapsed s)    "
+            if ($elapsed -gt $TimeoutSeconds) {
+                try { $proc.Kill() } catch { }
+                Write-Host ""
+                throw "Headless import timed out after $TimeoutSeconds seconds."
+            }
+        }
+        Write-Host -NoNewline "`r                                        `r"
+        $proc.WaitForExit()
+        $lines = @()
+        if (Test-Path $resultFile) { $lines = @(Get-Content $resultFile) }
+        $status = if ($lines.Count -gt 0) { $lines[0] } else { "NO-RESULT" }
+        if ($status -ne "OK" -and $status -ne "EXISTS") {
+            $reason = if ($lines.Count -gt 1) { ($lines | Select-Object -Skip 1) -join " | " } else { $stderrTask.Result.Trim() }
+            $tail = $recent.ToArray() -join " / "
+            throw "Headless import result '$status' (exit code $($proc.ExitCode)): $reason`n  Last output: $tail"
+        }
+        $target = $lines[1]
+        if (-not (Test-Path $target) -or (Get-Item $target).Length -eq 0) {
+            throw "Helper reported $status but the target database is missing or empty: $target"
+        }
+        Write-Host "  Imported headlessly: $(Split-Path -Leaf $target) ($([math]::Round((Get-Item $target).Length / 1KB)) KB)"
+    } finally {
+        # Ctrl+C / a failure must not leave the helper running in the background (it would also hold
+        # files in the folder removed below).
+        if ($null -ne $proc -and -not $proc.HasExited) { try { $proc.Kill() } catch { } }
+        Remove-Item -Path $workFolder -Recurse -Force -ErrorAction SilentlyContinue
+    }
+}
