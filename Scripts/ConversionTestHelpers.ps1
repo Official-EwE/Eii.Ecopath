@@ -150,7 +150,14 @@ function Test-HelperImportSucceeds {
         Wait-ForEditControlText -WindowElement $consoleElement -ContainsAnyOf @("--- Process exited") -TimeoutSeconds 120
     }
 
-    Write-Step "Dismissing the import console (Continue)" { Invoke-ButtonByName -WindowElement $consoleElement -Name "Continue" }
+    try {
+        Write-Step "Dismissing the import console (Continue)" { Invoke-ButtonByName -WindowElement $consoleElement -Name "Continue" }
+    } catch {
+        # Diagnostic: what is actually in that window / on screen right now?
+        Write-Host "`n    [diagnostic] Continue not found. Console window UIA tree:" -ForegroundColor Yellow
+        try { Write-UiaTreeDump -Element $consoleElement } catch { Write-Host "    (window is gone: $($_.Exception.Message))" -ForegroundColor Yellow }
+        throw
+    }
     # Assert-NoNewDialogs (run by the caller right after this returns) does a single immediate
     # check with no settle time of its own - give the app a moment to actually finish whatever
     # clicking Continue kicks off (closing the console, bringing up its real main window) before

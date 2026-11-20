@@ -3,6 +3,7 @@
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.IO
+Imports EwECore.Database
 
 Namespace Import
 
@@ -65,6 +66,73 @@ Namespace Import
         ''' <param name="strErrorMessage">Set to a human-readable reason if this returns False.</param>
         ''' <returns>True if the import completed successfully.</returns>
         Public Shared Function TryRunFullImport(strSource As String, ByRef strImportedFileName As String, ByRef strErrorMessage As String) As Boolean
+
+            ' Staging is opt-in, like everywhere else (cEwEDatabase.EnableLocalStaging): when it is off,
+            ' run the helper directly on the original, with its output next to it, as before.
+            If Not cEwEDatabase.EnableLocalStaging Then
+                Return RunFullImportOn(strSource, strImportedFileName, strErrorMessage)
+            End If
+
+            ' Same principle as the local working copy staged for any other model the app opens
+            ' (cEwEDatabase.StageLocalWorkingCopy): the file the user selected - possibly in a
+            ' cloud-synced folder (OneDrive etc.) - is only READ, once, to make a local copy, and the
+            ' (long-running) import then reads and writes only local files. The finished result is
+            ' moved next to the original afterwards. The copy lives in its own fresh sub-folder, so
+            ' the helper always creates its target new (never reusing one left by an earlier run).
+            Dim strOriginalFolder As String = Path.GetDirectoryName(strSource)
+            Dim strWorkFolder As String = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "Ecopath with Ecosim", "DBs", "TempImport." & Guid.NewGuid().ToString())
+            Dim strStagedSource As String = Path.Combine(strWorkFolder, Path.GetFileName(strSource))
+
+            Try
+                Directory.CreateDirectory(strWorkFolder)
+                File.Copy(strSource, strStagedSource, True)
+            Catch ex As Exception
+                strErrorMessage = $"Could not stage a local working copy of '{strSource}': {ex.Message}"
+                DeleteFolderQuietly(strWorkFolder)
+                Return False
+            End Try
+
+            Dim bKeepWorkFolder As Boolean = False
+            Try
+                Dim bSuccess As Boolean = RunFullImportOn(strStagedSource, strImportedFileName, strErrorMessage)
+
+                ' Move the result (a complete target on success, or a partial one on failure - see
+                ' RunFullImportOn's strImportedFileName) next to the original. An existing file of that
+                ' name there is kept, as before (the helper used to report it as EXISTS and reuse it).
+                If Not String.IsNullOrWhiteSpace(strImportedFileName) AndAlso File.Exists(strImportedFileName) Then
+                    Dim strDestination As String = Path.Combine(strOriginalFolder, Path.GetFileName(strImportedFileName))
+                    Try
+                        If Not File.Exists(strDestination) Then File.Move(strImportedFileName, strDestination)
+                        strImportedFileName = strDestination
+                    Catch ex As Exception
+                        ' strImportedFileName stays at the local copy, which must therefore survive.
+                        bKeepWorkFolder = True
+                        strErrorMessage = $"The import finished but the result could not be moved to '{strOriginalFolder}': {ex.Message}"
+                        Return False
+                    End Try
+                End If
+
+                Return bSuccess
+
+            Finally
+                If Not bKeepWorkFolder Then DeleteFolderQuietly(strWorkFolder)
+            End Try
+
+        End Function
+
+        Private Shared Sub DeleteFolderQuietly(strFolder As String)
+            Try
+                If Directory.Exists(strFolder) Then Directory.Delete(strFolder, True)
+            Catch
+                ' Best effort only - a leftover temp folder is harmless.
+            End Try
+        End Sub
+
+        ''' <summary>Runs the helper on strSource (the local copy), with the helper's output going to
+        ''' the same folder. Parameters as documented on TryRunFullImport.</summary>
+        Private Shared Function RunFullImportOn(strSource As String, ByRef strImportedFileName As String, ByRef strErrorMessage As String) As Boolean
 
             Dim strHelperPath As String = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "EwEImportHelper", "EwEImportHelper.exe")
             If Not File.Exists(strHelperPath) Then

@@ -1066,6 +1066,17 @@ function Invoke-ButtonByName {
         [Parameter(Mandatory = $true)][string]$Name
     )
     $button = Find-ByNameAndType -Root $WindowElement -Name $Name -ControlType ([System.Windows.Automation.ControlType]::Button)
+    if ($null -eq $button) {
+        # PowerShell's UIA client often exposes a WinForms button as a Pane (CONFIRMED for the import
+        # console's Continue button: Pane name='Continue' class='WindowsForms10.BUTTON...'), where
+        # Accessibility Insights shows a Button. Fall back to matching by Name + ClassName.
+        $nameCondition = New-Object System.Windows.Automation.PropertyCondition(
+            [System.Windows.Automation.AutomationElement]::NameProperty, $Name)
+        foreach ($candidate in $WindowElement.FindAll([System.Windows.Automation.TreeScope]::Descendants, $nameCondition)) {
+            $candidateClass = try { $candidate.Current.ClassName } catch { "" }
+            if ($candidateClass -like "*BUTTON*") { $button = $candidate; break }
+        }
+    }
     if ($null -eq $button) { throw "Could not find a '$Name' button in this window." }
     Invoke-ElementClick -Element $button
 }
