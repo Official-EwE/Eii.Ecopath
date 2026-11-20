@@ -60,7 +60,9 @@ param(
     # something to do for a flow whose actual dialog sequence isn't characterized yet. Callers for
     # that flow should pass this switch and do their OWN waiting (by window name, not handle) once
     # this function returns right after launch.
-    [switch]$SkipMainWindowWait
+    [switch]$SkipMainWindowWait,
+    # Rebuild even if this session already built the app (see "Build once per PowerShell session").
+    [switch]$ForceBuild
 )
 
 if (-not $SourceModelPath) {
@@ -97,9 +99,20 @@ Write-Host "Building ScientificInterface ($Configuration|$Platform)..."
 # "$Proc = & Start-TestInstance.ps1", producing an array instead of a single Process (confirmed -
 # this is exactly what happened). Routing through Write-Host keeps the build log fully visible
 # without it polluting this script's actual return value.
-dotnet build $vbproj -c $Configuration -p:Platform=$Platform | ForEach-Object { Write-Host $_ }
-if ($LASTEXITCODE -ne 0) {
-    throw "Build failed (dotnet build exit code $LASTEXITCODE)."
+# Build once per PowerShell session: the first launch for a given project/configuration/platform
+# builds, every later launch in the same session (every test, every runner under Run-AllTests.ps1)
+# reuses it. Kept in a $global: table because this script runs in a child scope. Pass -ForceBuild,
+# or start a new PowerShell session, after changing source code.
+if (-not $global:EwEBuiltProjects) { $global:EwEBuiltProjects = @{} }
+$buildKey = "$vbproj|$Configuration|$Platform".ToLowerInvariant()
+if ($global:EwEBuiltProjects[$buildKey] -and -not $ForceBuild) {
+    Write-Host "Already built in this session ($Configuration|$Platform) - skipping the build (use -ForceBuild to rebuild)."
+} else {
+    dotnet build $vbproj -c $Configuration -p:Platform=$Platform | ForEach-Object { Write-Host $_ }
+    if ($LASTEXITCODE -ne 0) {
+        throw "Build failed (dotnet build exit code $LASTEXITCODE)."
+    }
+    $global:EwEBuiltProjects[$buildKey] = $true
 }
 
 $exePath = Join-Path $RepoRoot "Sources\ScientificInterface\bin\$Platform\$Configuration\net48\ScientificInterface.exe"
