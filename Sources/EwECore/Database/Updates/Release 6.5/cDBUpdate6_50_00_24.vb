@@ -58,7 +58,7 @@ Friend Class cDBUpdate6_50_00_24
     Private Function UpdateShapeFunctions(db As cEwEDatabase, strTableName As String) As Boolean
 
         Dim bSuccess As Boolean = db.Execute("ALTER TABLE " & strTableName & " ADD COLUMN FunctionParams MEMO")
-        Dim writer As cEwEDatabase.cEwEDbWriter = db.GetWriter(strTableName)
+        Dim writer As IEwEDbWriter = db.GetWriter(strTableName)
         Dim dt As DataTable = writer.GetDataTable()
         Dim bIsChanged As Boolean = False
 

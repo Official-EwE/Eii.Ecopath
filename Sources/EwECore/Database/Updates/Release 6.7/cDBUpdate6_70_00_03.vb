@@ -42,7 +42,7 @@ Friend Class cDBUpdate6_70_00_03
     ''' -----------------------------------------------------------------------
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
-        Return db.Execute("DELETE * FROM EcosimScenarioArena") And db.Execute("ALTER TABLE EcosimScenarioArena ADD COLUMN Sequence INTEGER")
+        Return db.Execute("DELETE FROM EcosimScenarioArena") And db.Execute("ALTER TABLE EcosimScenarioArena ADD COLUMN Sequence INTEGER")
 
     End Function
 

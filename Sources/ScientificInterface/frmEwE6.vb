@@ -39,7 +39,7 @@ Public Class frmEwE6
 
 #Region " Variables "
 
-    ' - Message handlers 
+    ' - Message handlers
     Private m_mhProgress As cMessageHandler = Nothing
     Private m_mhEcosim As cMessageHandler = Nothing
     Private m_mhEcospace As cMessageHandler = Nothing
@@ -108,7 +108,7 @@ Public Class frmEwE6
         ''' Constructor.
         ''' </summary>
         ''' <param name="frm">The <see cref="frmEwE6"/> to toggle presentation mode for.</param>
-        ''' <param name="bUseOpacity">If set to true, the main form will be totally 
+        ''' <param name="bUseOpacity">If set to true, the main form will be totally
         ''' opaque during a presentation mode switch.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(frm As frmEwE6, Optional bUseOpacity As Boolean = False)
@@ -304,6 +304,19 @@ Public Class frmEwE6
         MRU
         ''' <summary>Database open attempt originated from the user interface.</summary>
         User
+        ''' <summary>
+        ''' Not a real, user-visible model open at all - a disposable
+        ''' implementation detail of some other operation (e.g. the
+        ''' Access-to-SQLite conversion flow loading a transient local
+        ''' staged copy that won't exist a few lines later). Distinct from
+        ''' API: that describes WHO triggered the load (an external,
+        ''' non-interactive caller); this describes WHAT the load itself
+        ''' is (disposable, never something to surface to the user),
+        ''' regardless of who or what triggered the surrounding action -
+        ''' an Internal load can happen in the middle of an entirely
+        ''' normal, interactive, GUI-driven flow.
+        ''' </summary>
+        Internal
     End Enum
 
 #End Region ' Variables
@@ -415,7 +428,7 @@ Public Class frmEwE6
             ' #Yes: is compatible?
             If (cDataSourceFactory.GetSupportedType(strDB) <> eDataSourceTypes.NotSet) Then
                 ' #Yes: try to open the model
-                Me.LoadEcopathModel(strDB, eLoadSourceType.CommandLine)
+                Me.LoadEcopathModelHandlingConversion(strDB, eLoadSourceType.CommandLine)
             End If
         End If
 
@@ -951,7 +964,7 @@ Public Class frmEwE6
     ''' <summary>
     ''' Returns the file name of the current loaded model.
     ''' </summary>
-    ''' <param name="bFullPath">Flag stating thether the full path needs to be 
+    ''' <param name="bFullPath">Flag stating thether the full path needs to be
     ''' returned.</param>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property SelectedFileName(Optional bFullPath As Boolean = True) As String
@@ -1053,7 +1066,7 @@ Public Class frmEwE6
     ''' -----------------------------------------------------------------------
     Protected Overrides Sub OnLoad(e As System.EventArgs)
 
-        ' Add the dock panel 
+        ' Add the dock panel
         Me.m_DockPanel = New DockPanel()
         Me.m_DockPanel.Parent = Me
         Me.m_DockPanel.Dock = DockStyle.Fill
@@ -1177,7 +1190,7 @@ Public Class frmEwE6
                 Me.ClearScenarioDropdowns()
                 Me.ClearModelMRUDropdowns()
 
-                ' JS 13Dec10: Another attempt to free tooltip memory 
+                ' JS 13Dec10: Another attempt to free tooltip memory
                 Dim ts As cToolTipShared = cToolTipShared.GetInstance()
                 ts.RemoveAll()
                 ts.Dispose()
@@ -1193,7 +1206,7 @@ Public Class frmEwE6
                 Me.m_pluginManager.UIContext = Nothing
                 Me.UIContext = Nothing
 
-                ' Clear commands after all UI elements have lost their UI context, which 
+                ' Clear commands after all UI elements have lost their UI context, which
                 ' should have triggered proper cleanups
                 cmdh.Clear()
 
@@ -1271,10 +1284,10 @@ Public Class frmEwE6
             Try
                 Dim files() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
                 If files.Length > 0 Then
-                    Me.LoadEcopathModel(files(0), eLoadSourceType.User)
+                    Me.LoadEcopathModelHandlingConversion(files(0), eLoadSourceType.User)
                 End If
             Catch ex As Exception
-
+                m_logger.LogError(ex, "frmEwE6.OnDragDrop")
             End Try
         End If
         MyBase.OnDragDrop(e)
@@ -1427,7 +1440,7 @@ Public Class frmEwE6
     ''' converted file.</param>
     ''' <returns>A <see cref="cEwEDatabase.eCompatibilityTypes"/> value</returns>
     ''' <remarks>
-    ''' This logic will need to change entirely. A database 
+    ''' This logic will need to change entirely. A database
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
     Private Function CovertToEwE6(ByRef strFileName As String) As cEwEDatabase.eCompatibilityTypes
@@ -1633,7 +1646,7 @@ Public Class frmEwE6
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Helper method, updates the state of controls reflecting the current model. 
+    ''' Helper method, updates the state of controls reflecting the current model.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub UpdateModelControls()
@@ -1660,7 +1673,7 @@ Public Class frmEwE6
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Helper method, populate the content of the scenario drop-down controls
-    ''' with lists of scenarios available in the current model. 
+    ''' with lists of scenarios available in the current model.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub PopulateScenarioDropdowns()
@@ -1756,7 +1769,7 @@ Public Class frmEwE6
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Helper method, clear the content of the scenario drop-down controls. 
+    ''' Helper method, clear the content of the scenario drop-down controls.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub ClearScenarioDropdowns()
@@ -1885,7 +1898,7 @@ Public Class frmEwE6
     ''' </summary>
     ''' <param name="strFileName">Name of the file to remove.</param>
     ''' <param name="iStartPos">Index in the MRU list to start searching for
-    ''' the item to remove. If not provided, the search will start at the 
+    ''' the item to remove. If not provided, the search will start at the
     ''' beginning of the list.</param>
     ''' -----------------------------------------------------------------------
     Private Sub RemoveModelMRU(strFileName As String,
@@ -1902,7 +1915,7 @@ Public Class frmEwE6
                 Dim strEntry As String = CStr(alMDBmru(iStartPos))
                 ' Is same file?
                 If (String.Compare(strEntry, strFileName, True) = 0) Then
-                    ' #Yes: remove 
+                    ' #Yes: remove
                     alMDBmru.RemoveAt(iStartPos)
                     iStartPos -= 1
                 End If
@@ -2081,7 +2094,7 @@ Public Class frmEwE6
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Helper method, tries to activate an opened dock panel or MDI child 
+    ''' Helper method, tries to activate an opened dock panel or MDI child
     ''' window.
     ''' </summary>
     ''' <param name="strNavLink">Navigation descriptor to find the panel with.</param>
@@ -2091,7 +2104,7 @@ Public Class frmEwE6
 
         Dim bFound As Boolean = False
 
-        ' Dock settings, loop through current opened 
+        ' Dock settings, loop through current opened
         For Each cnt As DockContent In Me.m_DockPanel.Contents
 
             If (TypeOf cnt.Tag Is String) Then
@@ -2200,7 +2213,7 @@ Public Class frmEwE6
     ''' </summary>
     ''' <param name="strFileName">Location of the model to open.</param>
     ''' <param name="loadsource">Flag indicating where the load request came from.</param>
-    ''' <remarks>This code is designed for strFileName to indicate a path. It should 
+    ''' <remarks>This code is designed for strFileName to indicate a path. It should
     ''' be possible to indicate a database as well. One day...</remarks>
     ''' ---------------------------------------------------------------------------
     Private Function LoadEcopathModel(strFileName As String,
@@ -2212,8 +2225,11 @@ Public Class frmEwE6
         Select Case cDataSourceFactory.GetSupportedType(strFileName)
 
             Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007,
-                 eDataSourceTypes.EII, eDataSourceTypes.EIIXML
+                 eDataSourceTypes.EII, eDataSourceTypes.EIIXML,
+                 eDataSourceTypes.AccessVsSqlite, eDataSourceTypes.Sqlite
 
+                System.Threading.Thread.Sleep(1000)
+                
                 ' Check if target file exists at all before affecting anything
                 If Not File.Exists(strFileName) Then
 
@@ -2235,6 +2251,9 @@ Public Class frmEwE6
 
                         Case eLoadSourceType.API
                             ' Do not provide user feedback in response to an API call
+
+                        Case eLoadSourceType.Internal
+                            ' Not a real, user-visible open - no feedback of any kind
 
                     End Select
 
@@ -2259,8 +2278,17 @@ Public Class frmEwE6
                 Return False
         End Select
 
-        ' Update MRU
-        Me.AddModelMRU(strFileName)
+        ' Update MRU - skipped for API (an external, non-interactive
+        ' caller - see the .API case above) and for Internal (not a real,
+        ' user-visible open at all - see eLoadSourceType.Internal's own
+        ' doc comment). Used specifically by the Access-to-SQLite
+        ' migration step (frmEwE6.LoadEcopathModelHandlingConversion),
+        ' which loads a transient local staged copy - that path should
+        ' never appear in the user's own recently-used list; only the
+        ' final, real .ewesqlite location the user actually opened should.
+        If loadsource <> eLoadSourceType.API AndAlso loadsource <> eLoadSourceType.Internal Then
+            Me.AddModelMRU(strFileName)
+        End If
 
         If Me.Core.LoadModel(strFileName) Then
             ' Set core paths
@@ -2286,7 +2314,7 @@ Public Class frmEwE6
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Save model to a different datasource and switch to that new datasource. 
+    ''' Save model to a different datasource and switch to that new datasource.
     ''' </summary>
     ''' <param name="strFileName">Full path + extension of the file to save.</param>
     ''' ---------------------------------------------------------------------------
@@ -2309,7 +2337,7 @@ Public Class frmEwE6
     ''' <param name="format">The file format to create.</param>
     ''' <returns>An Ecopath database, if successful.</returns>
     ''' <remarks>
-    ''' Note that this will NOT load the new model! For this, 
+    ''' Note that this will NOT load the new model! For this,
     ''' <see cref="LoadEcopathModel"/> will need to be called.
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
@@ -2340,6 +2368,30 @@ Public Class frmEwE6
 
             Case eDataSourceTypes.NotSet
                 atResult = eDatasourceAccessType.Failed_UnknownType
+
+            Case eDataSourceTypes.Sqlite
+                If File.Exists(strFileName) Then
+                    Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.GENERIC_PROMPT_OVERWRITEFILE, strFileName),
+                                                     eCoreComponentType.DataSource, eMessageType.DataValidation,
+                                                     eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+                    fmsg.Reply = eMessageReply.NO
+                    Me.Core.Messages.SendMessage(fmsg)
+                    If fmsg.Reply = eMessageReply.NO Then Return Nothing
+                End If
+                db = New cEwEEFDatabase()
+                atResult = db.Create(strFileName, strModelName, True, format, Me.Core.DefaultAuthor)
+
+            Case eDataSourceTypes.AccessVsSqlite
+                If File.Exists(strFileName) Then
+                    Dim fmsg As New cFeedbackMessage(cStringUtils.Localize(My.Resources.GENERIC_PROMPT_OVERWRITEFILE, strFileName),
+                                                     eCoreComponentType.DataSource, eMessageType.DataValidation,
+                                                     eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+                    fmsg.Reply = eMessageReply.NO
+                    Me.Core.Messages.SendMessage(fmsg)
+                    If fmsg.Reply = eMessageReply.NO Then Return Nothing
+                End If
+                db = New cEwEVersusDatabase(New cEwEAccessDatabase(), New cEwEEFDatabase())
+                atResult = db.Create(strFileName, strModelName, True, format, Me.Core.DefaultAuthor)
         End Select
 
         ' Provide status feedback
@@ -2354,7 +2406,7 @@ Public Class frmEwE6
                 importance = eMessageImportance.Critical
 
                 ' Should not occur
-                'Case eDatasourceAccessType.Failed_ReadOnly 
+                'Case eDatasourceAccessType.Failed_ReadOnly
 
             Case eDatasourceAccessType.Failed_OSUnsupported
                 strPrompt = My.Resources.PROMPT_DRIVERERROR
@@ -2394,7 +2446,7 @@ Public Class frmEwE6
     ''' <param name="strModelName">The name of the model to create.</param>
     ''' <returns>An Ecopath database, if successful.</returns>
     ''' <remarks>
-    ''' <para>Note that this will NOT load the new model! For this, 
+    ''' <para>Note that this will NOT load the new model! For this,
     ''' <see cref="LoadEcopathModel"/> will need to be called.</para>
     ''' <para>This method distills the database type from the provided file name.</para>
     ''' </remarks>
@@ -2541,7 +2593,7 @@ Public Class frmEwE6
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    '''
     ''' </summary>
     ''' <param name="strName"></param>
     ''' <param name="strDescription"></param>
@@ -2634,7 +2686,7 @@ Public Class frmEwE6
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    '''
     ''' </summary>
     ''' <param name="strName"></param>
     ''' <param name="strDescription"></param>
@@ -2657,7 +2709,7 @@ Public Class frmEwE6
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    '''
     ''' </summary>
     ''' <param name="es"></param>
     ''' <returns></returns>
@@ -2739,7 +2791,7 @@ Public Class frmEwE6
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    '''
     ''' </summary>
     ''' <param name="strName"></param>
     ''' <param name="strDescription"></param>
@@ -2758,7 +2810,7 @@ Public Class frmEwE6
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    '''
     ''' </summary>
     ''' <param name="es"></param>
     ''' <returns></returns>
@@ -2925,7 +2977,7 @@ Public Class frmEwE6
                     If (frm IsNot Nothing) Then
                         ' #Yes
                         If frm.WindowState = FormWindowState.Minimized Then frm.WindowState = FormWindowState.Normal
-                        ' Is this a dockable form? 
+                        ' Is this a dockable form?
                         If (TypeOf frm Is DockContent) And (Me.m_DockPanel.DocumentStyle = DocumentStyle.DockingMdi) Then
                             ' #Yes: show the form in the dock panel
                             DirectCast(frm, DockContent).Show(Me.m_DockPanel, DockState.Document)
@@ -3099,7 +3151,7 @@ Public Class frmEwE6
 
             ' Open the model
             cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_ECOPATH_LOADING)
-            Me.LoadEcopathModel(cmdFO.FileName, eLoadSourceType.User)
+            Me.LoadEcopathModelHandlingConversion(cmdFO.FileName, eLoadSourceType.User)
             cApplicationStatusNotifier.EndProgress(Me.Core)
 
         End If
@@ -3146,12 +3198,10 @@ Public Class frmEwE6
 
         ' JS 27Jul08: Only able to save in current file format (save as between formats not supported by the core)
         Select Case cDataSourceFactory.GetSupportedType(Me.SelectedFileName)
-            Case eDataSourceTypes.Access2003
-                ' Only allow saving as MDB
-                strFileFilter = SharedResources.FILEFILTER_SAVE_MDB
-            Case eDataSourceTypes.Access2007
-                ' Only allow saving as ACCDB
-                strFileFilter = SharedResources.FILEFILTER_SAVE_ACCDB
+            Case eDataSourceTypes.Sqlite,
+                eDataSourceTypes.AccessVsSqlite ' Note that in this supported type it will write to both the SQLite and Access database
+                ' Only allow saving as SQLite
+                strFileFilter = SharedResources.FILEFILTER_SAVE_SQLITE
             Case Else
                 ' Not supported
                 Debug.Assert(False, "Option should not have been available")
@@ -3187,7 +3237,7 @@ Public Class frmEwE6
         Dim bEnable As Boolean = Me.Core.StateMonitor.HasEcopathLoaded
 
         Select Case cDataSourceFactory.GetSupportedType(Me.SelectedFileName)
-            Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007
+            Case eDataSourceTypes.AccessVsSqlite, eDataSourceTypes.Sqlite
                 ' NOP
             Case Else
                 ' Only allow save as when file was opened as MDB or ACCDB since the core does
@@ -3442,7 +3492,7 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Command update handler; enables and disables the 
+    ''' Command update handler; enables and disables the
     ''' <see cref="m_cmdViewPresentationMode">View Presentation Mode command</see>.
     ''' </summary>
     Private Sub OnUpdateViewPresentationMode(cmd As cCommand) _
@@ -3957,7 +4007,7 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Command update handler; takes care of enabling and disabling the 
+    ''' Command update handler; takes care of enabling and disabling the
     ''' <see cref="m_cmdLoadEcosimScenario">Load Ecosim Scenario</see> command.
     ''' </summary>
     Private Sub OnUpdateLoadEcosimScenario(cmd As cCommand) Handles m_cmdLoadEcosimScenario.OnUpdate
@@ -3974,7 +4024,7 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Command update handler; takes care of enabling and disabling the 
+    ''' Command update handler; takes care of enabling and disabling the
     ''' <see cref="m_cmdCloseEcosimScenario">Close Ecosim Scenario</see> command.
     ''' </summary>
     Private Sub OnUpdateCloseEcosimScenario(cmd As cCommand) Handles m_cmdCloseEcosimScenario.OnUpdate
@@ -4034,7 +4084,7 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Command handler; deletes an Ecosim scenario 
+    ''' Command handler; deletes an Ecosim scenario
     ''' </summary>
     Private Sub OnInvokeDeleteEcosimScenario(cmd As cCommand) _
          Handles m_cmdDeleteEcosimScenario.OnInvoke
@@ -4322,7 +4372,7 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Command update handler; enables and disables the 
+    ''' Command update handler; enables and disables the
     ''' <see cref="m_cmdSaveEcospaceScenarioAs">Save Ecospace Scenario As</see> command.
     ''' </summary>
     Private Sub OnUpdateSaveEcospaceScenarioAs(cmd As cCommand) Handles m_cmdSaveEcospaceScenarioAS.OnUpdate
@@ -4330,7 +4380,7 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Command handler; deletes an Ecosim scenario 
+    ''' Command handler; deletes an Ecosim scenario
     ''' </summary>
     Private Sub OnInvokeDeleteEcospaceScenario(cmd As cCommand) _
          Handles m_cmdDeleteEcospaceScenario.OnInvoke
@@ -4717,7 +4767,7 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Command update handler; enables and disables the 
+    ''' Command update handler; enables and disables the
     ''' <see cref="m_cmdImportLayerData">export layer data command</see>.
     ''' </summary>
     Private Sub OnUpdateExportLayerData(cmd As cCommand) _
@@ -4745,7 +4795,7 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Command update handler; enables and disables the 
+    ''' Command update handler; enables and disables the
     ''' <see cref="m_cmdImportLayerData">export layer data command</see>.
     ''' </summary>
     Private Sub OnUpdateEditLayer(cmd As cCommand) _
@@ -4826,7 +4876,7 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Command update handler; takes care of enabling and disabling the 
+    ''' Command update handler; takes care of enabling and disabling the
     ''' <see cref="m_cmdLoadEcotracerScenario">Load Ecotracer Scenario</see> command.
     ''' </summary>
     Private Sub OnUpdateLoadEcotracerScenario(cmd As cCommand) _
@@ -4845,7 +4895,7 @@ Public Class frmEwE6
     End Sub
 
     ''' <summary>
-    ''' Command update handler; takes care of enabling and disabling the 
+    ''' Command update handler; takes care of enabling and disabling the
     ''' <see cref="m_cmdCloseEcotracerScenario">Close Ecotracer Scenario</see> command.
     ''' </summary>
     Private Sub OnUpdateCloseEcotracerScenario(cmd As cCommand) _
@@ -5026,7 +5076,7 @@ Public Class frmEwE6
                         pgcmd.Form.Hide()
                     End If
 
-                    ' Is this a dockable form? 
+                    ' Is this a dockable form?
                     If (TypeOf pgcmd.Form Is DockContent) And (Me.m_DockPanel.DocumentStyle = DocumentStyle.DockingMdi) Then
                         ' #Yes
                         ' Fix dockstyle
@@ -5081,7 +5131,7 @@ Public Class frmEwE6
 
 #End Region ' License commands
 
-#End Region ' Command handlers 
+#End Region ' Command handlers
 
 #Region " Event handlers "
 
@@ -5090,11 +5140,222 @@ Public Class frmEwE6
             Dim mnuItem As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
             Dim strFileName As String = CStr(mnuItem.Tag)
             cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_ECOPATH_LOADING)
-            Me.LoadEcopathModel(strFileName, eLoadSourceType.MRU)
+            Me.LoadEcopathModelHandlingConversion(strFileName, eLoadSourceType.MRU)
             cApplicationStatusNotifier.EndProgress(Me.Core)
         Catch ex As Exception
             ' Whoah!
         End Try
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Handles converting an Access-sourced model to SQLite on first open. If
+    ''' strFileName is not Access-sourced, does nothing. If a SQLite
+    ''' counterpart already exists (AccessVsSqlite), loads it directly - or,
+    ''' in DEBUG builds, offers to keep the already-loaded versus-database
+    ''' model open for comparison instead. Otherwise closes the currently-
+    ''' loaded (Access) model, runs the conversion (retrying on request if it
+    ''' fails due to a network problem), and loads the resulting SQLite file.
+    ''' </summary>
+    ''' <param name="strFileName">The file that was just loaded via MRU.</param>
+    ''' -----------------------------------------------------------------------
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Loads an Ecopath model, transparently redirecting Access-sourced files
+    ''' to their SQLite companion (converting first if none exists yet).
+    ''' Determines this upfront, before any load is attempted, rather than
+    ''' opening the Access file first and then closing/reopening the SQLite
+    ''' one afterward - so when a companion is already known to exist, the
+    ''' Access file is never opened at all (except deliberately, when Debug
+    ''' comparison mode is requested).
+    ''' </summary>
+    ''' <param name="strFileName">The file to open, as selected/dragged/passed by the caller.</param>
+    ''' <param name="loadsource">Where this load request came from.</param>
+    ''' -----------------------------------------------------------------------
+    Private Sub LoadEcopathModelHandlingConversion(strFileName As String, loadsource As eLoadSourceType)
+
+        Dim dataSourceType As eDataSourceTypes = cDataSourceFactory.GetSupportedType(strFileName)
+
+        Select Case dataSourceType
+
+            Case eDataSourceTypes.AccessVsSqlite
+
+                Dim strSqlitePath As String = Path.ChangeExtension(strFileName, ".ewesqlite")
+#If DEBUG
+                ' Todo: localize the message
+                Dim msg As New cFeedbackMessage("Open both Access and Sqlite databases with debug comparison features? Or cancel, to just open the Sqlite one", eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.OK_CANCEL)
+                Me.Core.Messages.SendMessage(msg)
+                If msg.Reply = eMessageReply.Cancel Then
+                    Me.LoadEcopathModel(strSqlitePath, loadsource)
+                Else
+                    ' Only now, having deliberately asked for comparison mode,
+                    ' do we actually open the Access file at all.
+                    Me.LoadEcopathModel(strFileName, loadsource)
+                End If
+#Else
+                ' A companion already exists - go straight to it. The Access
+                ' file is never opened at all in a Release build.
+                Me.LoadEcopathModel(strSqlitePath, loadsource)
+#End If
+
+            Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007
+
+                Dim strSqlitePath As String = Path.ChangeExtension(strFileName, ".ewesqlite")
+
+                ' Access2003 (.mdb/.ewemdb) never offers the Debug comparison
+                ' prompt, regardless of build configuration - GetSupportedType
+                ' only ever returns AccessVsSqlite for .accdb/.eweaccdb, so the
+                ' companion check for .mdb/.ewemdb has to happen here directly.
+                If File.Exists(strSqlitePath) Then
+                    Me.LoadEcopathModel(strSqlitePath, loadsource)
+                    Return
+                End If
+
+                ' 2 users racing to convert the same file at the same time is
+                ' now the user's own responsibility to avoid - no lock of
+                ' any kind is claimed here.
+                '
+                ' Stage a local copy and migrate/convert THAT, never the
+                ' original - the legacy update chain (RunAllUpdates,
+                ' triggered by the LoadEcopathModel call below) can require
+                ' a non-trivial number of writes for an old database, and
+                ' running that directly against a possibly cloud-synced
+                ' (OneDrive etc.) file is exactly the corruption risk this
+                ' whole project exists to prevent. The original Access file
+                ' is only ever READ once, right here, to make this copy -
+                ' it is never opened for write access at all.
+                Dim strStagingFolder As String = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Ecopath with Ecosim", "DBs")
+                Directory.CreateDirectory(strStagingFolder)
+                ' Real extension kept at the end (not ".tmp") - this exact
+                ' path is passed straight into LoadEcopathModel below, which
+                ' needs cDataSourceFactory.GetSupportedType to recognize it
+                ' as an Access file via Path.GetExtension. A ".tmp"
+                ' extension here made that detection fail entirely.
+                Dim strStagedCopy As String = Path.Combine(strStagingFolder,
+                    "Temp" & Path.GetFileNameWithoutExtension(strFileName) & "." & Guid.NewGuid().ToString() & Path.GetExtension(strFileName))
+                File.Copy(strFileName, strStagedCopy, True)
+
+                ' Marker held for the duration of this whole migrate+convert
+                ' operation - same mechanism cEwEDatabase.
+                ' StageLocalWorkingCopy() uses for its own working copies.
+                ' Without this, cEwEDatabase's own orphan sweep - which can
+                ' run at any moment, triggered by an UNRELATED database
+                ' being opened elsewhere on this machine, not just this one
+                ' - would see a marker-less "Temp*" file (its filter is on
+                ' the "Temp" prefix, not any particular extension) and
+                ' correctly (by its own rules) conclude it's an abandoned
+                ' orphan safe to delete, even while this migration is
+                ' actively using it.
+                Dim stagingMarker As New cEwEExclusivityLock()
+                stagingMarker.TryAcquire(strStagedCopy & ".marker")
+
+                Try
+                    ' Same naming convention ("Temp<name>.<GUID><ext>", real
+                    ' extension kept - see below) as cEwEDatabase's own
+                    ' working-copy staging, in the same
+                    ' folder - if this marker is ever lost (e.g. a crash),
+                    ' that mechanism's own orphan sweep will opportunistically
+                    ' clean up the leftover the next time any SQLite session
+                    ' opens read-write, as a free side benefit.
+                    '
+                    ' This step cannot be skipped: cSqliteMigrator.
+                    ' SeedBaseline assumes the source is always already at
+                    ' the latest version before conversion. Runs against
+                    ' strStagedCopy - NOTE: LoadEcopathModel may briefly
+                    ' reflect strStagedCopy's path in UI state (title bar,
+                    ' MRU) during this transient step, until the final
+                    ' LoadEcopathModel(strSqlitePath, ...) call below
+                    ' restores the real identity. Flagged as an accepted
+                    ' cosmetic caveat pending verification
+                    '
+                    ' EnableLocalStaging is deliberately disabled for JUST
+                    ' this one call, not left at its normal
+                    ' (application-wide) value: this code already handles
+                    ' staging itself, above - if cEwEAccessDatabase.Open()
+                    ' were ALSO staging strStagedCopy internally, migrations
+                    ' would write into a SECOND, inner temp copy that
+                    ' CloseModel() then deletes, silently discarding the
+                    ' migration results (nothing in this flow calls
+                    ' PublishToSource() to write them anywhere first).
+                    ' Restored immediately after in a Finally, so the FINAL
+                    ' LoadEcopathModel(strSqlitePath, ...) call below still
+                    ' gets normal staging for the real, ongoing editing
+                    ' session. Safe as a temporary global toggle here
+                    ' specifically because this is synchronous,
+                    ' single-threaded UI code with no concurrent model
+                    ' loads.
+                    ' Also pass eLoadSourceType.Internal here specifically
+                    ' (not the original loadsource) - this load is of a
+                    ' transient staged copy, not a real, user-visible open
+                    ' at all, regardless of the fact that this whole
+                    ' method is itself running as part of a normal,
+                    ' interactive GUI flow. The FINAL
+                    ' LoadEcopathModel(strSqlitePath, ...) call below
+                    ' correctly keeps using the original loadsource, since
+                    ' that one IS the real, user-visible open.
+                    Dim bPreviousStagingFlag As Boolean = cEwEDatabase.EnableLocalStaging
+                    cEwEDatabase.EnableLocalStaging = False
+                    Try
+                        If Not Me.LoadEcopathModel(strStagedCopy, eLoadSourceType.Internal) Then Return
+                        Me.Core.CloseModel()
+                    Finally
+                        cEwEDatabase.EnableLocalStaging = bPreviousStagingFlag
+                    End Try
+
+                    Dim bConverted As Boolean = False
+                    Do
+                        Try
+                            ' Explicit output path required here: the staged
+                            ' copy keeps the real extension now, but it's
+                            ' still in the staging folder, not next to the
+                            ' original - ChangeExtension(strStagedCopy,
+                            ' ".ewesqlite") would produce the right name in
+                            ' the WRONG folder. See
+                            ' cMdb2SqliteConverter.ConvertMdbToSqlite's own
+                            ' doc comment for why omitting this would
+                            ' silently write the result to the wrong
+                            ' location.
+                            cMdb2SqliteConverter.ConvertMdbToSqlite(strStagedCopy, strSqlitePath)
+                            bConverted = True
+                        Catch ex As cMdb2SqliteNetworkException
+                            ' Todo: localize the message
+                            If Me.AskFeedback("Converting this database to SQLite requires an internet connection (only needed once, to download the conversion tool). Please connect to the internet, then click OK to retry, or Cancel to stop.",
+                                              eMessageImportance.Warning, eCoreComponentType.External, eMessageReplyStyle.OK_CANCEL) = eMessageReply.Cancel Then
+                                Return
+                            End If
+                            ' Reply = OK: loop back and retry the conversion
+                        Catch ex As Exception
+                            ' Todo: localize the message
+                            Me.AskFeedback($"Failed to convert '{strFileName}' to SQLite: {ex.Message}",
+                                           eMessageImportance.Warning, eCoreComponentType.External, eMessageReplyStyle.OK)
+                            Return
+                        End Try
+                    Loop Until bConverted
+                    If bConverted Then
+                        ' Todo: localize the message
+                        Me.SendMessage($"Successfully converted '{strFileName}' to SQLite", eMessageImportance.Information)
+                    End If
+
+                Finally
+                    ' Guaranteed cleanup regardless of success, failure, or
+                    ' an early Return above.
+                    stagingMarker.Release()
+                    Try
+                        If File.Exists(strStagedCopy) Then File.Delete(strStagedCopy)
+                    Catch
+                    End Try
+                End Try
+
+                Me.LoadEcopathModel(strSqlitePath, loadsource)
+
+            Case Else
+                ' Not Access-related at all (already SQLite, EII, etc.) -
+                ' load as-is, no redirection needed.
+                Me.LoadEcopathModel(strFileName, loadsource)
+
+        End Select
+
     End Sub
 
     Private Sub OnSpatialTempMRUItemClicked(sender As Object, e As System.EventArgs)
@@ -5292,7 +5553,7 @@ Public Class frmEwE6
     ''' Update the directories in the Core to match any regular expressions.
     ''' </summary>
     ''' <remarks>
-    ''' Note that this will also reset the base directory for commands 
+    ''' Note that this will also reset the base directory for commands
     ''' <see cref="m_cmdFileOpen"/> and <see cref="m_cmdDirectoryOpen"/>.
     ''' </remarks>
     ''' -----------------------------------------------------------------------

@@ -8,6 +8,9 @@
         <GenerateRuntimeConfigurationFiles>false</GenerateRuntimeConfigurationFiles>
         <AssemblyName>EwEUtils</AssemblyName>
         <RootNamespace>EwEUtils</RootNamespace>
+        <AssemblyTitle>EwEUtils</AssemblyTitle>
+        <Product>EwEUtils</Product>
+        <Copyright>Copyright © 2005</Copyright>
         <RuntimeIdentifiers>win-x86;win-x64;linux-x64</RuntimeIdentifiers>
         <DebugType>portable</DebugType>
         <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>

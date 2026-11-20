@@ -15,12 +15,12 @@ Namespace Database
 
     ''' =======================================================================
     ''' <summary>
-    ''' Database class specialized for storing and writing EwE data to Microsoft 
+    ''' Database class specialized for storing and writing EwE data to Microsoft
     ''' Access databases.
     ''' </summary>
     ''' <remarks>
     ''' This class wraps Microsoft Access specifics such as connection
-    ''' strings, deals with deficiencies in the SQL implementation of Bill's 
+    ''' strings, deals with deficiencies in the SQL implementation of Bill's
     ''' beast, and provides default field values from the Access DB schema.
     ''' </remarks>
     ''' =======================================================================
@@ -107,7 +107,7 @@ Namespace Database
         ''' <param name="strAuthor">Name of the author to assign.</param>
         ''' <param name="strModelName">Name of the model to use.</param>
         ''' <param name="bOverwrite">States whether an existing database may be overwritten.</param>
-        ''' <param name="format">Database format type to use. If not set, the 
+        ''' <param name="format">Database format type to use. If not set, the
         ''' database type is deducted from the <paramref name="strDatabase">database</paramref>.</param>
         ''' <returns>A <see cref="eDatasourceAccessType">eDatasourceAccessType</see> value</returns>
         ''' <remarks>Note that this will NOT open the newly created database.</remarks>
@@ -181,7 +181,7 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Save a given Access database to a new destination, and open this 
+        ''' Save a given Access database to a new destination, and open this
         ''' new database.
         ''' </summary>
         ''' <param name="strDatabaseTo">Target database name.</param>
@@ -452,7 +452,7 @@ Namespace Database
                 ' working copy to protect the eventual Save from cloud-sync
                 ' interference. There is no lock of any kind here -
                 ' multi-user/multi-session protection was removed entirely
-                ' as a deliberate product decision.
+                ' as a deliberate product decision;
                 '
                 ' A caller-requested read-only open (the older/incompatible
                 ' DB version case - the only remaining use of bReadOnly),
@@ -484,7 +484,7 @@ Namespace Database
                 Select Case databaseType
                     Case eDataSourceTypes.Access2003
                         Me.m_conn.ConnectionString = cStringUtils.Localize(Me.m_strConnectionMDB, strEffectivePath)
-                    Case eDataSourceTypes.Access2007
+                    Case eDataSourceTypes.Access2007, eDataSourceTypes.AccessVsSqlite
                         Me.m_conn.ConnectionString = cStringUtils.Localize(Me.m_strConnectionACCDB, strEffectivePath)
                     Case eDataSourceTypes.NotSet
                         Me.m_conn.ConnectionString = ""

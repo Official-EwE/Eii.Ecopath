@@ -1,4 +1,4 @@
-﻿' SPDX-License-Identifier: EUPL-1.2
+' SPDX-License-Identifier: EUPL-1.2
 ' This file is part of Ecopath with Ecosim (EwE).
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
@@ -13,7 +13,6 @@ Imports Microsoft.Extensions.Logging
 Imports Serilog
 Imports Serilog.Sinks.Grafana.Loki
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-
 
 Module EwE6ApplicationFramework
 
