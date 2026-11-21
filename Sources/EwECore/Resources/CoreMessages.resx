@@ -796,6 +796,13 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>Model '{0}' was last accessed by {1}  and will be updated. Do you wish to create a backup copy of this model?</value>
     <comment>{0}=file name; {1}=last used version</comment>
   </data>
+  <data name="DATABASE_UPDATE_PROMPT" xml:space="preserve">
+    <value>To continue, your model database will be updated to a newer version. This means that you will not be able to open the model in older versions of EwE. Do you want to continue?</value>
+  </data>
+  <data name="DATABASE_UPDATE_PROMPT_CAPTION" xml:space="preserve">
+    <value>Update model database</value>
+    <comment>Dialog caption, deliberately distinct from the main window caption</comment>
+  </data>
   <data name="IMPORT_PROGRESS_ECOSIMFLEETS" xml:space="preserve">
     <value>Importing Ecosim fleets</value>
   </data>

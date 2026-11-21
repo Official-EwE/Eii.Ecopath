@@ -3188,8 +3188,9 @@ Public Class cCore
 
             If dbUpd.HasDatabaseUpdates(db, ver) Then
 
-                Dim fmsg As New cFeedbackMessage("To continue, your model database will be updated to a newer version. This means that you will not be able to open the model in older versions of EwE. Do you want to continue?", eCoreComponentType.DataSource,
+                Dim fmsg As New cFeedbackMessage(My.Resources.CoreMessages.DATABASE_UPDATE_PROMPT, eCoreComponentType.DataSource,
                                            eMessageType.NotSet, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+                fmsg.Caption = My.Resources.CoreMessages.DATABASE_UPDATE_PROMPT_CAPTION
                 fmsg.Reply = eMessageReply.YES
                 Me.m_publisher.SendMessage(fmsg)
                 If (fmsg.Reply <> eMessageReply.YES) Then Return False
@@ -3612,6 +3613,99 @@ Public Class cCore
             End If
         Else
             bSucces = Me.SaveChanges(True)
+        End If
+
+        ' Publish the local working copy back to its real, possibly
+        ' cloud-synced (OneDrive etc.) location.
+        ' Must happen exactly once here, per explicit user Save action, only
+        ' once SaveChanges() has actually finished writing everything to
+        ' the local working copy, and only on a confirmed successful save -
+        ' never per internal transaction, and never on a failed save (which
+        ' could publish incomplete/inconsistent data).
+        '
+        ' PublishToSource() already retries internally, briefly, for a
+        ' transient sharing violation (see cEwEDatabase.
+        ' PublishLocalCopyToSource). If it still fails after that -
+        ' typically a longer-lived lock, e.g. a cloud-sync client mid-sync
+        ' - ask the user whether to try again or give up, looping for as
+        ' long as they keep choosing to retry. Auto-affirms to CANCEL if no
+        ' message handler responds (e.g. a headless/EwERunConsole-style
+        ' caller with no UI attached), so an unattended process fails
+        ' cleanly rather than hanging indefinitely.
+        If bSucces Then
+#If DEBUG Then
+            ' Test hook for the local-staging-copy test plan (§2.1, "kill mid-save"): lets an external
+            ' script pause execution right here - save just completed, publish-back not yet started -
+            ' deterministically, instead of relying on a manual breakpoint. See
+            ' Documentation/CODE_COMMENTS.md. DEBUG-only: no cost or behavior change in a Release build.
+            Dim strTestWaitFlag As String = Path.Combine(Path.GetTempPath(), "EwE_TestWaitBeforePublish.flag")
+            If File.Exists(strTestWaitFlag) Then
+                ' Acknowledges that execution has genuinely reached this point and is now waiting -
+                ' lets an external script know it's safe to act (e.g. kill this process) rather than
+                ' guessing a delay, the same deterministic-signal approach as everywhere else this
+                ' flag is used from.
+                Dim strTestWaitAck As String = Path.Combine(Path.GetTempPath(), "EwE_TestWaitBeforePublish.ack")
+                Try
+                    File.WriteAllText(strTestWaitAck, "")
+                Catch
+                End Try
+                Dim dtWaitStart As DateTime = DateTime.UtcNow
+                While File.Exists(strTestWaitFlag)
+                    Threading.Thread.Sleep(100)
+                    If (DateTime.UtcNow - dtWaitStart).TotalMinutes > 5 Then
+                        Debug.WriteLine("EwE_TestWaitBeforePublish.flag still present after 5 minutes - proceeding anyway (stale flag left over from a crashed/forgotten test script?).")
+                        Exit While
+                    End If
+                End While
+                Try
+                    File.Delete(strTestWaitAck)
+                Catch
+                End Try
+            End If
+#End If
+            Do
+                If Me.DataSource.PublishToSource() Then Exit Do
+
+                ' cRestartManagerLookup is purely cosmetic here - a better
+                ' worded message, nothing more. An empty result (detection
+                ' found nothing, or failed for any reason) falls back to
+                ' generic phrasing; either way the retry/cancel behavior
+                ' above is unaffected.
+                ' IEwEDataSource.FileName() is just the base name, no
+                ' directory or extension (by design - see Directory()/
+                ' Extension() alongside it) - fine for the dialog message
+                ' text below, but GetLockingAppName needs an actual,
+                ' openable path, so reconstruct the full one here.
+                Dim strLockingPath As String = Path.Combine(Me.DataSource.Directory(), Me.DataSource.FileName() & Me.DataSource.Extension())
+                Dim strLockingApp As String = cRestartManagerLookup.GetLockingAppName(strLockingPath)
+                If String.IsNullOrEmpty(strLockingApp) Then strLockingApp = "another application" ' Todo: localize
+
+                ' Todo: localize the message
+                Dim fmPublish As New cFeedbackMessage(
+                    cStringUtils.Localize("Cannot write changes to '{0}' - it is currently locked by {1}. Please close it, then click OK to retry, or click Cancel to stop.", Me.DataSource.FileName(), strLockingApp),
+                    eCoreComponentType.Core, eMessageType.Any,
+                    eMessageImportance.Warning, eMessageReplyStyle.OK_CANCEL)
+                fmPublish.Reply = eMessageReply.CANCEL
+                Me.m_publisher.SendMessage(fmPublish)
+
+                If fmPublish.Reply = eMessageReply.CANCEL Then
+                    bSucces = False
+                    ' Re-mark the data source as modified: SaveChanges() above already cleared this,
+                    ' correctly, from its own perspective - SaveModel() DID genuinely persist
+                    ' everything to the local staged copy. But the REAL external file was never
+                    ' actually updated, since this publish-back step was just cancelled - without
+                    ' this, the Save button stays disabled as if nothing were wrong, even though the
+                    ' user's changes have not reached the real file. eCoreComponentType.DataSource is
+                    ' a member of cDBDataSource's own s_EcopathComponents, so this correctly restores
+                    ' both the base IsModified() check and IsEcopathModified() - the unconditional
+                    ' UpdateDataState call below picks this up and broadcasts it as usual.
+                    ' Confirmed as a real, reproducible bug via an automated test (§8.1 in the
+                    ' local-staging-copy test plan).
+                    Me.DataSource.SetChanged(eCoreComponentType.DataSource)
+                    Exit Do
+                End If
+                ' Reply = OK: loop back and retry
+            Loop
         End If
 
         ' Force an update since datasources have been switched

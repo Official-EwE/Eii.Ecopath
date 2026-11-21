@@ -3,6 +3,7 @@
 ' Copyright © 1991– Ecopath International Initiative (EII)
 
 Imports System.Data.OleDb
+Imports System.Globalization
 Imports System.IO
 Imports System.Reflection
 Imports EwECore.DataSources
@@ -30,25 +31,69 @@ Namespace Database
 
         ''' <summary>A connection to an OleDb database, if any.</summary>
         Public m_conn As OleDbConnection = Nothing
-        ''' <summary>The connection string to connect to a MDB database.</summary>
-        Private m_strConnectionMDB As String = "Provider=Microsoft.Jet.OLEDB.4.0; Data Source={0};Mode=Share Exclusive;"
+        ''' <summary>
+        ''' The connection string to connect to a MDB database. No longer
+        ''' opened in exclusive mode - multi-user/multi-session protection
+        ''' was removed entirely as a deliberate product decision (a
+        ''' concurrent open by another session is now the user's own
+        ''' responsibility to avoid).
+        ''' </summary>
+        Private m_strConnectionMDB As String = "Provider=Microsoft.Jet.OLEDB.4.0; Data Source={0};"
         ' Download from http://www.microsoft.com/download/en/details.aspx?displaylang=en&id=13255.
         ' only works if office is 64 bit too. To detect
-        ' To determine if office 2010 is 32 bit or 64 bit, we could check a registry key named 
+        ' To determine if office 2010 is 32 bit or 64 bit, we could check a registry key named
         ' bitness. For more information, please refer to this article: http://technet.microsoft.com/en-us/library/ee681792.aspx.
-        ' Also here is a resource with a same question you could refer to: 
+        ' Also here is a resource with a same question you could refer to:
         ' Detect whether Office 2010 is 32bit or 64bit via the registry (http://stackoverflow.com/questions/2203980/detect-whether-office-2010-is-32bit-or-64bit-via-the-registry).
-        ''' <summary>The connection string to connect to a ACCDB database.</summary>
-        Private m_strConnectionACCDB As String = "Provider=Microsoft.ACE.OLEDB.12.0;Mode=Share Exclusive;Data Source={0};"
-
-        '17-Jul-2025 Connection string without Exclusive opening mode
-        'This is needed for running the console on multiple instances of the same model with different data.
-        'Right now it has to be switched on in code(obviously).
-        'Private m_strConnectionACCDB As String = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};"
+        ''' <summary>
+        ''' The connection string to connect to a ACCDB database. No longer
+        ''' opened in exclusive mode - see m_strConnectionMDB's own doc
+        ''' comment above.
+        ''' </summary>
+        Private m_strConnectionACCDB As String = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};"
 
         ''' <summary>File name to access database.</summary>
         Private m_strFileName As String = ""
         Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEwEAccessDatabase)()
+
+        ''' <summary>
+        ''' Accumulates messages logged by Open()/Create() on a failure path - Shared (process-wide),
+        ''' so a caller like Create() below, which opens its own internal cEwEAccessDatabase instance,
+        ''' can still have the real reason read back by someone who never held that instance (e.g.
+        ''' EwEImportHelper's Program.vb, which only has its own dbTarget).
+        ''' </summary>
+        ''' <remarks>
+        ''' Appends, never overwrites - a failed Create() call can log more than one message before
+        ''' giving up, and only the full sequence is reliably useful. Does not auto-clear on every
+        ''' Open() call (called constantly, for unrelated reasons) - a caller wanting a clean trace for
+        ''' one operation calls ClearOpenFailureLog() before it and GetOpenFailureLog() after.
+        ''' Not safe for concurrent capture from multiple threads at once (each would see a mix of the
+        ''' other's messages) - fine for EwEImportHelper's single-threaded usage.
+        ''' </remarks>
+        Private Shared ReadOnly s_openFailureLog As New List(Of String)
+        Private Shared ReadOnly s_openFailureLogLock As New Object()
+
+        ''' <summary>Clears the accumulated failure log - call before the operation to capture.</summary>
+        Public Shared Sub ClearOpenFailureLog()
+            SyncLock s_openFailureLogLock
+                s_openFailureLog.Clear()
+            End SyncLock
+        End Sub
+
+        ''' <summary>Appends one message; blank/whitespace-only messages are ignored.</summary>
+        Public Shared Sub AppendOpenFailureLog(strMessage As String)
+            If String.IsNullOrWhiteSpace(strMessage) Then Return
+            SyncLock s_openFailureLogLock
+                s_openFailureLog.Add(strMessage)
+            End SyncLock
+        End Sub
+
+        ''' <summary>Everything accumulated since the last ClearOpenFailureLog(), one message per line.</summary>
+        Public Shared Function GetOpenFailureLog() As String
+            SyncLock s_openFailureLogLock
+                Return String.Join(Environment.NewLine, s_openFailureLog)
+            End SyncLock
+        End Function
 
 #End Region ' Private vars
 
@@ -114,15 +159,18 @@ Namespace Database
                             End Try
                             db.Close()
                         Else
+                            cEwEAccessDatabase.AppendOpenFailureLog("Create DB: Unable to open DB using required drivers, check driver installation.")
                             m_logger.LogError("Create DB: Unable to open DB using required drivers, check driver installation.")
                         End If
                         db = Nothing
                     Catch ex As Exception
+                        cEwEAccessDatabase.AppendOpenFailureLog(ex.Message)
                         m_logger.LogError(ex, "Create DB: Exception when updating model name: " & ex.Message)
                         datResult = eDatasourceAccessType.Failed_Unknown
                     End Try
                 Else
                     'Unable to write to target location
+                    cEwEAccessDatabase.AppendOpenFailureLog("Create DB: Unable to save to target location " & strDatabase)
                     m_logger.LogError("Create DB: Unable to save to target location " & strDatabase)
                     datResult = eDatasourceAccessType.Failed_CannotSave
                 End If
@@ -160,6 +208,18 @@ Namespace Database
                 Return eDatasourceAccessType.Failed_TransferTypes
             End If
 
+            ' This session's actual, up-to-date data lives in the local
+            ' working copy (if any was staged - a write-intent open always
+            ' has one); strDatabaseFrom is stale, frozen at whatever it was
+            ' when the working copy was staged. Close() below deletes the
+            ' working copy via CleanUpLocalWorkingCopy(), so detach it from
+            ' Me first - this leaves the file in place on disk for the copy
+            ' further down, instead of losing this session's only
+            ' up-to-date copy of the data before we can use it.
+            Dim strDataToCarryOver As String = If(String.IsNullOrEmpty(Me.m_strLocalWorkingCopyPath), strDatabaseFrom, Me.m_strLocalWorkingCopyPath)
+            Dim strLeftoverWorkingCopy As String = Me.m_strLocalWorkingCopyPath
+            Me.m_strLocalWorkingCopyPath = ""
+
             Me.Close()
 
             ' Test if we can create a new DB at the intended location
@@ -171,7 +231,7 @@ Namespace Database
                 ' #Yes: this is painful... File Copy the current DB on top of the newly created DB
                 Try
                     ' Can copy database from old to new MDB?
-                    System.IO.File.Copy(strDatabaseFrom, strDatabaseTo, True)
+                    System.IO.File.Copy(strDataToCarryOver, strDatabaseTo, True)
                 Catch ex As Exception
                     ' #Failure
                     datResult = eDatasourceAccessType.Failed_CannotSave
@@ -187,7 +247,172 @@ Namespace Database
                     Me.Open(strDatabaseFrom)
                 End If
             End If
+
+            ' Now safe to remove the detached working copy, if there was one.
+            If Not String.IsNullOrEmpty(strLeftoverWorkingCopy) Then
+                Try
+                    If File.Exists(strLeftoverWorkingCopy) Then File.Delete(strLeftoverWorkingCopy)
+                Catch
+                End Try
+            End If
+
             Return datResult
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Reads the Jet engine version byte directly from the MDB file
+        ''' header (a single byte at a fixed offset near the start of the
+        ''' file - the same byte Jet/ACE itself reads internally to decide
+        ''' how to parse the file) and reports whether it indicates a
+        ''' genuinely too-old (legacy Jet3, pre-Access-2000) format.
+        ''' </summary>
+        ''' <remarks>
+        ''' Used by cDataSourceFactory.GetCompatibility to identify a
+        ''' pre-EwE6, pre-Access-2000 Ecopath 5 database (as TooOld) even
+        ''' when it cannot actually be opened: on a 64-bit process there is
+        ''' no 64-bit build of the classic Microsoft.Jet.OLEDB.4.0 provider
+        ''' at all, so a genuine Jet3 file - which only the classic
+        ''' provider can reliably open - gets routed through ACE instead
+        ''' (see cDataSourceFactory.GetSupportedType), and ACE cannot open
+        ''' it. On 32-bit, the classic provider opens it fine, and
+        ''' cEwEDatabase.Compatibility (which does need a working
+        ''' connection) reaches the same TooOld conclusion by reading the
+        ''' actual Ecopath 5 version number stored inside the file.
+        ''' Byte-value mapping confirmed directly against mdbtools' own
+        ''' source (include/mdbtools.h.in, MDB_VER_* constants): 0 =
+        ''' MDB_VER_JET3 (genuinely too old - the only case this reports
+        ''' True for), 1 = MDB_VER_JET4 (Access 2000-2003 - ACE opens this
+        ''' fine), 2/3 = ACCDB 2007/2010+.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function IsLegacyJetFormat(strPath As String) As Boolean
+            Const iVersionByteOffset As Integer = &H14 ' 20 decimal
+            Const bJet3VersionByte As Byte = 0 ' MDB_VER_JET3 - see remarks above
+
+            Try
+                Using fs As New FileStream(strPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
+                    If fs.Length <= iVersionByteOffset Then Return False ' not a real/parseable Jet file at all - let the normal Open() path report that
+                    fs.Seek(iVersionByteOffset, SeekOrigin.Begin)
+                    Return fs.ReadByte() = bJet3VersionByte
+                End Using
+
+            Catch ex As Exception
+                ' Purely a pre-check - if this itself fails for any reason
+                ' (permissions, a genuinely unreadable file, etc.), fall
+                ' through to the normal Open() path and let IT report the
+                ' real error, rather than this diagnostic masking it.
+                Return False
+            End Try
+        End Function
+
+        ''' <summary>
+        ''' Quotes a single argument for a ProcessStartInfo.Arguments string, per CommandLineToArgvW.
+        ''' </summary>
+        ''' <remarks>
+        ''' ProcessStartInfo.ArgumentList would avoid manual quoting entirely but needs .NET Core
+        ''' 2.0+/.NET 5+; this file targets net48 (one of EwECore's two TargetFrameworks) too.
+        ''' </remarks>
+        Private Shared Function QuoteArgument(strArg As String) As String
+            Dim sb As New Text.StringBuilder()
+            Dim chQuote As Char = Convert.ToChar(34)
+            Dim chBackslash As Char = "\"c
+            sb.Append(chQuote)
+            Dim i As Integer = 0
+            While i < strArg.Length
+                Dim nBackslashes As Integer = 0
+                While i < strArg.Length AndAlso strArg(i) = chBackslash
+                    nBackslashes += 1
+                    i += 1
+                End While
+                If i = strArg.Length Then
+                    ' Trailing backslashes, right before the closing
+                    ' quote: double them so they stay literal.
+                    sb.Append(New String(chBackslash, nBackslashes * 2))
+                ElseIf strArg(i) = chQuote Then
+                    ' Backslashes immediately followed by a literal
+                    ' quote: double them, then escape the quote itself.
+                    sb.Append(New String(chBackslash, nBackslashes * 2 + 1))
+                    sb.Append(chQuote)
+                    i += 1
+                Else
+                    ' Backslashes followed by anything else: literal,
+                    ' no doubling needed.
+                    sb.Append(New String(chBackslash, nBackslashes))
+                    sb.Append(strArg(i))
+                    i += 1
+                End If
+            End While
+            sb.Append(chQuote)
+            Return sb.ToString()
+        End Function
+
+        ''' <summary>
+        ''' Reads a legacy Jet3 file's real Ecopath version number by spawning EwEImportHelper.exe, a
+        ''' separate x86 process - the classic Microsoft.Jet.OLEDB.4.0 provider it uses has no 64-bit
+        ''' build, so this is the one way to read this value for a file ACE cannot open.
+        ''' </summary>
+        ''' <param name="strPath">The database file to read.</param>
+        ''' <param name="sVersion">Set to the version number found, if this returns True.</param>
+        ''' <returns>True only if the helper ran, exited 0, and printed a parseable number - any other
+        ''' outcome (missing, timeout, non-zero exit, bad output) returns False; callers fall back to
+        ''' their own conservative default either way.</returns>
+        ''' <remarks>
+        ''' Looks for EwEImportHelper.exe in an "EwEImportHelper" subfolder of the current process's own
+        ''' base directory - built and published out of band from Tools\EwEImportHelper (same pattern as
+        ''' Tools\mdb2sqlite and Tools\Eii.Ecopath.Storage.Migrator); the host app copies its published
+        ''' output there via a None/Link item in its own .vbproj.
+        ''' Only called on 64-bit (see cDataSourceFactory.GetCompatibility) - on 32-bit the classic
+        ''' provider already opens Jet3 files directly.
+        ''' </remarks>
+        Public Shared Function TryGetLegacyVersionViaX86Helper(strPath As String, ByRef sVersion As Single) As Boolean
+
+            Const iTimeoutMs As Integer = 15000
+
+            Dim strHelperPath As String = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "EwEImportHelper", "EwEImportHelper.exe")
+            If Not File.Exists(strHelperPath) Then Return False
+
+            Try
+                Dim psi As New Diagnostics.ProcessStartInfo() With {
+                    .FileName = strHelperPath,
+                    .UseShellExecute = False,
+                    .CreateNoWindow = True,
+                    .RedirectStandardOutput = True,
+                    .RedirectStandardError = True
+                }
+                psi.Arguments = QuoteArgument("version") & " " & QuoteArgument(strPath)
+
+                Using proc As Diagnostics.Process = Diagnostics.Process.Start(psi)
+                    ' WaitForExit before reading output: output here is guaranteed tiny (a single short
+                    ' number), so no deadlock risk - reading first would block on ReadToEnd() (only
+                    ' returns at EOF) before this timeout ever applied, defeating its purpose.
+                    If Not proc.WaitForExit(iTimeoutMs) Then
+                        Try
+                            proc.Kill()
+                        Catch
+                        End Try
+                        Return False
+                    End If
+
+                    If proc.ExitCode <> 0 Then
+                        ' Debug.WriteLine, not m_logger: this is an expected-to-sometimes-fail path
+                        ' (caller already falls back to its own default), not worth the app's log file.
+                        Dim strError As String = proc.StandardError.ReadToEnd()
+                        System.Diagnostics.Debug.WriteLine($"TryGetLegacyVersionViaX86Helper: helper exited with code {proc.ExitCode} for '{strPath}': {strError.Trim()}")
+                        Return False
+                    End If
+
+                    Dim strOutput As String = proc.StandardOutput.ReadToEnd()
+                    Return Single.TryParse(strOutput.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, sVersion)
+                End Using
+
+            Catch ex As Exception
+                ' Helper could not be started, or anything else went wrong -
+                ' either way, no real version number to go on.
+                System.Diagnostics.Debug.WriteLine($"TryGetLegacyVersionViaX86Helper: exception for '{strPath}': {ex.Message}")
+                Return False
+            End Try
 
         End Function
 
@@ -220,6 +445,30 @@ Namespace Database
                 ' Return eDatasourceAccessType.Failed_ReadOnly
             End If
 
+            Dim strEffectivePath As String = strDatabase
+
+            If Not bReadOnly AndAlso cEwEDatabase.EnableLocalStaging Then
+                ' Write-intent open, with staging enabled: stages a local
+                ' working copy to protect the eventual Save from cloud-sync
+                ' interference. There is no lock of any kind here -
+                ' multi-user/multi-session protection was removed entirely
+                ' as a deliberate product decision.
+                '
+                ' A caller-requested read-only open (the older/incompatible
+                ' DB version case - the only remaining use of bReadOnly),
+                ' OR any caller that hasn't opted into EnableLocalStaging
+                ' at all (e.g. EwERunConsole - see EnableLocalStaging's own
+                ' doc comment), needs none of this: connects directly to
+                ' the real file below, exactly as before this whole
+                ' feature existed.
+                Try
+                    strEffectivePath = Me.StageLocalWorkingCopy(strDatabase)
+                Catch ex As Exception
+                    m_logger.LogError(ex, "cEwEAccessDatabase.Open('{0}') failed to stage a local working copy: {1}", strDatabase, ex.Message)
+                    Return eDatasourceAccessType.Failed_Unknown
+                End Try
+            End If
+
             ' Need to auto-detect database type?
             If databaseType = eDataSourceTypes.NotSet Then
                 ' #Yes: auto-detect
@@ -229,12 +478,14 @@ Namespace Database
             Me.m_conn = New OleDbConnection()
 
             Do
-                ' Assemble connection string
+                ' Assemble connection string - against the local working
+                ' copy for a write-intent open, or the real file directly
+                ' for a read-only open (see above).
                 Select Case databaseType
                     Case eDataSourceTypes.Access2003
-                        Me.m_conn.ConnectionString = cStringUtils.Localize(Me.m_strConnectionMDB, strDatabase)
+                        Me.m_conn.ConnectionString = cStringUtils.Localize(Me.m_strConnectionMDB, strEffectivePath)
                     Case eDataSourceTypes.Access2007
-                        Me.m_conn.ConnectionString = cStringUtils.Localize(Me.m_strConnectionACCDB, strDatabase)
+                        Me.m_conn.ConnectionString = cStringUtils.Localize(Me.m_strConnectionACCDB, strEffectivePath)
                     Case eDataSourceTypes.NotSet
                         Me.m_conn.ConnectionString = ""
                         datResult = eDatasourceAccessType.Failed_UnknownType
@@ -253,7 +504,7 @@ Namespace Database
                         Me.m_conn.Open()
                         ' Set status
                         datResult = eDatasourceAccessType.Opened
-                        ' All well: store file name
+                        ' All well: store file name - the REAL path, not the working copy
                         Me.m_strFileName = strDatabase
 
                     Catch ex As OleDbException
@@ -263,14 +514,17 @@ Namespace Database
                             datResult = eDatasourceAccessType.Failed_Unknown
                         End If
                         ' OleDb got into trouble
+                        cEwEAccessDatabase.AppendOpenFailureLog(ex.Message)
                         m_logger.LogError(ex, cStringUtils.Localize("Open DB: OleDbException {0}, {1} when opening '{2}'", ex.Message, ex.ErrorCode, Me.m_conn.ConnectionString))
 
                     Catch ex As InvalidOperationException
                         datResult = eDatasourceAccessType.Failed_OSUnsupported
+                        cEwEAccessDatabase.AppendOpenFailureLog(ex.Message)
                         m_logger.LogError(ex, cStringUtils.Localize("Open DB: InvalidOperationException {0} when opening {1}", ex.Message, strDatabase))
 
                     Catch ex As Exception
                         datResult = eDatasourceAccessType.Failed_Unknown
+                        cEwEAccessDatabase.AppendOpenFailureLog(ex.Message)
                         m_logger.LogError(ex, cStringUtils.Localize("Open DB: Exception {0} when opening {1}", ex.Message, strDatabase))
 
                     End Try
@@ -285,6 +539,10 @@ Namespace Database
                 End If
 
             Loop Until bTryAgain = False
+
+            If datResult <> eDatasourceAccessType.Opened Then
+                Me.CleanUpLocalWorkingCopy()
+            End If
 
             Return datResult
 
@@ -312,6 +570,8 @@ Namespace Database
                 Me.m_conn.Dispose()
                 Me.m_conn = Nothing
             End If
+
+            Me.CleanUpLocalWorkingCopy() ' no-op if this session never staged one (a genuine read-only open)
 
             ' Clear file name
             Me.m_strFileName = ""

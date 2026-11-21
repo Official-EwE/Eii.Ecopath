@@ -300,6 +300,14 @@ Namespace DataSources
             Return Me.m_db.IsReadOnly()
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdoc cref="IEwEDataSource.PublishToSource" />
+        ''' -------------------------------------------------------------------
+        Public Function PublishToSource() As Boolean _
+            Implements IEwEDataSource.PublishToSource
+            Return Me.m_db.PublishLocalCopyToSource()
+        End Function
+
 #Region " Helper methods "
 
         ''' <inheritdoc cref="IEcopathDataSource.CopyTo" />
@@ -837,7 +845,7 @@ Namespace DataSources
             End Try
 
             ' Save changes
-            Me.m_db.ReleaseWriter(writer, True)
+            bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Return bSucces
         End Function
@@ -929,7 +937,7 @@ Namespace DataSources
             End Try
 
             ' Save changes
-            Me.m_db.ReleaseWriter(writer, True)
+            bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Return bSucces
         End Function
@@ -1020,7 +1028,7 @@ Namespace DataSources
             End Try
 
             ' Save changes
-            Me.m_db.ReleaseWriter(writer, True)
+            bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Return bSucces
         End Function
@@ -1111,7 +1119,7 @@ Namespace DataSources
             End Try
 
             ' Save changes
-            Me.m_db.ReleaseWriter(writer, True)
+            bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Return bSucces
         End Function
@@ -1365,7 +1373,7 @@ Namespace DataSources
 
                 ' Commit to db
                 writer.AddRow(drow)
-                Me.m_db.ReleaseWriter(writer, True)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
                 Me.LogError(String.Format("Error {0} occurred while adding pedigree level {1} var {2}", ex.Message, strName, varName.ToString))
@@ -1520,7 +1528,7 @@ Namespace DataSources
             End Try
 
             ' Save changes
-            Me.m_db.ReleaseWriter(writer, True)
+            bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Return bSucces
         End Function
@@ -2153,7 +2161,7 @@ Namespace DataSources
             End Try
 
             ' Save changes
-            Me.m_db.ReleaseWriter(writer, True)
+            bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             bSucces = bSucces And Me.SaveEcopathDietComp()
             bSucces = bSucces And Me.SaveStanza()
@@ -2211,7 +2219,7 @@ Namespace DataSources
 
                 ' Commit to db
                 writer.AddRow(drow)
-                Me.m_db.ReleaseWriter(writer, True)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
                 bSucces = False
@@ -2234,7 +2242,7 @@ Namespace DataSources
                         writer.AddRow(drow)
                     Next iPrey
 
-                    Me.m_db.ReleaseWriter(writer, True)
+                    bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
                 Catch ex As Exception
                     bSucces = False
@@ -2490,7 +2498,7 @@ Namespace DataSources
                     Next iPrey
                 Next iPred
 
-                Me.m_db.ReleaseWriter(writer, True)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
                 Me.LogError(String.Format("Error {0} occurred while saving EcopathDietComp", ex.Message))
@@ -2789,7 +2797,7 @@ Namespace DataSources
                     If bAddNewRow Then writer.AddRow(drow)
                 Next iFleet
                 ' Save changes
-                Me.m_db.ReleaseWriter(writer, True)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
                 Me.LogError(String.Format("Error {0} occurred while saving EcopathFleet", ex.Message))
@@ -4915,7 +4923,7 @@ Namespace DataSources
                     Next iPrey
                 Next iPredator
 
-                Me.m_db.ReleaseWriter(writer, True)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
                 Me.LogError(String.Format("Error {0} occurred while saving Ecosim vulnerabilities", ex.Message))
@@ -4962,7 +4970,7 @@ Namespace DataSources
                         writer.AddRow(drow)
                     Next
 
-                    Me.m_db.ReleaseWriter(writer, True)
+                    bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
                 Catch ex As Exception
                     Me.LogError(String.Format("Error {0} occurred while saving Ecosim shared arenas", ex.Message))
@@ -5891,7 +5899,7 @@ Namespace DataSources
                     End If
                 Next iShape
 
-                Me.m_db.ReleaseWriter(writer, True)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
                 Me.LogError(String.Format("Error {0} occurred while saving Ecosim forcing shapes", ex.Message))
@@ -5962,7 +5970,7 @@ Namespace DataSources
                     drow.EndEdit()
                 End If
 
-                Me.m_db.ReleaseWriter(writer, True)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
                 Me.LogError(String.Format("Error {0} occurred while saving Ecosim egg shape {1}", ex.Message, iShapeID))
@@ -6024,7 +6032,7 @@ Namespace DataSources
                 Else
                     writer.AddRow(drow)
                 End If
-                Me.m_db.ReleaseWriter(writer, True)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
                 Me.LogError(String.Format("Error {0} occurred while saving Ecosim time shape {1}", ex.Message, iShapeID))
@@ -6080,7 +6088,7 @@ Namespace DataSources
                 Else
                     writer.AddRow(drow)
                 End If
-                Me.m_db.ReleaseWriter(writer, True)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
                 Me.LogError(String.Format("Error {0} occurred while saving Ecosim mediation shape {1}", ex.Message, iShapeID))
@@ -6138,7 +6146,7 @@ Namespace DataSources
                     Next iPrey
                 Next iPredator
 
-                Me.m_db.ReleaseWriter(writer, True)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
                 Me.LogError(String.Format("Error {0} occurred while saving PredPreyInteraction", ex.Message))
@@ -6190,7 +6198,7 @@ Namespace DataSources
                     Next iGroup
                 Next iFleet
 
-                Me.m_db.ReleaseWriter(writer, True)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
                 Me.LogError(String.Format("Error {0} occurred while saving landings interaction", ex.Message))
@@ -6234,7 +6242,7 @@ Namespace DataSources
                         End If
                     Next iShape
                 Next iGroup
-                Me.m_db.ReleaseWriter(writer, True)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
             Catch ex As Exception
                 Me.LogError(String.Format("Error {0} occurred while saving group mediation weights", ex.Message))
                 bSucces = False
@@ -6255,7 +6263,7 @@ Namespace DataSources
                         End If
                     Next iShape
                 Next iFleet
-                Me.m_db.ReleaseWriter(writer, True)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
                 Me.LogError(String.Format("Error {0} occurred while saving fleet mediation weights", ex.Message))
@@ -6383,7 +6391,7 @@ Namespace DataSources
                 Else
                     writer.AddRow(drow)
                 End If
-                Me.m_db.ReleaseWriter(writer, True)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
                 Me.LogError(String.Format("Error {0} occurred while saving save rate shape {1}", ex.Message, iShapeID))
@@ -6724,7 +6732,7 @@ Namespace DataSources
                     drow.EndEdit()
                 End If
                 writer.Commit()
-                Me.m_db.ReleaseWriter(writer, True)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
                 Me.LogError(String.Format("Internal error {0} while creating function in AddAsForcingFunction {1}", ex.Message, bNewShape))
@@ -6774,7 +6782,7 @@ Namespace DataSources
                     drow.EndEdit()
                 End If
 
-                Me.m_db.ReleaseWriter(writer, True)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
                 Me.LogError(String.Format("Internal error {0} while updating function in AddAsForcingFunction {1}", ex.Message, iShapeID))
@@ -6823,7 +6831,7 @@ Namespace DataSources
             drow("TimeValues") = sbValues.ToString()
 
             writer.AddRow(drow)
-            Me.m_db.ReleaseWriter(writer, True)
+            bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Select Case cTimeSeries.Category(ts.TimeSeriesType)
                 Case eTimeSeriesCategoryType.Group
@@ -7455,7 +7463,7 @@ Namespace DataSources
             End Try
 
             ' Save changes
-            Me.m_db.ReleaseWriter(writer, True)
+            bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Return bSucces
 
@@ -7990,7 +7998,7 @@ Namespace DataSources
                 drow("Incol") = InCol
                 drow.EndEdit()
 
-                Me.m_db.ReleaseWriter(writer, True)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
                 Me.LogError(String.Format("Error {0} occurred while resizing Ecospace basemap", ex.Message))
@@ -8725,7 +8733,7 @@ Namespace DataSources
                     Next iHabitat
                 Next iGroup
 
-                Me.m_db.ReleaseWriter(writer, True)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
                 Me.LogError(String.Format("Error {0} occurred while saving Ecospace group habitats", ex.Message))
@@ -9093,7 +9101,7 @@ Namespace DataSources
                 Next iFleet
 
                 ' Save changes
-                Me.m_db.ReleaseWriter(writer, True)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
                 Me.LogError(String.Format("Error {0} occurred while saving Ecospace Fleet", ex.Message))
@@ -9141,7 +9149,7 @@ Namespace DataSources
                     Next iHabitat
                 Next iFleet
 
-                Me.m_db.ReleaseWriter(writer, True)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
                 Me.LogError(String.Format("Error {0} occurred while saving EcospaceScenarioHabitatFishery", ex.Message))
@@ -9184,7 +9192,7 @@ Namespace DataSources
                     Next iMPA
                 Next iFleet
 
-                Me.m_db.ReleaseWriter(writer, True)
+                bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Catch ex As Exception
                 Me.LogError(String.Format("Error {0} occurred while saving EcospaceScenarioMPAFishery", ex.Message))
@@ -10666,7 +10674,7 @@ Namespace DataSources
             End Try
 
             ' Save changes
-            Me.m_db.ReleaseWriter(writer, True)
+            bSucces = bSucces And Me.m_db.ReleaseWriter(writer, True)
 
             Return bSucces
 

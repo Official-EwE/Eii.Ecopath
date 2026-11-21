@@ -45,7 +45,11 @@ Friend Class frmSplash
             Case 666 : Me.BackgroundImage = My.Resources.splash_xx : bInvertText = True
         End Select
 
-        Me.Text = My.Resources.GENERIC_CAPTION
+        ' NB: deliberately NOT just My.Resources.GENERIC_CAPTION - that's the same caption the main
+        ' window uses, and several other dialogs in this app reuse it too (title alone isn't a
+        ' reliable way to identify a specific window, for a user with several EwE windows open or
+        ' for UI-automation tooling). Append the loading status so the splash gets its own title.
+        Me.Text = My.Resources.GENERIC_CAPTION & " - " & My.Resources.STATUS_LOADING
         Me.m_pbIcon.BackgroundImageLayout = ImageLayout.Stretch
 
         Me.m_pbIcon.BackgroundImage = cDrawingUtils.BitmapFromIcon(cEwEIcon.Current())
