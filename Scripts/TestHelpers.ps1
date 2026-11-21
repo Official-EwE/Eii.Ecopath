@@ -28,11 +28,23 @@ function Test-IsElevated {
 # (non-elevated) run. The caller is whichever script dot-sourced this file: dot-sourcing shares
 # scope, so $PSBoundParameters read here are that runner's own.
 function Request-ElevationIfNeeded {
-    if ($env:EWE_TEST_NO_ELEVATE -eq "1" -or (Test-IsElevated)) { return }
+    # EWE_TEST_ELEVATION_DONE is inherited by every child script/process, so only the FIRST (top-level)
+    # runner ever decides about elevation. Without it, each script a runner invokes (Start-TestInstance.ps1
+    # etc.) dot-sources this file again and would open yet another elevated window - and its `exit`
+    # would end the child script while the runner carried on with no instance.
+    if ($env:EWE_TEST_NO_ELEVATE -eq "1" -or $env:EWE_TEST_ELEVATION_DONE -eq "1") { return }
+    $env:EWE_TEST_ELEVATION_DONE = "1"
+    if (Test-IsElevated) { return }
+    # Already relaunched once in this session (a nested runner got here after the outer one did): never twice.
+    if ($global:EwEElevationRelaunched) { throw "This run was relaunched elevated in another window; aborting this non-elevated copy." }
 
-    $callerScript = (Get-PSCallStack | Where-Object { $_.ScriptName -and $_.ScriptName -ne $PSCommandPath } | Select-Object -First 1).ScriptName
-    if (-not $callerScript) { return }   # not started from a script file: nothing to relaunch
-    $bound = Get-Variable -Name PSBoundParameters -Scope 1 -ValueOnly -ErrorAction SilentlyContinue
+    # The OUTERMOST script on the call stack is the one to relaunch (e.g. Run-AllTests.ps1, not each
+    # runner it calls) - relaunching a nested runner would open one window per runner while the outer
+    # non-elevated script carried on. Its own bound parameters come from the call stack frame.
+    $frame = Get-PSCallStack | Where-Object { $_.ScriptName -and $_.ScriptName -ne $PSCommandPath } | Select-Object -Last 1
+    if (-not $frame) { return }   # not started from a script file: nothing to relaunch
+    $callerScript = $frame.ScriptName
+    $bound = $frame.InvocationInfo.BoundParameters
 
     $argList = @("-NoExit", "-ExecutionPolicy", "Bypass", "-File", "`"$callerScript`"")
     if ($bound) {
@@ -58,7 +70,8 @@ function Request-ElevationIfNeeded {
         Write-Host "Could not elevate ($($_.Exception.Message)). Continuing NON-elevated; set EWE_TEST_NO_ELEVATE=1 to silence this." -ForegroundColor Red
         return
     }
-    exit
+    $global:EwEElevationRelaunched = $true
+    throw "Relaunched elevated in a new window; this non-elevated run stops here."
 }
 Request-ElevationIfNeeded
 
