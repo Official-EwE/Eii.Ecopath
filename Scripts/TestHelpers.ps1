@@ -10,6 +10,59 @@
 
 Add-Type -AssemblyName UIAutomationClient, UIAutomationTypes, System.Windows.Forms, System.Drawing
 
+# ---------------------------------------------------------------------------------------------
+# Elevation. The tests drive the app with real mouse/keyboard input and UI Automation, and kill the
+# processes they start. Windows blocks both across privilege levels (UIPI; "Access is denied" when
+# killing an elevated process from a normal prompt), and a process left behind by an elevated run
+# can then never be cleaned up by a normal one - it locks DLLs and fails the next build. So every
+# run uses ONE level, and that level is elevated: a non-elevated start relaunches itself elevated
+# (a new window - the UAC prompt appears once; the window stays open when the run ends).
+# Set the environment variable EWE_TEST_NO_ELEVATE=1 to skip this (e.g. a CI agent that is already
+# in a suitable session, or when deliberately running everything non-elevated).
+function Test-IsElevated {
+    $principal = New-Object System.Security.Principal.WindowsPrincipal([System.Security.Principal.WindowsIdentity]::GetCurrent())
+    $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
+}
+
+# Relaunches the calling runner script elevated, with its own bound parameters, then exits this
+# (non-elevated) run. The caller is whichever script dot-sourced this file: dot-sourcing shares
+# scope, so $PSBoundParameters read here are that runner's own.
+function Request-ElevationIfNeeded {
+    if ($env:EWE_TEST_NO_ELEVATE -eq "1" -or (Test-IsElevated)) { return }
+
+    $callerScript = (Get-PSCallStack | Where-Object { $_.ScriptName -and $_.ScriptName -ne $PSCommandPath } | Select-Object -First 1).ScriptName
+    if (-not $callerScript) { return }   # not started from a script file: nothing to relaunch
+    $bound = Get-Variable -Name PSBoundParameters -Scope 1 -ValueOnly -ErrorAction SilentlyContinue
+
+    $argList = @("-NoExit", "-ExecutionPolicy", "Bypass", "-File", "`"$callerScript`"")
+    if ($bound) {
+        foreach ($key in $bound.Keys) {
+            $value = $bound[$key]
+            if ($value -is [System.Management.Automation.SwitchParameter]) {
+                if ($value.IsPresent) { $argList += "-$key" }
+            } elseif ($value -is [array]) {
+                $argList += "-$key"
+                $argList += ($value | ForEach-Object { "`"$_`"" }) -join ","
+            } else {
+                $argList += "-$key"
+                $argList += "`"$value`""
+            }
+        }
+    }
+
+    Write-Host "Not elevated - relaunching '$([System.IO.Path]::GetFileName($callerScript))' as administrator in a new window (confirm the UAC prompt)." -ForegroundColor Yellow
+    $host_exe = (Get-Process -Id $PID).Path
+    try {
+        Start-Process -FilePath $host_exe -Verb RunAs -WorkingDirectory (Get-Location).Path -ArgumentList $argList -ErrorAction Stop
+    } catch {
+        Write-Host "Could not elevate ($($_.Exception.Message)). Continuing NON-elevated; set EWE_TEST_NO_ELEVATE=1 to silence this." -ForegroundColor Red
+        return
+    }
+    exit
+}
+Request-ElevationIfNeeded
+
+
 # Checked against Win32Rect specifically (the newest addition), not Win32TestRunner: .NET cannot
 # redefine a type once loaded, so a session that already has an OLDER Win32TestRunner loaded (from
 # before Win32Rect was added here) would otherwise skip this whole block and silently never define
@@ -221,6 +274,7 @@ function Show-TestSummary {
         Write-Host "`nFailures:" -ForegroundColor Red
         $script:TestResults | Where-Object { $_.Result -eq "FAIL" } | ForEach-Object {
             Write-Host "  - $($_.Name): $($_.Reason)" -ForegroundColor Red
+            Write-Host ""   # blank line between failures - reasons can span several lines
         }
     }
 }
@@ -352,10 +406,12 @@ function Set-SafeRestorableEdit {
 
 # Polls the staging folder for Temp*-prefixed working copies (any extension - CONFIRMED this
 # session that the staged copy keeps the source file's own extension, not normalized to .eweaccdb).
+# Files only (-File): the legacy-import launcher's own "TempImport.<guid>" work FOLDERS live in the same
+# folder and are a different mechanism (cLegacyImportLauncher), not staged model working copies.
 function Get-StagedCopies {
     $stagingDir = Join-Path $env:LocalAppData "Ecopath with Ecosim\DBs"
     if (-not (Test-Path $stagingDir)) { return @() }
-    Get-ChildItem -Path $stagingDir -Filter "Temp*" -ErrorAction SilentlyContinue | Where-Object { $_.Extension -ne ".ldb" }
+    Get-ChildItem -Path $stagingDir -Filter "Temp*" -File -ErrorAction SilentlyContinue | Where-Object { $_.Extension -ne ".ldb" }
 }
 
 # Waits for a just-started process's main window, handling the "your model database will be
@@ -431,6 +487,17 @@ function Write-InstanceStarted {
 function Stop-TestInstance {
     param([Parameter(Mandatory = $true)][int]$ProcessId, [Parameter(Mandatory = $true)][string]$Label)
     Write-Host "[PID $ProcessId] Stopping ($Label)..." -ForegroundColor DarkGray
+    # Child processes first (e.g. the legacy-import helper console the app launches): killing only the
+    # parent leaves them running, and a leftover EwEImportHelper.exe keeps its DLLs locked, which
+    # fails the next build of the helper.
+    function Stop-ChildProcessTree {
+        param([int]$ParentId)
+        foreach ($child in @(Get-CimInstance Win32_Process -Filter "ParentProcessId=$ParentId" -ErrorAction SilentlyContinue)) {
+            Stop-ChildProcessTree -ParentId $child.ProcessId
+            Stop-Process -Id $child.ProcessId -Force -ErrorAction SilentlyContinue
+        }
+    }
+    Stop-ChildProcessTree -ParentId $ProcessId
     Stop-Process -Id $ProcessId -Force -ErrorAction SilentlyContinue
     Write-Host "[PID $ProcessId] Stopped ($Label)." -ForegroundColor DarkGray
 }
@@ -1060,23 +1127,29 @@ function Wait-ForEditControlText {
 # Finds and clicks a button by its exact Name within a window element - thin wrapper over the same
 # Find-ByNameAndType + Invoke-ElementClick pattern used throughout this file, named explicitly for
 # conversion-test call sites (clicking "Continue" on the import console, "OK" on a message dialog).
+# Finds a button by its exact Name: a genuine Button first, else - because PowerShell's UIA client
+# often exposes a WinForms button as a Pane (CONFIRMED: the import console's Continue and the
+# wizard's OK are both Pane name='...' class='WindowsForms10.BUTTON...') - any element with that
+# Name whose ClassName contains BUTTON. Returns $null when there is none.
+function Find-ButtonByName {
+    param($Root, [string]$Name)
+    $button = Find-ByNameAndType -Root $Root -Name $Name -ControlType ([System.Windows.Automation.ControlType]::Button)
+    if ($null -ne $button) { return $button }
+    $nameCondition = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::NameProperty, $Name)
+    foreach ($candidate in $Root.FindAll([System.Windows.Automation.TreeScope]::Descendants, $nameCondition)) {
+        $candidateClass = try { $candidate.Current.ClassName } catch { "" }
+        if ($candidateClass -like "*BUTTON*") { return $candidate }
+    }
+    $null
+}
+
 function Invoke-ButtonByName {
     param(
         [Parameter(Mandatory = $true)]$WindowElement,
         [Parameter(Mandatory = $true)][string]$Name
     )
-    $button = Find-ByNameAndType -Root $WindowElement -Name $Name -ControlType ([System.Windows.Automation.ControlType]::Button)
-    if ($null -eq $button) {
-        # PowerShell's UIA client often exposes a WinForms button as a Pane (CONFIRMED for the import
-        # console's Continue button: Pane name='Continue' class='WindowsForms10.BUTTON...'), where
-        # Accessibility Insights shows a Button. Fall back to matching by Name + ClassName.
-        $nameCondition = New-Object System.Windows.Automation.PropertyCondition(
-            [System.Windows.Automation.AutomationElement]::NameProperty, $Name)
-        foreach ($candidate in $WindowElement.FindAll([System.Windows.Automation.TreeScope]::Descendants, $nameCondition)) {
-            $candidateClass = try { $candidate.Current.ClassName } catch { "" }
-            if ($candidateClass -like "*BUTTON*") { $button = $candidate; break }
-        }
-    }
+    $button = Find-ButtonByName -Root $WindowElement -Name $Name
     if ($null -eq $button) { throw "Could not find a '$Name' button in this window." }
     Invoke-ElementClick -Element $button
 }

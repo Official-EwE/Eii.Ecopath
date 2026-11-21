@@ -11,6 +11,15 @@ function Get-ImportHelperExe {
     if (-not $global:EwEBuiltProjects) { $global:EwEBuiltProjects = @{} }
     $buildKey = "$proj|Debug|x86".ToLowerInvariant()
     if (-not $global:EwEBuiltProjects[$buildKey]) {
+        # A helper process left over from an earlier (killed) run keeps its DLLs locked and fails the build.
+        foreach ($leftover in @(Get-Process -Name "EwEImportHelper" -ErrorAction SilentlyContinue)) {
+            $info = Get-CimInstance Win32_Process -Filter "ProcessId=$($leftover.Id)" -ErrorAction SilentlyContinue
+            Write-Host "Stopping leftover EwEImportHelper (PID $($leftover.Id), parent PID $($info.ParentProcessId), started $($leftover.StartTime)) - it would lock the build..." -ForegroundColor Yellow
+            & taskkill.exe /F /T /PID $leftover.Id 2>&1 | ForEach-Object { Write-Host "  $_" -ForegroundColor DarkGray }
+            if (-not $leftover.WaitForExit(5000)) {
+                Write-Host "  PID $($leftover.Id) is STILL running after a forced kill (elevated, or stuck?). Kill it by hand (Task Manager, or an elevated 'taskkill /F /PID $($leftover.Id)'), then run again." -ForegroundColor Red
+            }
+        }
         Write-Host "Building EwEImportHelper (Debug|x86)..."
         $buildOutput = & dotnet build $proj -c Debug -p:Platform=x86 --nologo -v q 2>&1
         if ($LASTEXITCODE -ne 0) {
@@ -209,15 +218,25 @@ function Test-ReferralDialogAppears {
         "Expected the EwE5-referral dialog (title '$ReferralDialogCaption'), got '$($dialog.Name)' ($($dialog.ControlType))."
 
     $dialogElement = Get-WindowElementByHandle -Handle $dialog.NativeWindowHandle
-    $textCondition = New-Object System.Windows.Automation.PropertyCondition(
-        [System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::Text)
-    $textElement = $null
-    try { $textElement = $dialogElement.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $textCondition) } catch { }
-    $messageText = if ($null -ne $textElement) { try { $textElement.Current.Name } catch { "" } } else { "" }
+    # Collect the text of EVERY descendant with a non-empty Name (Text controls, but also the Pane /
+    # link-label / edit forms PowerShell's UIA client exposes WinForms controls as - the referral
+    # message carries a hyperlink, so its text control is not necessarily a plain Text element).
+    $messageParts = @()
+    try {
+        foreach ($el in $dialogElement.FindAll([System.Windows.Automation.TreeScope]::Descendants, [System.Windows.Automation.Condition]::TrueCondition)) {
+            $elName = try { $el.Current.Name } catch { "" }
+            if (-not [string]::IsNullOrWhiteSpace($elName)) { $messageParts += $elName }
+        }
+    } catch { }
+    $messageText = ($messageParts -join " ")
 
     $matchedMarker = $false
     foreach ($marker in $ExpectedTextMarkers) {
         if ($messageText -like "*$marker*") { $matchedMarker = $true; break }
+    }
+    if (-not $matchedMarker) {
+        Write-Host "`n    [diagnostic] Referral dialog text not recognised. Dialog UIA tree:" -ForegroundColor Yellow
+        Write-UiaTreeDump -Element $dialogElement
     }
     Assert-True $matchedMarker `
         "Expected the dialog's text to mention one of: $($ExpectedTextMarkers -join ', ') - the title matched but the content didn't match the one expected here. Got: '$messageText'"
@@ -424,7 +443,7 @@ function Wait-ForWizardConversion {
         $percent = Get-WizardProgressPercent -WizardElement $WizardElement
         $okEnabled = $false
         try {
-            $okButton = Find-ByNameAndType -Root $WizardElement -Name "OK" -ControlType ([System.Windows.Automation.ControlType]::Button)
+            $okButton = Find-ButtonByName -Root $WizardElement -Name "OK"
             if ($null -ne $okButton) { $okEnabled = [bool]$okButton.Current.IsEnabled }
         } catch { }
 

@@ -92,7 +92,6 @@ if (-not (Test-Path $vbproj)) {
     throw "Project file not found: $vbproj"
 }
 
-Write-Host "Building ScientificInterface ($Configuration|$Platform)..."
 # Piped through Write-Host, not left to print directly: an external command's own stdout lines
 # become part of THIS SCRIPT's pipeline output in PowerShell, not just console text - left
 # unsuppressed, they'd get captured alongside the real $proc object by a caller doing
@@ -108,6 +107,7 @@ $buildKey = "$vbproj|$Configuration|$Platform".ToLowerInvariant()
 if ($global:EwEBuiltProjects[$buildKey] -and -not $ForceBuild) {
     Write-Host "Already built in this session ($Configuration|$Platform) - skipping the build (use -ForceBuild to rebuild)."
 } else {
+    Write-Host "Building ScientificInterface ($Configuration|$Platform)..."
     dotnet build $vbproj -c $Configuration -p:Platform=$Platform | ForEach-Object { Write-Host $_ }
     if ($LASTEXITCODE -ne 0) {
         throw "Build failed (dotnet build exit code $LASTEXITCODE)."
