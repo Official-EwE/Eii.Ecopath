@@ -32,11 +32,8 @@ function Request-ElevationIfNeeded {
     # runner ever decides about elevation. Without it, each script a runner invokes (Start-TestInstance.ps1
     # etc.) dot-sources this file again and would open yet another elevated window - and its `exit`
     # would end the child script while the runner carried on with no instance.
-    if ($env:EWE_TEST_NO_ELEVATE -eq "1" -or $env:EWE_TEST_ELEVATION_DONE -eq "1") { return }
-    $env:EWE_TEST_ELEVATION_DONE = "1"
+    if ($env:EWE_TEST_NO_ELEVATE -eq "1" -or $env:EWE_TEST_ELEVATION_DONE -eq "1" -or $global:EwEElevationDeclined) { return }
     if (Test-IsElevated) { return }
-    # Already relaunched once in this session (a nested runner got here after the outer one did): never twice.
-    if ($global:EwEElevationRelaunched) { throw "This run was relaunched elevated in another window; aborting this non-elevated copy." }
 
     # The OUTERMOST script on the call stack is the one to relaunch (e.g. Run-AllTests.ps1, not each
     # runner it calls) - relaunching a nested runner would open one window per runner while the outer
@@ -64,13 +61,19 @@ function Request-ElevationIfNeeded {
 
     Write-Host "Not elevated - relaunching '$([System.IO.Path]::GetFileName($callerScript))' as administrator in a new window (confirm the UAC prompt)." -ForegroundColor Yellow
     $host_exe = (Get-Process -Id $PID).Path
+    # The marker goes ONLY to the relaunched process (it inherits this environment), then is removed
+    # here again: left set, it would persist in this interactive PowerShell session and silently
+    # disable elevation for every later run. It stops an elevated-but-not-detected copy from relaunching in a loop.
+    $env:EWE_TEST_ELEVATION_DONE = "1"
     try {
         Start-Process -FilePath $host_exe -Verb RunAs -WorkingDirectory (Get-Location).Path -ArgumentList $argList -ErrorAction Stop
     } catch {
+        Remove-Item Env:\EWE_TEST_ELEVATION_DONE -ErrorAction SilentlyContinue
         Write-Host "Could not elevate ($($_.Exception.Message)). Continuing NON-elevated; set EWE_TEST_NO_ELEVATE=1 to silence this." -ForegroundColor Red
+        $global:EwEElevationDeclined = $true
         return
     }
-    $global:EwEElevationRelaunched = $true
+    Remove-Item Env:\EWE_TEST_ELEVATION_DONE -ErrorAction SilentlyContinue
     throw "Relaunched elevated in a new window; this non-elevated run stops here."
 }
 Request-ElevationIfNeeded
@@ -107,6 +110,47 @@ public class Win32TestRunner {
     public const uint MOUSEEVENTF_LEFTUP = 0x04;
 }
 "@
+}
+
+# Separate type (own guard) so an older Win32TestRunner already loaded in the session doesn't matter.
+# Used by Clear-ConsoleFromClickTarget below.
+if (-not ("Win32Focus" -as [type])) {
+    Add-Type @"
+using System;
+using System.Runtime.InteropServices;
+public struct Win32Point { public int X; public int Y; }
+public class Win32Focus {
+    [DllImport("kernel32.dll")] public static extern IntPtr GetConsoleWindow();
+    [DllImport("user32.dll")] public static extern IntPtr WindowFromPoint(Win32Point pt);
+    [DllImport("user32.dll")] public static extern IntPtr GetAncestor(IntPtr hWnd, uint flags);
+    [DllImport("user32.dll")] public static extern bool SetWindowPos(IntPtr hWnd, IntPtr after, int x, int y, int cx, int cy, uint flags);
+    public static readonly IntPtr HWND_BOTTOM = new IntPtr(1);
+    public const uint SWP_NOSIZE = 0x1, SWP_NOMOVE = 0x2, SWP_NOACTIVATE = 0x10;
+}
+"@
+}
+
+# On a small desktop the (elevated) PowerShell console window can sit on top of the app, so a raw
+# mouse click at the app's screen coordinates lands in the console instead (selecting text there,
+# which then pauses the console's output and stalls the whole run). Call this right after moving the
+# cursor and before pressing the button: if the window under the cursor is this console, it is sent
+# to the bottom of the z-order (not minimised - the progress output stays reachable), so the click
+# reaches the app window underneath.
+function Clear-ConsoleFromClickTarget {
+    try {
+        $console = [Win32Focus]::GetConsoleWindow()
+        if ($console -eq [IntPtr]::Zero) { return }
+        $pos = [System.Windows.Forms.Cursor]::Position
+        $pt = New-Object Win32Point
+        $pt.X = $pos.X; $pt.Y = $pos.Y
+        $hit = [Win32Focus]::WindowFromPoint($pt)
+        if ($hit -eq [IntPtr]::Zero) { return }
+        $root = [Win32Focus]::GetAncestor($hit, 2)   # GA_ROOT
+        if ($root -eq $console -or $hit -eq $console) {
+            [Win32Focus]::SetWindowPos($console, [Win32Focus]::HWND_BOTTOM, 0, 0, 0, 0, 0x13) | Out-Null  # NOSIZE|NOMOVE|NOACTIVATE
+            Start-Sleep -Milliseconds 150
+        }
+    } catch { }
 }
 
 # ===== Test framework =====
@@ -270,7 +314,22 @@ function Format-Duration {
 
 function Show-TestSummary {
     Write-Host "`n`n========== TEST SUMMARY ==========" -ForegroundColor Cyan
-    $script:TestResults | Format-Table Name, Result, DurationMs, Reason -AutoSize | Out-Host
+    # One line per test, written directly (no Format-Table): Format-Table sizes its columns to the
+    # window width, and in a narrow console it dropped the Result/Duration columns entirely, leaving
+    # just a list of names. Names are truncated to fit; Result and duration always stay visible.
+    $width = try { $Host.UI.RawUI.WindowSize.Width } catch { 120 }
+    if (-not $width -or $width -lt 60) { $width = 120 }
+    $nameWidth = [Math]::Max(20, $width - 20)
+    Write-Host ("{0,-6} {1,8}  {2}" -f "Result", "Time", "Name")
+    Write-Host ("{0,-6} {1,8}  {2}" -f "------", "--------", "----")
+    foreach ($r in $script:TestResults) {
+        $name = [string]$r.Name
+        if ($name.Length -gt $nameWidth) { $name = $name.Substring(0, $nameWidth - 3) + "..." }
+        $time = if ($null -ne $r.DurationMs) { "{0:N1}s" -f ($r.DurationMs / 1000.0) } else { "" }
+        $rowColor = switch ($r.Result) { "PASS" { "Green" } "FAIL" { "Red" } default { "Yellow" } }
+        Write-Host ("{0,-6} {1,8}  {2}" -f $r.Result, $time, $name) -ForegroundColor $rowColor
+    }
+    Write-Host ""
 
     # @(...) forces an array even when exactly one result matches - see Assert-NoNewDialogs's own
     # comment on this same PowerShell gotcha. Without it, a run with exactly one pass/fail/skip (an
@@ -323,6 +382,7 @@ function Invoke-ElementClick {
     $rect = $Element.Current.BoundingRectangle
     [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point([int]($rect.X + $rect.Width / 2), [int]($rect.Y + $rect.Height / 2))
     Start-Sleep -Milliseconds 100
+    Clear-ConsoleFromClickTarget
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTDOWN, 0, 0, 0, [UIntPtr]::Zero)
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTUP, 0, 0, 0, [UIntPtr]::Zero)
 }
@@ -372,9 +432,11 @@ function Select-GridFirstCell {
     $clickY = [int]($rect.Y) + 10
     [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point($clickX, $clickY)
     Start-Sleep -Milliseconds 100
+    Clear-ConsoleFromClickTarget
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTDOWN, 0, 0, 0, [UIntPtr]::Zero)
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTUP, 0, 0, 0, [UIntPtr]::Zero)
     Start-Sleep -Milliseconds 100
+    Clear-ConsoleFromClickTarget
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTDOWN, 0, 0, 0, [UIntPtr]::Zero)
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTUP, 0, 0, 0, [UIntPtr]::Zero)
     Start-Sleep -Milliseconds 300
@@ -638,11 +700,28 @@ function Open-ModelViaUI {
     }
     if ($null -eq $dialog) { throw "'Open' dialog did not appear - its real Name may differ from the assumed 'Open'." }
 
-    $label = Find-ByNameAndType -Root $dialog -Name "File name:" -ControlType ([System.Windows.Automation.ControlType]::Text)
-    if ($null -eq $label) { throw "Could not find the 'File name:' label in the Open dialog." }
+    # Polled: the dialog shell can be found before its children exist (seen again on a slow run), and
+    # on newer Windows the label may be exposed as something other than ControlType.Text - so fall back
+    # to any element with that Name.
+    $label = $null
+    $labelDeadline = (Get-Date).AddSeconds(8)
+    while ($null -eq $label -and (Get-Date) -lt $labelDeadline) {
+        $label = Find-ByNameAndType -Root $dialog -Name "File name:" -ControlType ([System.Windows.Automation.ControlType]::Text)
+        if ($null -eq $label) {
+            $label = $dialog.FindFirst([System.Windows.Automation.TreeScope]::Descendants,
+                (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::NameProperty, "File name:")))
+        }
+        if ($null -eq $label) { Start-Sleep -Milliseconds 250 }
+    }
+    if ($null -eq $label) {
+        Write-Host "`n    [diagnostic] 'File name:' label not found. Open dialog UIA tree:" -ForegroundColor Yellow
+        if (Get-Command Write-UiaTreeDump -ErrorAction SilentlyContinue) { Write-UiaTreeDump -Element $dialog }
+        throw "Could not find the 'File name:' label in the Open dialog."
+    }
     $labelRect = $label.Current.BoundingRectangle
     [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point([int]($labelRect.X + $labelRect.Width + 10), [int]($labelRect.Y + $labelRect.Height / 2))
     Start-Sleep -Milliseconds 150
+    Clear-ConsoleFromClickTarget
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTDOWN, 0, 0, 0, [UIntPtr]::Zero)
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTUP, 0, 0, 0, [UIntPtr]::Zero)
     Start-Sleep -Milliseconds 150
@@ -952,11 +1031,28 @@ function Open-LegacyModelViaUI {
     }
     if ($null -eq $dialog) { throw "'Open' dialog did not appear - its real Name may differ from the assumed 'Open'." }
 
-    $label = Find-ByNameAndType -Root $dialog -Name "File name:" -ControlType ([System.Windows.Automation.ControlType]::Text)
-    if ($null -eq $label) { throw "Could not find the 'File name:' label in the Open dialog." }
+    # Polled: the dialog shell can be found before its children exist (seen again on a slow run), and
+    # on newer Windows the label may be exposed as something other than ControlType.Text - so fall back
+    # to any element with that Name.
+    $label = $null
+    $labelDeadline = (Get-Date).AddSeconds(8)
+    while ($null -eq $label -and (Get-Date) -lt $labelDeadline) {
+        $label = Find-ByNameAndType -Root $dialog -Name "File name:" -ControlType ([System.Windows.Automation.ControlType]::Text)
+        if ($null -eq $label) {
+            $label = $dialog.FindFirst([System.Windows.Automation.TreeScope]::Descendants,
+                (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::NameProperty, "File name:")))
+        }
+        if ($null -eq $label) { Start-Sleep -Milliseconds 250 }
+    }
+    if ($null -eq $label) {
+        Write-Host "`n    [diagnostic] 'File name:' label not found. Open dialog UIA tree:" -ForegroundColor Yellow
+        if (Get-Command Write-UiaTreeDump -ErrorAction SilentlyContinue) { Write-UiaTreeDump -Element $dialog }
+        throw "Could not find the 'File name:' label in the Open dialog."
+    }
     $labelRect = $label.Current.BoundingRectangle
     [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point([int]($labelRect.X + $labelRect.Width + 10), [int]($labelRect.Y + $labelRect.Height / 2))
     Start-Sleep -Milliseconds 150
+    Clear-ConsoleFromClickTarget
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTDOWN, 0, 0, 0, [UIntPtr]::Zero)
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTUP, 0, 0, 0, [UIntPtr]::Zero)
     Start-Sleep -Milliseconds 150

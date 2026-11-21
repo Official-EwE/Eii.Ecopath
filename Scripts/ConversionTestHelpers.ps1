@@ -109,6 +109,13 @@ function Open-LegacyModelDirectly {
     # No pre-launch cleanup of earlier conversion output needed: Start-TestInstance copies the model
     # into a fresh, uniquely-named EwE-TestRun\<random> folder every run, so the conversion output
     # always lands in an empty folder (and that folder is cleaned up afterwards).
+    # A ScientificInterface / EwEImportHelper left over from an earlier test (any platform) can show
+    # its own import window and confuse both the test and the user. Conversion tests are single-instance,
+    # so anything still running here is a leftover: say so, and stop it.
+    foreach ($leftover in @(Get-Process -Name "ScientificInterface","EwEImportHelper" -ErrorAction SilentlyContinue)) {
+        Write-Host "  Stopping leftover $($leftover.ProcessName) (PID $($leftover.Id), $($leftover.Path))" -ForegroundColor Yellow
+        & taskkill.exe /F /T /PID $leftover.Id 2>&1 | Out-Null
+    }
     Write-Host "  Starting a disposable instance (model opened directly via the command line):"
     # -SkipMainWindowWait: CONFIRMED (user's own run) that the ordinary main-window wait never
     # reliably completes for this launch - the import console/wizard that appears instead isn't
@@ -385,6 +392,7 @@ function Select-WizardModel {
     Start-Sleep -Milliseconds 150
     $actual = [System.Windows.Forms.Cursor]::Position
     Write-Host "    [diagnostic] Cursor is now at ($($actual.X), $($actual.Y))" -ForegroundColor DarkGray
+    Clear-ConsoleFromClickTarget
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTDOWN, 0, 0, 0, [UIntPtr]::Zero)
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTUP, 0, 0, 0, [UIntPtr]::Zero)
     Start-Sleep -Milliseconds 300
@@ -393,6 +401,7 @@ function Select-WizardModel {
         # Wait out the system double-click interval so the second click is a separate click.
         Start-Sleep -Milliseconds 800
         Write-Host "    [diagnostic] Clicking again to deselect the first model, then Down x$Index + Space" -ForegroundColor DarkGray
+        Clear-ConsoleFromClickTarget
         [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTDOWN, 0, 0, 0, [UIntPtr]::Zero)
         [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTUP, 0, 0, 0, [UIntPtr]::Zero)
         Start-Sleep -Milliseconds 300
@@ -440,6 +449,20 @@ function Wait-ForWizardConversion {
     while ((Get-Date) -lt $deadline) {
         Assert-NoNewDialogs -ProcessId $Setup.Instance.Process.Id -Baseline $Setup.Baseline
 
+        # Fail fast instead of polling a window that no longer exists (seen: the wizard vanished and the
+        # loop spun for the full timeout reporting "progress ?, OK enabled False").
+        $setupProc = $Setup.Instance.Process
+        $setupProc.Refresh()
+        if ($setupProc.HasExited) {
+            throw "The app process (PID $($setupProc.Id)) exited during the wizard conversion (exit code $($setupProc.ExitCode)) - it crashed or closed itself."
+        }
+        $wizardName = $null
+        try { $wizardName = $WizardElement.Current.Name } catch { }
+        if ($null -eq $wizardName) {
+            $remaining = @(Get-OpenWindows -ProcessId $setupProc.Id | ForEach-Object { "'$($_.Name)'" })
+            throw "The wizard window disappeared during the conversion while the app (PID $($setupProc.Id)) is still running. Windows it has now: $(if ($remaining.Count) { $remaining -join ', ' } else { '(none)' })."
+        }
+
         $percent = Get-WizardProgressPercent -WizardElement $WizardElement
         $okEnabled = $false
         try {
@@ -456,6 +479,15 @@ function Wait-ForWizardConversion {
         }
         Start-Sleep -Milliseconds 500
     }
+    # Diagnostics: which process owns the window we were watching, and is it the x86 one we launched?
+    try {
+        $ownerPid = $WizardElement.Current.ProcessId
+        $owner = Get-Process -Id $ownerPid -ErrorAction SilentlyContinue
+        Write-Host "`n    [diagnostic] Watched window '$($WizardElement.Current.Name)' belongs to PID $ownerPid ($($owner.Path)); expected PID $($Setup.Instance.Process.Id)." -ForegroundColor Yellow
+        foreach ($other in @(Get-Process -Name "ScientificInterface","EwEImportHelper" -ErrorAction SilentlyContinue)) {
+            Write-Host "    [diagnostic] running: $($other.ProcessName) PID $($other.Id) $($other.Path)" -ForegroundColor Yellow
+        }
+    } catch { }
     throw "The wizard's conversion did not finish (OK enabled) within $TimeoutSeconds seconds."
 }
 
