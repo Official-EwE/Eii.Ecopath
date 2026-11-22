@@ -195,6 +195,44 @@ function Register-DialogCheck {
     $script:PendingDialogChecks.Add([PSCustomObject]@{ ProcessId = $ProcessId; Baseline = $Baseline })
 }
 
+# -PauseOnFailure (or EWE_TEST_PAUSE_ON_FAIL=1): when a test fails, stop and wait for Enter so the app /
+# dialog can be inspected before anything is closed. Called from Stop-TestInstance (while the failure is
+# still propagating, i.e. before the app is killed) and from Invoke-Test's catch (for failures where the
+# app was not stopped by the test itself). Pauses at most once per failing test.
+function Wait-OnTestFailure {
+    param([string]$Reason)
+    if ($env:EWE_TEST_PAUSE_ON_FAIL -ne "1" -or $script:PausedForCurrentFailure) { return }
+    $script:PausedForCurrentFailure = $true
+    Write-Host "`n`n  >>> TEST FAILED - paused so you can inspect the app. $Reason" -ForegroundColor Magenta
+    Read-Host "  >>> Press Enter to continue (this will close the test app)" | Out-Null
+}
+
+# Central PRE-check every test goes through (Invoke-Test, Invoke-ManualTest, Invoke-ConversionTestEntry and the
+# hand-rolled blocks in the runners): returns $true when the test should run.
+#  - -Only (runner's $script:TestNameFilter): a non-matching test is skipped silently, so an -Only run shows just what was asked for.
+#  - -From (env EWE_TEST_FROM): tests are skipped, with a visible line, until one whose name contains the text. That one sets
+#    $script:FromStarted, which switches the check off for everything after it. Run-AllTests resets the flag per platform.
+function Test-ShouldRunTest {
+    param([Parameter(Mandatory = $true)][string]$Name)
+    if ($script:TestNameFilter -and $Name -notlike "*$script:TestNameFilter*") { return $false }
+    if ($env:EWE_TEST_FROM -and -not $script:FromStarted) {
+        if ($Name -like "*$env:EWE_TEST_FROM*") {
+            $script:FromStarted = $true
+            Write-Host "`n(-From '$env:EWE_TEST_FROM' matched '$Name' - running this and every test after it.)" -ForegroundColor Yellow
+            return $true
+        }
+        # A hand-rolled block may ask twice for the same test (its manual fallback): report it once.
+        if ($script:LastSkippedTestName -ne $Name) {
+            $script:LastSkippedTestName = $Name
+            $label = if ($script:CurrentPlatformLabel) { "[$script:CurrentPlatformLabel] $Name" } else { $Name }
+            Write-Host "`n=== $label ===" -ForegroundColor DarkGray
+            Write-Host "Skipping - not matching -From '$env:EWE_TEST_FROM'" -ForegroundColor DarkGray
+        }
+        return $false
+    }
+    $true
+}
+
 function Invoke-Test {
     param(
         [Parameter(Mandatory = $true)][string]$Name,
@@ -209,16 +247,12 @@ function Invoke-Test {
         # the collision entirely, regardless of what any caller happens to name its own variables.
         [Parameter(Mandatory = $true)][scriptblock]$TestBody
     )
-    # Set by a runner's own -Only parameter, if given - a substring match (case-insensitive) against
-    # the test name, letting a single test run in isolation (e.g. to tell apart a genuine bug from
-    # an artifact of running several similar tests back-to-back in one session). Silently skipped,
-    # not even recorded, so an -Only run's summary only ever shows what was actually asked for.
-    if ($script:TestNameFilter -and $Name -notlike "*$script:TestNameFilter*") {
-        return
-    }
+    if (-not (Test-ShouldRunTest -Name $Name)) { return }
     $displayName = if ($script:CurrentPlatformLabel) { "[$script:CurrentPlatformLabel] $Name" } else { $Name }
     Write-Host "`n=== $displayName ===" -ForegroundColor Cyan
     $script:PendingDialogChecks = [System.Collections.Generic.List[object]]::new()
+    $script:PausedForCurrentFailure = $false
+    $script:TestErrorBaseline = $Error.Count
     $sw = [System.Diagnostics.Stopwatch]::StartNew()
     try {
         & $TestBody
@@ -239,6 +273,7 @@ function Invoke-Test {
         $sw.Stop()
         Add-TestResult -Name $Name -Result "FAIL" -DurationMs $sw.ElapsedMilliseconds -Reason $_.Exception.Message
         Write-Host "FAIL ($($sw.ElapsedMilliseconds) ms): $($_.Exception.Message)" -ForegroundColor Red
+        Wait-OnTestFailure -Reason $_.Exception.Message
         # Printed separately from the one-line summary above, and wrapped in its own try/catch:
         # for a genuine recursion bug (e.g. "call depth overflow") or any other real engine/COM
         # exception, ScriptStackTrace is exactly what pinpoints which function was calling which -
@@ -267,9 +302,7 @@ function Invoke-ManualTest {
         [Parameter(Mandatory = $true)][string]$Name,
         [Parameter(Mandatory = $true)][string]$Instructions
     )
-    if ($script:TestNameFilter -and $Name -notlike "*$script:TestNameFilter*") {
-        return
-    }
+    if (-not (Test-ShouldRunTest -Name $Name)) { return }
     $displayName = if ($script:CurrentPlatformLabel) { "[$script:CurrentPlatformLabel] $Name" } else { $Name }
     Write-Host "`n=== $displayName (MANUAL) ===" -ForegroundColor Yellow
     Write-Host $Instructions
@@ -561,6 +594,12 @@ function Write-InstanceStarted {
 
 function Stop-TestInstance {
     param([Parameter(Mandatory = $true)][int]$ProcessId, [Parameter(Mandatory = $true)][string]$Label)
+    # A failure is propagating (a test's own finally/cleanup is stopping the app): pause first, so the
+    # window the failure left behind is still there to look at.
+    if ($env:EWE_TEST_PAUSE_ON_FAIL -eq "1" -and $Error.Count -gt $script:TestErrorBaseline -and
+        $Error.Count -gt 0 -and $Error[0].CategoryInfo.Category -eq "OperationStopped") {
+        Wait-OnTestFailure -Reason "Last error: $($Error[0].Exception.Message)"
+    }
     Write-Host "[PID $ProcessId] Stopping ($Label)..." -ForegroundColor DarkGray
     # Child processes first (e.g. the legacy-import helper console the app launches): killing only the
     # parent leaves them running, and a leftover EwEImportHelper.exe keeps its DLLs locked, which
@@ -1240,6 +1279,34 @@ function Wait-ForEditControlText {
 # often exposes a WinForms button as a Pane (CONFIRMED: the import console's Continue and the
 # wizard's OK are both Pane name='...' class='WindowsForms10.BUTTON...') - any element with that
 # Name whose ClassName contains BUTTON. Returns $null when there is none.
+# Moved here from ConversionTestHelpers.ps1 so every runner can dump a dialog's UIA tree for diagnostics.
+function Write-UiaTreeDump {
+    param(
+        [Parameter(Mandatory = $true)]$Element,
+        [int]$MaxDepth = 8,
+        [int]$MaxNodes = 120
+    )
+    $walker = [System.Windows.Automation.TreeWalker]::ControlViewWalker
+    $script:uiaDumpCount = 0
+    function Write-UiaNode {
+        param($Node, [int]$Depth)
+        if ($script:uiaDumpCount -ge $MaxNodes -or $Depth -gt $MaxDepth) { return }
+        $script:uiaDumpCount++
+        $type = try { $Node.Current.ControlType.ProgrammaticName -replace '^ControlType\.', '' } catch { "?" }
+        $name = try { $Node.Current.Name } catch { "?" }
+        $cls = try { $Node.Current.ClassName } catch { "?" }
+        $rect = try { $Node.Current.BoundingRectangle } catch { "?" }
+        $focusable = try { $Node.Current.IsKeyboardFocusable } catch { "?" }
+        Write-Host ("    {0}{1} name='{2}' class='{3}' rect={4} focusable={5}" -f ("  " * $Depth), $type, $name, $cls, $rect, $focusable) -ForegroundColor DarkGray
+        $child = $walker.GetFirstChild($Node)
+        while ($null -ne $child) {
+            Write-UiaNode -Node $child -Depth ($Depth + 1)
+            $child = $walker.GetNextSibling($child)
+        }
+    }
+    Write-UiaNode -Node $Element -Depth 0
+}
+
 function Find-ButtonByName {
     param($Root, [string]$Name)
     $button = Find-ByNameAndType -Root $Root -Name $Name -ControlType ([System.Windows.Automation.ControlType]::Button)
