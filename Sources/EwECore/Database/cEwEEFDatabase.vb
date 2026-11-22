@@ -137,6 +137,14 @@ Namespace Database
         ''' -------------------------------------------------------------------
         Public Overrides Function SaveAs(strDatabaseTo As String, strModelName As String, Optional bOverwrite As Boolean = False, Optional databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
             Try
+                ' SQLite models can only be saved as SQLite; copying the bytes to e.g. ".ewemdb" would make a corrupt Access file.
+                Dim strExt As String = Path.GetExtension(strDatabaseTo)
+                If Not (strExt.Equals(".ewesqlite", StringComparison.OrdinalIgnoreCase) OrElse
+                        strExt.Equals(".sqlite", StringComparison.OrdinalIgnoreCase)) Then
+                    m_logger.LogWarning("SaveAs('{0}') refused: only .ewesqlite/.sqlite targets are supported.", strDatabaseTo)
+                    Return eDatasourceAccessType.Failed_CannotSave
+                End If
+
                 If File.Exists(strDatabaseTo) AndAlso Not bOverwrite Then
                     Return eDatasourceAccessType.Failed_CannotSave
                 End If

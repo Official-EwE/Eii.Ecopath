@@ -36,16 +36,16 @@
   broken file) or detected and re-converted - this determines whether
   `cDataSourceFactory.GetSupportedType` needs a validity check beyond a bare
   `File.Exists`.
+  - Finding (`Run-SqliteTests.ps1`): a 0-byte `.ewesqlite` beside an Access file is treated as "already converted"
+    (the factory only checks `File.Exists`) and then fails to load, so the model cannot be opened until the
+    stale file is deleted by hand. Decide whether to add a validity check.
 - [ ] **1.20.** **Test conversion when the `mdb2sqlite` tool/folder is missing** from
   the output directory (e.g. incomplete deployment) - confirm a clear error is
   shown rather than a silent failure or crash.
-- [ ] **1.21.** **Test conversion when the target `.ewesqlite` file is held open** by
-  another process (e.g. left open in a SQLite browser) during a
-  re-conversion attempt. There is no app-level lock protecting this
-  anymore - confirm what actually happens: does `mdb2sqlite.exe`'s write
-  fail with a clear, surfaced error, or something more confusing? (Unlike
-  `cEwEDatabase.PublishLocalCopyToSource`, this specific write has no
-  retry-then-dialog mechanism of its own.)
+- [x] **1.21.** **Conversion while the target `.ewesqlite` exists / is held open.** Finding, not automated:
+  `mdb2sqlite.exe` asks an interactive "Overwrite? (y/n)" on its console when the target exists, so a scripted run
+  would hang. The app never reaches this: an existing `.ewesqlite` is opened instead of converting. If a user
+  deletes nothing and converts anyway, the visible console shows the prompt; a locked target was not tested.
 - [ ] **1.22.** **Test conversion of a large/complex real-world database** (many
   groups, fleets, time series, scenarios) - both for correctness and for
   reasonable conversion time.
