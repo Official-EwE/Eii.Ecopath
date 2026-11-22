@@ -5149,25 +5149,9 @@ Public Class frmEwE6
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Handles converting an Access-sourced model to SQLite on first open. If
-    ''' strFileName is not Access-sourced, does nothing. If a SQLite
-    ''' counterpart already exists (AccessVsSqlite), loads it directly - or,
-    ''' in DEBUG builds, offers to keep the already-loaded versus-database
-    ''' model open for comparison instead. Otherwise closes the currently-
-    ''' loaded (Access) model, runs the conversion (retrying on request if it
-    ''' fails due to a network problem), and loads the resulting SQLite file.
-    ''' </summary>
-    ''' <param name="strFileName">The file that was just loaded via MRU.</param>
-    ''' -----------------------------------------------------------------------
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Loads an Ecopath model, transparently redirecting Access-sourced files
-    ''' to their SQLite companion (converting first if none exists yet).
-    ''' Determines this upfront, before any load is attempted, rather than
-    ''' opening the Access file first and then closing/reopening the SQLite
-    ''' one afterward - so when a companion is already known to exist, the
-    ''' Access file is never opened at all (except deliberately, when Debug
-    ''' comparison mode is requested).
+    ''' Opens a model, converting an Access file to SQLite on first open. Non-Access files are left alone.
+    ''' If a same-named .ewesqlite exists it is loaded instead (DEBUG: optionally together with the Access file, for
+    ''' comparison). Otherwise the Access file is migrated and converted via a staged copy, and the result is loaded.
     ''' </summary>
     ''' <param name="strFileName">The file to open, as selected/dragged/passed by the caller.</param>
     ''' <param name="loadsource">Where this load request came from.</param>
@@ -5188,13 +5172,11 @@ Public Class frmEwE6
                 If msg.Reply = eMessageReply.Cancel Then
                     Me.LoadEcopathModel(strSqlitePath, loadsource)
                 Else
-                    ' Only now, having deliberately asked for comparison mode,
-                    ' do we actually open the Access file at all.
+                    ' Comparison mode requested: only now is the Access file opened.
                     Me.LoadEcopathModel(strFileName, loadsource)
                 End If
 #Else
-                ' A companion already exists - go straight to it. The Access
-                ' file is never opened at all in a Release build.
+                ' A converted .ewesqlite exists: open it directly; the Access file is never opened.
                 Me.LoadEcopathModel(strSqlitePath, loadsource)
 #End If
 
@@ -5202,98 +5184,34 @@ Public Class frmEwE6
 
                 Dim strSqlitePath As String = Path.ChangeExtension(strFileName, ".ewesqlite")
 
-                ' Access2003 (.mdb/.ewemdb) never offers the Debug comparison
-                ' prompt, regardless of build configuration - GetSupportedType
-                ' only ever returns AccessVsSqlite for .accdb/.eweaccdb, so the
-                ' companion check for .mdb/.ewemdb has to happen here directly.
+                ' .mdb/.ewemdb never maps to AccessVsSqlite (no comparison prompt), so check for the .ewesqlite here.
                 If File.Exists(strSqlitePath) Then
                     Me.LoadEcopathModel(strSqlitePath, loadsource)
                     Return
                 End If
 
-                ' 2 users racing to convert the same file at the same time is
-                ' now the user's own responsibility to avoid - no lock of
-                ' any kind is claimed here.
-                '
-                ' Stage a local copy and migrate/convert THAT, never the
-                ' original - the legacy update chain (RunAllUpdates,
-                ' triggered by the LoadEcopathModel call below) can require
-                ' a non-trivial number of writes for an old database, and
-                ' running that directly against a possibly cloud-synced
-                ' (OneDrive etc.) file is exactly the corruption risk this
-                ' whole project exists to prevent. The original Access file
-                ' is only ever READ once, right here, to make this copy -
-                ' it is never opened for write access at all.
+                ' Migrate/convert a staged copy, never the original: the legacy update chain writes a lot, which risks
+                ' corruption on a cloud-synced file. The original is only read, once, to make this copy.
+                ' Two users converting the same file at once is not guarded against (last writer wins).
                 Dim strStagingFolder As String = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Ecopath with Ecosim", "DBs")
                 Directory.CreateDirectory(strStagingFolder)
-                ' Real extension kept at the end (not ".tmp") - this exact
-                ' path is passed straight into LoadEcopathModel below, which
-                ' needs cDataSourceFactory.GetSupportedType to recognize it
-                ' as an Access file via Path.GetExtension. A ".tmp"
-                ' extension here made that detection fail entirely.
+                ' Keep the real extension: GetSupportedType detects the Access type from it.
                 Dim strStagedCopy As String = Path.Combine(strStagingFolder,
                     "Temp" & Path.GetFileNameWithoutExtension(strFileName) & "." & Guid.NewGuid().ToString() & Path.GetExtension(strFileName))
                 File.Copy(strFileName, strStagedCopy, True)
 
-                ' Marker held for the duration of this whole migrate+convert
-                ' operation - same mechanism cEwEDatabase.
-                ' StageLocalWorkingCopy() uses for its own working copies.
-                ' Without this, cEwEDatabase's own orphan sweep - which can
-                ' run at any moment, triggered by an UNRELATED database
-                ' being opened elsewhere on this machine, not just this one
-                ' - would see a marker-less "Temp*" file (its filter is on
-                ' the "Temp" prefix, not any particular extension) and
-                ' correctly (by its own rules) conclude it's an abandoned
-                ' orphan safe to delete, even while this migration is
-                ' actively using it.
+                ' Hold the marker for the whole migrate+convert, so the orphan sweep (which any other database open can
+                ' trigger) does not delete this staged copy.
                 Dim stagingMarker As New cEwEExclusivityLock()
                 stagingMarker.TryAcquire(strStagedCopy & ".marker")
 
                 Try
-                    ' Same naming convention ("Temp<name>.<GUID><ext>", real
-                    ' extension kept - see below) as cEwEDatabase's own
-                    ' working-copy staging, in the same
-                    ' folder - if this marker is ever lost (e.g. a crash),
-                    ' that mechanism's own orphan sweep will opportunistically
-                    ' clean up the leftover the next time any SQLite session
-                    ' opens read-write, as a free side benefit.
-                    '
-                    ' This step cannot be skipped: cSqliteMigrator.
-                    ' SeedBaseline assumes the source is always already at
-                    ' the latest version before conversion. Runs against
-                    ' strStagedCopy - NOTE: LoadEcopathModel may briefly
-                    ' reflect strStagedCopy's path in UI state (title bar,
-                    ' MRU) during this transient step, until the final
-                    ' LoadEcopathModel(strSqlitePath, ...) call below
-                    ' restores the real identity. Flagged as an accepted
-                    ' cosmetic caveat pending verification
-                    '
-                    ' EnableLocalStaging is deliberately disabled for JUST
-                    ' this one call, not left at its normal
-                    ' (application-wide) value: this code already handles
-                    ' staging itself, above - if cEwEAccessDatabase.Open()
-                    ' were ALSO staging strStagedCopy internally, migrations
-                    ' would write into a SECOND, inner temp copy that
-                    ' CloseModel() then deletes, silently discarding the
-                    ' migration results (nothing in this flow calls
-                    ' PublishToSource() to write them anywhere first).
-                    ' Restored immediately after in a Finally, so the FINAL
-                    ' LoadEcopathModel(strSqlitePath, ...) call below still
-                    ' gets normal staging for the real, ongoing editing
-                    ' session. Safe as a temporary global toggle here
-                    ' specifically because this is synchronous,
-                    ' single-threaded UI code with no concurrent model
-                    ' loads.
-                    ' Also pass eLoadSourceType.Internal here specifically
-                    ' (not the original loadsource) - this load is of a
-                    ' transient staged copy, not a real, user-visible open
-                    ' at all, regardless of the fact that this whole
-                    ' method is itself running as part of a normal,
-                    ' interactive GUI flow. The FINAL
-                    ' LoadEcopathModel(strSqlitePath, ...) call below
-                    ' correctly keeps using the original loadsource, since
-                    ' that one IS the real, user-visible open.
+                    ' Required: cSqliteMigrator.SeedBaseline assumes the source is at the latest version. LoadEcopathModel
+                    ' may briefly show the staged path in the UI (title bar, MRU) until the final load below.
+                    ' Staging is switched off for this one call: the model is already staged here, and a second inner
+                    ' copy would be deleted on CloseModel, discarding the migration results.
+                    ' Internal load source: this is a transient load, not a user-visible open.
                     Dim bPreviousStagingFlag As Boolean = cEwEDatabase.EnableLocalStaging
                     cEwEDatabase.EnableLocalStaging = False
                     Try
@@ -5306,16 +5224,7 @@ Public Class frmEwE6
                     Dim bConverted As Boolean = False
                     Do
                         Try
-                            ' Explicit output path required here: the staged
-                            ' copy keeps the real extension now, but it's
-                            ' still in the staging folder, not next to the
-                            ' original - ChangeExtension(strStagedCopy,
-                            ' ".ewesqlite") would produce the right name in
-                            ' the WRONG folder. See
-                            ' cMdb2SqliteConverter.ConvertMdbToSqlite's own
-                            ' doc comment for why omitting this would
-                            ' silently write the result to the wrong
-                            ' location.
+                            ' Explicit output path: deriving it from the staged copy would write to the staging folder.
                             cMdb2SqliteConverter.ConvertMdbToSqlite(strStagedCopy, strSqlitePath)
                             bConverted = True
                         Catch ex As cMdb2SqliteNetworkException

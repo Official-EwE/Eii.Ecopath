@@ -94,6 +94,10 @@ mid-session with the app still open.
   the local working copy is still in progress). Confirm the *original*
   file is untouched (it hasn't been touched yet at this point) and
   reopening produces a fresh, correct working copy.
+  Journal mode is `DELETE` (no WAL): the only side file is
+  `Temp<name>.<GUID>.ewesqlite-journal`, present only during a write
+  transaction; it must not survive the kill-and-reopen cycle (the orphan
+  sweep judges it by its base copy's `.marker`).
   - Automated via the `EwE_TestWaitBeforePublish` DEBUG-only test hook in
     `cCore.Save()` (with its own `.ack` signal file, so the kill happens
     deterministically rather than via a guessed delay) rather than a

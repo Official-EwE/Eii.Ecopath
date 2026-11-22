@@ -140,17 +140,8 @@ Namespace Database
         ''' ever writes back to the source file at all.
         ''' </summary>
         ''' <remarks>
-        ''' A single, application-level flag rather than a per-call
-        ''' parameter threaded through Open() - set ONCE, at startup, by
-        ''' the interactive host application (see
-        ''' EwE6ApplicationFramework.Main()). A per-call parameter would
-        ''' put the burden on every future Core.LoadModel() call site to
-        ''' remember to opt in correctly; a single startup flag means every
-        ''' call anywhere in that host, present or future, is automatically
-        ''' covered with nothing to remember at each call site. Any other
-        ''' consumer of EwECore.dll that never sets this gets the safe
-        ''' default (no staging, no unnecessary cost) with no action needed
-        ''' on their part either.
+        ''' One application-level flag, set once at startup by the interactive host (EwE6ApplicationFramework.Main),
+        ''' rather than a parameter on every Open() call. Other EwECore consumers keep the default: no staging.
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Shared Property EnableLocalStaging As Boolean = False
@@ -160,31 +151,12 @@ Namespace Database
         ''' Local working-copy staging, shared by every concrete database type.
         ''' </summary>
         ''' <remarks>
-        ''' <para>Cloud-sync clients (OneDrive, Dropbox, etc.) can rewrite a
-        ''' file on disk out from under an application that has it open,
-        ''' which can corrupt an Access or SQLite database mid-save. To guard
-        ''' against this, every successful Open() stages a private local
-        ''' working copy under
-        ''' "%LocalAppData%\Ecopath with Ecosim\DBs\" and the actual database
-        ''' connection (OleDb or EF/SQLite) is pointed at that copy, never at
-        ''' the original file, for the entire session - but only when
-        ''' EnableLocalStaging (above) is True. When it's False (the
-        ''' default), Open() connects directly to the real file, exactly as
-        ''' if this whole mechanism did not exist.</para>
-        ''' <para>On Save, PublishLocalCopyToSource() blind-overwrites the
-        ''' real file with the working copy's current bytes - no fingerprint
-        ''' check, no conflict prompt.</para>
-        ''' <para><b>Multi-user/multi-session protection is explicitly out of
-        ''' scope</b> - a deliberate product decision. There is no lock of
-        ''' any kind (no companion sidecar, no native Access exclusive mode)
-        ''' anywhere in this class or its subclasses. If two sessions -
-        ''' anywhere, on any kind of storage, including a plain local network
-        ''' share - open the same file at the same time, that is the user's
-        ''' own responsibility to avoid; the last one to save simply wins,
-        ''' with no detection and no warning. This mechanism protects a
-        ''' single session's own save from cloud-sync interference; it does
-        ''' not, and is not intended to, protect against another session
-        ''' editing the same file concurrently.</para>
+        ''' <para>Cloud-sync clients (OneDrive, Dropbox) can rewrite an open file and corrupt a database mid-save. When
+        ''' EnableLocalStaging is True, every Open() for writing connects to a private copy under
+        ''' "%LocalAppData%\Ecopath with Ecosim\DBs\" instead of the real file. When False, Open() uses the real file.</para>
+        ''' <para>Save publishes the copy back over the real file (PublishLocalCopyToSource).</para>
+        ''' <para>There is no multi-session protection, by design: no lock on the real file, no conflict check.
+        ''' If two sessions open the same file, the last save wins.</para>
         ''' </remarks>
         ''' =======================================================================
         Protected m_strRealFilePath As String = ""
@@ -213,21 +185,11 @@ Namespace Database
             cEwEDatabase.CleanUpOrphanedWorkingCopies()
 
             Dim strFolder As String = cEwEDatabase.GetWorkingCopyFolder()
-            ' The real file's own extension is kept at the end (not ".tmp")
-            ' so cDataSourceFactory.GetSupportedType - which determines a
-            ' file's data source type purely from Path.GetExtension - still
-            ' correctly recognizes the staged copy if it's ever opened
-            ' directly by path, e.g. via frmEwE6.LoadEcopathModel. A ".tmp"
-            ' extension here made the staged copy invisible to that
-            ' detection entirely.
+            ' Keep the real extension (not ".tmp"): cDataSourceFactory.GetSupportedType detects the type from it.
             Dim strTempName As String = "Temp" & Path.GetFileNameWithoutExtension(strRealPath) & "." & Guid.NewGuid().ToString() & Path.GetExtension(strRealPath)
             Dim strTempPath As String = Path.Combine(strFolder, strTempName)
 
-            ' No retry here, deliberately - unlike PublishLocalCopyToSource
-            ' (Save), there is no unsaved work at risk on Open, and no
-            ' user-facing Retry/Cancel dialog paired with this path. A
-            ' retry loop would only add latency before the same eventual
-            ' failure, with no better outcome to show for it.
+            ' No retry: unlike Save, no unsaved work is at risk on Open.
             File.Copy(strRealPath, strTempPath, True)
             Me.m_workingCopyMarker.TryAcquire(strTempPath & ".marker")
             cEwEDatabase.EnsureProcessExitHookRegistered()
@@ -237,13 +199,8 @@ Namespace Database
             Return strTempPath
         End Function
 
-        ' A sharing violation (ERROR_SHARING_VIOLATION) or lock violation
-        ' (ERROR_LOCK_VIOLATION) is the specific, transient condition worth
-        ' retrying - e.g. a cloud-sync client (OneDrive etc.) briefly
-        ' holding the real file open to hash or sync it. Other IOExceptions
-        ' (disk full, path too long, media removed) are not transient in
-        ' the same way and should fail immediately rather than retry
-        ' pointlessly.
+        ' Only sharing/lock violations are retried (e.g. a sync client briefly holding the real file);
+        ' other IO errors (disk full, path too long) fail at once.
         ''' <summary>HRESULT for ERROR_SHARING_VIOLATION (0x80070020), as the signed Integer .NET exceptions actually report.</summary>
         Private Const HR_ERROR_SHARING_VIOLATION As Integer = -2147024864
         ''' <summary>HRESULT for ERROR_LOCK_VIOLATION (0x80070021), as the signed Integer .NET exceptions actually report.</summary>
@@ -251,53 +208,21 @@ Namespace Database
         Private Const cPublishRetryAttempts As Integer = 6
         Private Const cPublishRetryDelayMs As Integer = 500
 
-        ''' <summary>
-        ''' Sidecar suffix used to stage the new content next to the real
-        ''' file before the atomic rename in PublishLocalCopyToSource -
-        ''' never written to directly by anything else, so collisions with
-        ''' unrelated files/processes aren't a concern.
-        ''' </summary>
+        ''' <summary>Suffix of the temporary file written next to the real file during publish.</summary>
         Private Const cPublishSidecarSuffix As String = ".publishing"
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Copies the local working copy's current bytes back over the real
-        ''' file, unconditionally - no fingerprint check, no conflict
-        ''' detection, no prompt. Called once per explicit user Save action
-        ''' (see cCore.Save()), never per internal transaction.
+        ''' Copies the working copy back over the real file, unconditionally. Called once per user Save (cCore.Save).
         ''' </summary>
-        ''' <returns>
-        ''' True on success (or if nothing was staged - a no-op still
-        ''' counts as success). False if the real file remained locked
-        ''' (e.g. by a cloud-sync client) after exhausting all retry
-        ''' attempts, or if some other, non-retryable I/O error occurred.
-        ''' </returns>
+        ''' <returns>True on success or when nothing was staged; False if the real file stayed locked after all
+        ''' retries, or on a non-retryable IO error.</returns>
         ''' <remarks>
-        ''' <para>Callers must ensure all pending writes are actually
-        ''' committed to the local working copy (e.g. via
-        ''' CommitTransaction()/SaveChanges()) BEFORE calling this - it
-        ''' operates purely on the working copy's current bytes on disk, it
-        ''' does not itself flush anything.</para>
-        ''' <para>Publishes via copy-to-sidecar, delete-original,
-        ''' rename-sidecar-to-original - NOT a direct overwrite. A crash
-        ''' mid-copy leaves the real file completely untouched (the sidecar
-        ''' is written next to it, never in place of it, until the rename).
-        ''' A crash after the delete but before the rename leaves the real
-        ''' file genuinely missing - but the fully-intact new content sits
-        ''' right next to it as "&lt;name&gt;.publishing", trivially recoverable
-        ''' by hand even though there is no automated recovery for this.
-        ''' Either way, what the direct-overwrite approach this replaced
-        ''' could do - leave the real file's bytes themselves partially
-        ''' written and corrupted - is no longer possible: the rename
-        ''' itself is a single, atomic filesystem metadata operation on the
-        ''' same volume (confirmed for NTFS), not a byte-by-byte copy, so
-        ''' it cannot itself be interrupted into a half-done state.</para>
-        ''' <para>Retries the whole sequence from the top, mechanically,
-        ''' with a short delay, purely to ride out a brief sharing
-        ''' violation on the real path (delete or rename, most likely) -
-        ''' no UI, no dialog, no awareness of who is holding the file. A
-        ''' caller that wants to ask the user to retry after this returns
-        ''' False (see cCore.Save()) is responsible for that itself.</para>
+        ''' <para>Pending writes must be committed to the working copy first; this only copies bytes.</para>
+        ''' <para>Sequence: copy to "&lt;name&gt;.publishing", delete the real file, rename the sidecar over it. A crash
+        ''' before the rename never corrupts the real file; a crash between delete and rename leaves the complete new
+        ''' content in the ".publishing" file for manual recovery.</para>
+        ''' <para>Retries the whole sequence on a sharing violation. No UI: the caller decides on a user retry.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Overridable Function PublishLocalCopyToSource() As Boolean
@@ -307,22 +232,13 @@ Namespace Database
 
             For iAttempt As Integer = 1 To cPublishRetryAttempts
                 Try
-                    ' 1. Write the new content next to the real file, never
-                    ' in place of it - the real file is untouched by this
-                    ' step regardless of outcome.
+                    ' 1. Write the new content next to the real file; the real file stays untouched.
                     File.Copy(Me.m_strLocalWorkingCopyPath, strSidecar, True)
 
-                    ' 2. Remove the real file - a safe no-op if it doesn't
-                    ' exist yet (first-ever publish to a brand-new path).
-                    ' .NET's File.Move has no cross-target-platform
-                    ' (net48/net10) overwrite overload, so the delete has
-                    ' to happen explicitly, as its own step, before the
-                    ' rename below.
+                    ' 2. Remove the real file (net48 File.Move has no overwrite overload). No-op on a first publish.
                     If File.Exists(Me.m_strRealFilePath) Then File.Delete(Me.m_strRealFilePath)
 
-                    ' 3. Atomic rename, same volume - either this fully
-                    ' completes or it doesn't happen at all; there is no
-                    ' partially-renamed state for it to be interrupted into.
+                    ' 3. Atomic rename on the same volume.
                     File.Move(strSidecar, Me.m_strRealFilePath)
 
                     Return True
@@ -335,13 +251,8 @@ Namespace Database
                     System.Threading.Thread.Sleep(cPublishRetryDelayMs)
 
                 Catch ex As Exception
-                    ' Not a sharing/lock violation - not the transient
-                    ' condition this retry loop exists for. Fail
-                    ' immediately. Note: if this fires after the delete but
-                    ' before the rename, strSidecar still holds the
-                    ' complete, correct content - not cleaned up here
-                    ' deliberately, since it may be the only remaining copy
-                    ' of the user's latest changes.
+                    ' Non-retryable: fail at once. If this fires after the delete, the sidecar may be the only copy
+                    ' of the latest changes, so it is deliberately not cleaned up.
                     m_logger.LogError(ex, "cEwEDatabase.PublishLocalCopyToSource('{0}'): {1}", Me.m_strRealFilePath, ex.Message)
                     Return False
                 End Try
@@ -352,25 +263,11 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Releases the working-copy marker (always succeeds immediately)
-        ''' and deletes the local working copy, if any. Call from each
-        ''' subclass's Close() override, AFTER that subclass has finished
-        ''' closing its own connection to the working copy.
+        ''' Releases the marker and deletes the working copy. Call from Close() after the connection is closed.
         ''' </summary>
         ''' <remarks>
-        ''' This delete does NOT retry. A long-standing, still-unresolved
-        ''' issue (predating this staging feature entirely) holds a
-        ''' database connection's underlying file handle open for the rest
-        ''' of THIS process's own lifetime, regardless of Close() - not a
-        ''' brief pooling delay a short retry could ride out. A sleep-based
-        ''' retry here was tried once already and found to have no effect
-        ''' beyond risking an application-shutdown hang, and was removed
-        ''' for that reason. If the delete fails, the file is simply left
-        ''' behind - safe to do, since the marker above is already released
-        ''' regardless, so the orphan sweep will correctly identify and
-        ''' clean it up on a later Open() anywhere on this machine, or the
-        ''' exit-time sweep will on this process's own clean exit (the one
-        ''' point this handle is actually known to release).
+        ''' No delete retry: the connection's file handle can stay open until the process exits, so a retry would not
+        ''' help. A leftover copy is harmless: its marker is released, so the orphan sweep or exit sweep removes it.
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Protected Sub CleanUpLocalWorkingCopy()
@@ -408,10 +305,7 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Sweeps the working-copy folder for files left behind by a
-        ''' crashed session (no live ".marker"). Runs at the start of every
-        ''' staging operation. Only ever needs to reason about this same
-        ''' machine, since %LocalAppData% is always local.
+        ''' Deletes working copies left by crashed sessions (no live ".marker"). Runs before every staging operation.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Shared Sub CleanUpOrphanedWorkingCopies()
@@ -420,7 +314,16 @@ Namespace Database
                     If strFile.EndsWith(".marker", StringComparison.OrdinalIgnoreCase) Then Continue For
                     If Not Path.GetFileName(strFile).StartsWith("Temp", StringComparison.OrdinalIgnoreCase) Then Continue For
 
-                    Dim strMarkerFile As String = strFile & ".marker"
+                    ' SQLite side files ("...ewesqlite-journal") have no marker: judge them by their base copy's marker.
+                    Dim strBaseFile As String = strFile
+                    For Each strSuffix As String In New String() {"-journal", "-wal", "-shm"}
+                        If strFile.EndsWith(strSuffix, StringComparison.OrdinalIgnoreCase) Then
+                            strBaseFile = strFile.Substring(0, strFile.Length - strSuffix.Length)
+                            Exit For
+                        End If
+                    Next
+
+                    Dim strMarkerFile As String = strBaseFile & ".marker"
                     Using probe As New cEwEExclusivityLock()
                         If probe.TryAcquire(strMarkerFile) Then
                             ' Marker was free - nobody's using this copy; it's an orphan from a crash.
@@ -438,18 +341,10 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Registers the AppDomain.ProcessExit cleanup hook, once, the first
-        ''' time this process actually stages a working copy - a session
-        ''' that never opens anything never pays any cost at exit.
-        ''' ProcessExit is a base .NET runtime event, not WinForms-specific,
-        ''' so this works identically for the net48 ScientificInterface app
-        ''' or any other host built on EwECore.
+        ''' Registers the ProcessExit cleanup hook, once, when this process first stages a copy.
         ''' </summary>
         ''' <remarks>
-        ''' Not guaranteed to fire on a hard kill or fatal crash - that's
-        ''' fine, CleanUpOrphanedWorkingCopies() (the sweep on the next
-        ''' staging operation anywhere on this machine) remains the real
-        ''' guarantee for those cases.
+        ''' Does not fire on a hard kill; the orphan sweep on the next staging operation covers that.
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Private Shared Sub EnsureProcessExitHookRegistered()
@@ -467,13 +362,9 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Schedules one detached script that, once this process's own PID
-        ''' disappears from the OS process list, deletes every file in the
-        ''' working-copy folder that has no adjacent ".marker" file. Handles
-        ''' the case
-        ''' where a working copy's underlying connection does not release
-        ''' its file handle until the whole process exits, regardless of how
-        ''' thoroughly Close() disposes things in-process.
+        ''' Starts a detached script that, once this process has exited, deletes every working-copy file that has no
+        ''' ".marker" (connection handles may stay open until process exit). SQLite side files are skipped: they are
+        ''' cleaned by the orphan sweep, judged by their base copy's marker.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Shared Sub ScheduleDetachedFolderSweep()
@@ -495,6 +386,7 @@ Namespace Database
                         "    if errorlevel 1 (" & vbCrLf & ' PID no longer found - process has exited
                         "        for %%f in (""" & strFolder & "\*"") do (" & vbCrLf &
                         "            echo %%~xf | findstr /I /X "".marker"" >NUL" & vbCrLf &
+                        "            if errorlevel 1 echo %%f| findstr /I /R ""\-journal$ \-wal$ \-shm$"" >NUL" & vbCrLf &
                         "            if errorlevel 1 if not exist ""%%f.marker"" del /F /Q ""%%f""" & vbCrLf &
                         "        )" & vbCrLf &
                         "        del /F /Q ""%~f0""" & vbCrLf &
@@ -514,7 +406,7 @@ Namespace Database
                         "    if ! kill -0 " & iPid & " 2>/dev/null; then" & vbLf & ' PID no longer exists - process has exited
                         "        for f in """ & strFolder & """/*; do" & vbLf &
                         "            case ""$f"" in" & vbLf &
-                        "                *.marker) continue ;;" & vbLf &
+                        "                *.marker|*-journal|*-wal|*-shm) continue ;;" & vbLf &
                         "            esac" & vbLf &
                         "            [ -f ""$f.marker"" ] || rm -f ""$f""" & vbLf &
                         "        done" & vbLf &

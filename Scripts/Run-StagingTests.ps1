@@ -70,6 +70,10 @@ Invoke-Test "1.1 - A staged working copy is created on open" {
     Register-DialogCheck -ProcessId $Proc.Id -Baseline (Get-WindowBaseline -ProcessId $Proc.Id)
     $copies = Write-Step "Waiting for a staged working copy to appear" { Wait-ForStagedCopy -TimeoutSeconds 30 }
     Assert-True ($copies.Count -gt 0) "No Temp* working copy found after ~30 seconds."
+    # Confirms WHICH kind of file is being staged on this branch (Access original vs .ewesqlite).
+    Write-Host ("    Real model file : {0}  (extension '{1}')" -f $ModelPath, [IO.Path]::GetExtension($ModelPath)) -ForegroundColor Cyan
+    foreach ($c in $copies) { Write-Host ("    Staged copy     : {0}  (extension '{1}')" -f $c.Name, $c.Extension) -ForegroundColor Cyan }
+    if ($StagedCopyPath) { Write-Host ("    This instance's staged copy extension matches the real file's: {0}" -f ([IO.Path]::GetExtension($StagedCopyPath) -eq [IO.Path]::GetExtension($ModelPath))) -ForegroundColor Cyan }
 }
 
 Invoke-Test "7.1 - Opening a file needing legacy updates never touches its own timestamp" {
@@ -163,6 +167,7 @@ Invoke-Test "2.x - Edit and Save completes, Save becomes disabled afterward" {
         Assert-True ($null -ne $StagedCopyPath) "No confirmed staged copy path for this instance - it may not have been found within 30 seconds at launch time."
     }
     $stagedCopyPath = $StagedCopyPath
+    Write-Host ("    Comparing real '{0}' ({1}) against staged '{2}' ({3})" -f (Split-Path -Leaf $ModelPath), [IO.Path]::GetExtension($ModelPath), (Split-Path -Leaf $stagedCopyPath), [IO.Path]::GetExtension($stagedCopyPath)) -ForegroundColor Cyan
 
     Write-Step "Closing the app to release its own lock on the staged copy" {
         Stop-Process -Id $Proc.Id -Force -ErrorAction SilentlyContinue
