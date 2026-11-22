@@ -68,8 +68,15 @@ param(
     [string]$Only,
     [switch]$PlanOnly,
     [switch]$Ui,
-    [int]$MainWindowTimeoutSeconds = 90
+    [int]$MainWindowTimeoutSeconds = 90,
+    # Pause on a failing test (app left open) until Enter is pressed.
+    [switch]$PauseOnFailure,
+    # Skip every test before the first one whose name contains this text.
+    [string]$From
 )
+
+if ($PauseOnFailure) { $env:EWE_TEST_PAUSE_ON_FAIL = "1" }
+if ($From) { $env:EWE_TEST_FROM = $From }
 
 . (Join-Path $PSScriptRoot "TestHelpers.ps1")
 . (Join-Path $PSScriptRoot "ConversionTestHelpers.ps1")
@@ -271,3 +278,8 @@ foreach ($plan in $plans) {
 }
 
 Show-TestSummary
+
+# Standalone run only (not dot-sourced by Run-AllTests): don't leave these settings behind in the PowerShell session.
+if ($MyInvocation.InvocationName -ne '.') {
+    Remove-Item Env:\EWE_TEST_PAUSE_ON_FAIL, Env:\EWE_TEST_FROM -ErrorAction SilentlyContinue
+}

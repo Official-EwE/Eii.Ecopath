@@ -11,6 +11,15 @@ function Get-ImportHelperExe {
     if (-not $global:EwEBuiltProjects) { $global:EwEBuiltProjects = @{} }
     $buildKey = "$proj|Debug|x86".ToLowerInvariant()
     if (-not $global:EwEBuiltProjects[$buildKey]) {
+        # A helper process left over from an earlier (killed) run keeps its DLLs locked and fails the build.
+        foreach ($leftover in @(Get-Process -Name "EwEImportHelper" -ErrorAction SilentlyContinue)) {
+            $info = Get-CimInstance Win32_Process -Filter "ProcessId=$($leftover.Id)" -ErrorAction SilentlyContinue
+            Write-Host "Stopping leftover EwEImportHelper (PID $($leftover.Id), parent PID $($info.ParentProcessId), started $($leftover.StartTime)) - it would lock the build..." -ForegroundColor Yellow
+            & taskkill.exe /F /T /PID $leftover.Id 2>&1 | ForEach-Object { Write-Host "  $_" -ForegroundColor DarkGray }
+            if (-not $leftover.WaitForExit(5000)) {
+                Write-Host "  PID $($leftover.Id) is STILL running after a forced kill (elevated, or stuck?). Kill it by hand (Task Manager, or an elevated 'taskkill /F /PID $($leftover.Id)'), then run again." -ForegroundColor Red
+            }
+        }
         Write-Host "Building EwEImportHelper (Debug|x86)..."
         $buildOutput = & dotnet build $proj -c Debug -p:Platform=x86 --nologo -v q 2>&1
         if ($LASTEXITCODE -ne 0) {
@@ -100,6 +109,13 @@ function Open-LegacyModelDirectly {
     # No pre-launch cleanup of earlier conversion output needed: Start-TestInstance copies the model
     # into a fresh, uniquely-named EwE-TestRun\<random> folder every run, so the conversion output
     # always lands in an empty folder (and that folder is cleaned up afterwards).
+    # A ScientificInterface / EwEImportHelper left over from an earlier test (any platform) can show
+    # its own import window and confuse both the test and the user. Conversion tests are single-instance,
+    # so anything still running here is a leftover: say so, and stop it.
+    foreach ($leftover in @(Get-Process -Name "ScientificInterface","EwEImportHelper" -ErrorAction SilentlyContinue)) {
+        Write-Host "  Stopping leftover $($leftover.ProcessName) (PID $($leftover.Id), $($leftover.Path))" -ForegroundColor Yellow
+        & taskkill.exe /F /T /PID $leftover.Id 2>&1 | Out-Null
+    }
     Write-Host "  Starting a disposable instance (model opened directly via the command line):"
     # -SkipMainWindowWait: CONFIRMED (user's own run) that the ordinary main-window wait never
     # reliably completes for this launch - the import console/wizard that appears instead isn't
@@ -209,15 +225,25 @@ function Test-ReferralDialogAppears {
         "Expected the EwE5-referral dialog (title '$ReferralDialogCaption'), got '$($dialog.Name)' ($($dialog.ControlType))."
 
     $dialogElement = Get-WindowElementByHandle -Handle $dialog.NativeWindowHandle
-    $textCondition = New-Object System.Windows.Automation.PropertyCondition(
-        [System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::Text)
-    $textElement = $null
-    try { $textElement = $dialogElement.FindFirst([System.Windows.Automation.TreeScope]::Descendants, $textCondition) } catch { }
-    $messageText = if ($null -ne $textElement) { try { $textElement.Current.Name } catch { "" } } else { "" }
+    # Collect the text of EVERY descendant with a non-empty Name (Text controls, but also the Pane /
+    # link-label / edit forms PowerShell's UIA client exposes WinForms controls as - the referral
+    # message carries a hyperlink, so its text control is not necessarily a plain Text element).
+    $messageParts = @()
+    try {
+        foreach ($el in $dialogElement.FindAll([System.Windows.Automation.TreeScope]::Descendants, [System.Windows.Automation.Condition]::TrueCondition)) {
+            $elName = try { $el.Current.Name } catch { "" }
+            if (-not [string]::IsNullOrWhiteSpace($elName)) { $messageParts += $elName }
+        }
+    } catch { }
+    $messageText = ($messageParts -join " ")
 
     $matchedMarker = $false
     foreach ($marker in $ExpectedTextMarkers) {
         if ($messageText -like "*$marker*") { $matchedMarker = $true; break }
+    }
+    if (-not $matchedMarker) {
+        Write-Host "`n    [diagnostic] Referral dialog text not recognised. Dialog UIA tree:" -ForegroundColor Yellow
+        Write-UiaTreeDump -Element $dialogElement
     }
     Assert-True $matchedMarker `
         "Expected the dialog's text to mention one of: $($ExpectedTextMarkers -join ', ') - the title matched but the content didn't match the one expected here. Got: '$messageText'"
@@ -257,32 +283,6 @@ function Invoke-ReferralDialogTest {
 # Selects the model at -Index (0 = first, 1 = second, ...) in the wizard's grid. The checkbox itself isn't addressable, so (as
 # confirmed manually) clicking the top-left corner of the grid's value pane toggles it. That pane is
 # the first Pane sibling right after the grid's scroll bar in the UIA tree.
-function Write-UiaTreeDump {
-    param(
-        [Parameter(Mandatory = $true)]$Element,
-        [int]$MaxDepth = 8,
-        [int]$MaxNodes = 120
-    )
-    $walker = [System.Windows.Automation.TreeWalker]::ControlViewWalker
-    $script:uiaDumpCount = 0
-    function Write-UiaNode {
-        param($Node, [int]$Depth)
-        if ($script:uiaDumpCount -ge $MaxNodes -or $Depth -gt $MaxDepth) { return }
-        $script:uiaDumpCount++
-        $type = try { $Node.Current.ControlType.ProgrammaticName -replace '^ControlType\.', '' } catch { "?" }
-        $name = try { $Node.Current.Name } catch { "?" }
-        $cls = try { $Node.Current.ClassName } catch { "?" }
-        $rect = try { $Node.Current.BoundingRectangle } catch { "?" }
-        $focusable = try { $Node.Current.IsKeyboardFocusable } catch { "?" }
-        Write-Host ("    {0}{1} name='{2}' class='{3}' rect={4} focusable={5}" -f ("  " * $Depth), $type, $name, $cls, $rect, $focusable) -ForegroundColor DarkGray
-        $child = $walker.GetFirstChild($Node)
-        while ($null -ne $child) {
-            Write-UiaNode -Node $child -Depth ($Depth + 1)
-            $child = $walker.GetNextSibling($child)
-        }
-    }
-    Write-UiaNode -Node $Element -Depth 0
-}
 
 # Selects the model at -Index (0 = first, 1 = second, ...) in the wizard's grid. The checkbox itself isn't addressable, so (as
 # confirmed manually) clicking the top-left corner of the grid's value pane toggles it. That pane is
@@ -366,6 +366,7 @@ function Select-WizardModel {
     Start-Sleep -Milliseconds 150
     $actual = [System.Windows.Forms.Cursor]::Position
     Write-Host "    [diagnostic] Cursor is now at ($($actual.X), $($actual.Y))" -ForegroundColor DarkGray
+    Clear-ConsoleFromClickTarget
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTDOWN, 0, 0, 0, [UIntPtr]::Zero)
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTUP, 0, 0, 0, [UIntPtr]::Zero)
     Start-Sleep -Milliseconds 300
@@ -374,6 +375,7 @@ function Select-WizardModel {
         # Wait out the system double-click interval so the second click is a separate click.
         Start-Sleep -Milliseconds 800
         Write-Host "    [diagnostic] Clicking again to deselect the first model, then Down x$Index + Space" -ForegroundColor DarkGray
+        Clear-ConsoleFromClickTarget
         [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTDOWN, 0, 0, 0, [UIntPtr]::Zero)
         [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTUP, 0, 0, 0, [UIntPtr]::Zero)
         Start-Sleep -Milliseconds 300
@@ -421,10 +423,24 @@ function Wait-ForWizardConversion {
     while ((Get-Date) -lt $deadline) {
         Assert-NoNewDialogs -ProcessId $Setup.Instance.Process.Id -Baseline $Setup.Baseline
 
+        # Fail fast instead of polling a window that no longer exists (seen: the wizard vanished and the
+        # loop spun for the full timeout reporting "progress ?, OK enabled False").
+        $setupProc = $Setup.Instance.Process
+        $setupProc.Refresh()
+        if ($setupProc.HasExited) {
+            throw "The app process (PID $($setupProc.Id)) exited during the wizard conversion (exit code $($setupProc.ExitCode)) - it crashed or closed itself."
+        }
+        $wizardName = $null
+        try { $wizardName = $WizardElement.Current.Name } catch { }
+        if ($null -eq $wizardName) {
+            $remaining = @(Get-OpenWindows -ProcessId $setupProc.Id | ForEach-Object { "'$($_.Name)'" })
+            throw "The wizard window disappeared during the conversion while the app (PID $($setupProc.Id)) is still running. Windows it has now: $(if ($remaining.Count) { $remaining -join ', ' } else { '(none)' })."
+        }
+
         $percent = Get-WizardProgressPercent -WizardElement $WizardElement
         $okEnabled = $false
         try {
-            $okButton = Find-ByNameAndType -Root $WizardElement -Name "OK" -ControlType ([System.Windows.Automation.ControlType]::Button)
+            $okButton = Find-ButtonByName -Root $WizardElement -Name "OK"
             if ($null -ne $okButton) { $okEnabled = [bool]$okButton.Current.IsEnabled }
         } catch { }
 
@@ -437,6 +453,15 @@ function Wait-ForWizardConversion {
         }
         Start-Sleep -Milliseconds 500
     }
+    # Diagnostics: which process owns the window we were watching, and is it the x86 one we launched?
+    try {
+        $ownerPid = $WizardElement.Current.ProcessId
+        $owner = Get-Process -Id $ownerPid -ErrorAction SilentlyContinue
+        Write-Host "`n    [diagnostic] Watched window '$($WizardElement.Current.Name)' belongs to PID $ownerPid ($($owner.Path)); expected PID $($Setup.Instance.Process.Id)." -ForegroundColor Yellow
+        foreach ($other in @(Get-Process -Name "ScientificInterface","EwEImportHelper" -ErrorAction SilentlyContinue)) {
+            Write-Host "    [diagnostic] running: $($other.ProcessName) PID $($other.Id) $($other.Path)" -ForegroundColor Yellow
+        }
+    } catch { }
     throw "The wizard's conversion did not finish (OK enabled) within $TimeoutSeconds seconds."
 }
 

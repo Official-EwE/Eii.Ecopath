@@ -164,7 +164,16 @@ Invoke-Test "6.2 - Save As to a path another instance already has open as its ow
                 Start-Sleep -Milliseconds 200
             }
             if ($null -ne $confirmDialog) {
-                $yesButton = Find-ByNameAndType -Root $confirmDialog -Name "Yes" -ControlType ([System.Windows.Automation.ControlType]::Button)
+                # Button first, else a Pane/BUTTON-class element named "Yes" (see Find-ButtonByName).
+                $yesButton = $null
+                for ($i = 0; $i -lt 15 -and $null -eq $yesButton; $i++) {
+                    $yesButton = Find-ButtonByName -Root $confirmDialog -Name "Yes"
+                    if ($null -eq $yesButton) { Start-Sleep -Milliseconds 200 }
+                }
+                if ($null -eq $yesButton) {
+                    Write-Host "`n    [diagnostic] 'Yes' button not found. Dialog '$($confirmDialog.Current.Name)' UIA tree:" -ForegroundColor Yellow
+                    Write-UiaTreeDump -Element $confirmDialog
+                }
                 Assert-True ($null -ne $yesButton) "Found the overwrite-confirmation dialog but not its Yes button."
                 Invoke-ElementClick -Element $yesButton
                 Start-Sleep -Milliseconds 1500

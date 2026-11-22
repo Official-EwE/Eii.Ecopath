@@ -10,6 +10,75 @@
 
 Add-Type -AssemblyName UIAutomationClient, UIAutomationTypes, System.Windows.Forms, System.Drawing
 
+# ---------------------------------------------------------------------------------------------
+# Elevation. The tests drive the app with real mouse/keyboard input and UI Automation, and kill the
+# processes they start. Windows blocks both across privilege levels (UIPI; "Access is denied" when
+# killing an elevated process from a normal prompt), and a process left behind by an elevated run
+# can then never be cleaned up by a normal one - it locks DLLs and fails the next build. So every
+# run uses ONE level, and that level is elevated: a non-elevated start relaunches itself elevated
+# (a new window - the UAC prompt appears once; the window stays open when the run ends).
+# Set the environment variable EWE_TEST_NO_ELEVATE=1 to skip this (e.g. a CI agent that is already
+# in a suitable session, or when deliberately running everything non-elevated).
+function Test-IsElevated {
+    $principal = New-Object System.Security.Principal.WindowsPrincipal([System.Security.Principal.WindowsIdentity]::GetCurrent())
+    $principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)
+}
+
+# Relaunches the calling runner script elevated, with its own bound parameters, then exits this
+# (non-elevated) run. The caller is whichever script dot-sourced this file: dot-sourcing shares
+# scope, so $PSBoundParameters read here are that runner's own.
+function Request-ElevationIfNeeded {
+    # EWE_TEST_ELEVATION_DONE is inherited by every child script/process, so only the FIRST (top-level)
+    # runner ever decides about elevation. Without it, each script a runner invokes (Start-TestInstance.ps1
+    # etc.) dot-sources this file again and would open yet another elevated window - and its `exit`
+    # would end the child script while the runner carried on with no instance.
+    if ($env:EWE_TEST_NO_ELEVATE -eq "1" -or $env:EWE_TEST_ELEVATION_DONE -eq "1" -or $global:EwEElevationDeclined) { return }
+    if (Test-IsElevated) { return }
+
+    # The OUTERMOST script on the call stack is the one to relaunch (e.g. Run-AllTests.ps1, not each
+    # runner it calls) - relaunching a nested runner would open one window per runner while the outer
+    # non-elevated script carried on. Its own bound parameters come from the call stack frame.
+    $frame = Get-PSCallStack | Where-Object { $_.ScriptName -and $_.ScriptName -ne $PSCommandPath } | Select-Object -Last 1
+    if (-not $frame) { return }   # not started from a script file: nothing to relaunch
+    $callerScript = $frame.ScriptName
+    $bound = $frame.InvocationInfo.BoundParameters
+
+    $argList = @("-NoExit", "-ExecutionPolicy", "Bypass", "-File", "`"$callerScript`"")
+    if ($bound) {
+        foreach ($key in $bound.Keys) {
+            $value = $bound[$key]
+            if ($value -is [System.Management.Automation.SwitchParameter]) {
+                if ($value.IsPresent) { $argList += "-$key" }
+            } elseif ($value -is [array]) {
+                $argList += "-$key"
+                $argList += ($value | ForEach-Object { "`"$_`"" }) -join ","
+            } else {
+                $argList += "-$key"
+                $argList += "`"$value`""
+            }
+        }
+    }
+
+    Write-Host "Not elevated - relaunching '$([System.IO.Path]::GetFileName($callerScript))' as administrator in a new window (confirm the UAC prompt)." -ForegroundColor Yellow
+    $host_exe = (Get-Process -Id $PID).Path
+    # The marker goes ONLY to the relaunched process (it inherits this environment), then is removed
+    # here again: left set, it would persist in this interactive PowerShell session and silently
+    # disable elevation for every later run. It stops an elevated-but-not-detected copy from relaunching in a loop.
+    $env:EWE_TEST_ELEVATION_DONE = "1"
+    try {
+        Start-Process -FilePath $host_exe -Verb RunAs -WorkingDirectory (Get-Location).Path -ArgumentList $argList -ErrorAction Stop
+    } catch {
+        Remove-Item Env:\EWE_TEST_ELEVATION_DONE -ErrorAction SilentlyContinue
+        Write-Host "Could not elevate ($($_.Exception.Message)). Continuing NON-elevated; set EWE_TEST_NO_ELEVATE=1 to silence this." -ForegroundColor Red
+        $global:EwEElevationDeclined = $true
+        return
+    }
+    Remove-Item Env:\EWE_TEST_ELEVATION_DONE -ErrorAction SilentlyContinue
+    throw "Relaunched elevated in a new window; this non-elevated run stops here."
+}
+Request-ElevationIfNeeded
+
+
 # Checked against Win32Rect specifically (the newest addition), not Win32TestRunner: .NET cannot
 # redefine a type once loaded, so a session that already has an OLDER Win32TestRunner loaded (from
 # before Win32Rect was added here) would otherwise skip this whole block and silently never define
@@ -41,6 +110,47 @@ public class Win32TestRunner {
     public const uint MOUSEEVENTF_LEFTUP = 0x04;
 }
 "@
+}
+
+# Separate type (own guard) so an older Win32TestRunner already loaded in the session doesn't matter.
+# Used by Clear-ConsoleFromClickTarget below.
+if (-not ("Win32Focus" -as [type])) {
+    Add-Type @"
+using System;
+using System.Runtime.InteropServices;
+public struct Win32Point { public int X; public int Y; }
+public class Win32Focus {
+    [DllImport("kernel32.dll")] public static extern IntPtr GetConsoleWindow();
+    [DllImport("user32.dll")] public static extern IntPtr WindowFromPoint(Win32Point pt);
+    [DllImport("user32.dll")] public static extern IntPtr GetAncestor(IntPtr hWnd, uint flags);
+    [DllImport("user32.dll")] public static extern bool SetWindowPos(IntPtr hWnd, IntPtr after, int x, int y, int cx, int cy, uint flags);
+    public static readonly IntPtr HWND_BOTTOM = new IntPtr(1);
+    public const uint SWP_NOSIZE = 0x1, SWP_NOMOVE = 0x2, SWP_NOACTIVATE = 0x10;
+}
+"@
+}
+
+# On a small desktop the (elevated) PowerShell console window can sit on top of the app, so a raw
+# mouse click at the app's screen coordinates lands in the console instead (selecting text there,
+# which then pauses the console's output and stalls the whole run). Call this right after moving the
+# cursor and before pressing the button: if the window under the cursor is this console, it is sent
+# to the bottom of the z-order (not minimised - the progress output stays reachable), so the click
+# reaches the app window underneath.
+function Clear-ConsoleFromClickTarget {
+    try {
+        $console = [Win32Focus]::GetConsoleWindow()
+        if ($console -eq [IntPtr]::Zero) { return }
+        $pos = [System.Windows.Forms.Cursor]::Position
+        $pt = New-Object Win32Point
+        $pt.X = $pos.X; $pt.Y = $pos.Y
+        $hit = [Win32Focus]::WindowFromPoint($pt)
+        if ($hit -eq [IntPtr]::Zero) { return }
+        $root = [Win32Focus]::GetAncestor($hit, 2)   # GA_ROOT
+        if ($root -eq $console -or $hit -eq $console) {
+            [Win32Focus]::SetWindowPos($console, [Win32Focus]::HWND_BOTTOM, 0, 0, 0, 0, 0x13) | Out-Null  # NOSIZE|NOMOVE|NOACTIVATE
+            Start-Sleep -Milliseconds 150
+        }
+    } catch { }
 }
 
 # ===== Test framework =====
@@ -85,6 +195,44 @@ function Register-DialogCheck {
     $script:PendingDialogChecks.Add([PSCustomObject]@{ ProcessId = $ProcessId; Baseline = $Baseline })
 }
 
+# -PauseOnFailure (or EWE_TEST_PAUSE_ON_FAIL=1): when a test fails, stop and wait for Enter so the app /
+# dialog can be inspected before anything is closed. Called from Stop-TestInstance (while the failure is
+# still propagating, i.e. before the app is killed) and from Invoke-Test's catch (for failures where the
+# app was not stopped by the test itself). Pauses at most once per failing test.
+function Wait-OnTestFailure {
+    param([string]$Reason)
+    if ($env:EWE_TEST_PAUSE_ON_FAIL -ne "1" -or $script:PausedForCurrentFailure) { return }
+    $script:PausedForCurrentFailure = $true
+    Write-Host "`n`n  >>> TEST FAILED - paused so you can inspect the app. $Reason" -ForegroundColor Magenta
+    Read-Host "  >>> Press Enter to continue (this will close the test app)" | Out-Null
+}
+
+# Central PRE-check every test goes through (Invoke-Test, Invoke-ManualTest, Invoke-ConversionTestEntry and the
+# hand-rolled blocks in the runners): returns $true when the test should run.
+#  - -Only (runner's $script:TestNameFilter): a non-matching test is skipped silently, so an -Only run shows just what was asked for.
+#  - -From (env EWE_TEST_FROM): tests are skipped, with a visible line, until one whose name contains the text. That one sets
+#    $script:FromStarted, which switches the check off for everything after it. Run-AllTests resets the flag per platform.
+function Test-ShouldRunTest {
+    param([Parameter(Mandatory = $true)][string]$Name)
+    if ($script:TestNameFilter -and $Name -notlike "*$script:TestNameFilter*") { return $false }
+    if ($env:EWE_TEST_FROM -and -not $script:FromStarted) {
+        if ($Name -like "*$env:EWE_TEST_FROM*") {
+            $script:FromStarted = $true
+            Write-Host "`n(-From '$env:EWE_TEST_FROM' matched '$Name' - running this and every test after it.)" -ForegroundColor Yellow
+            return $true
+        }
+        # A hand-rolled block may ask twice for the same test (its manual fallback): report it once.
+        if ($script:LastSkippedTestName -ne $Name) {
+            $script:LastSkippedTestName = $Name
+            $label = if ($script:CurrentPlatformLabel) { "[$script:CurrentPlatformLabel] $Name" } else { $Name }
+            Write-Host "`n=== $label ===" -ForegroundColor DarkGray
+            Write-Host "Skipping - not matching -From '$env:EWE_TEST_FROM'" -ForegroundColor DarkGray
+        }
+        return $false
+    }
+    $true
+}
+
 function Invoke-Test {
     param(
         [Parameter(Mandatory = $true)][string]$Name,
@@ -99,16 +247,12 @@ function Invoke-Test {
         # the collision entirely, regardless of what any caller happens to name its own variables.
         [Parameter(Mandatory = $true)][scriptblock]$TestBody
     )
-    # Set by a runner's own -Only parameter, if given - a substring match (case-insensitive) against
-    # the test name, letting a single test run in isolation (e.g. to tell apart a genuine bug from
-    # an artifact of running several similar tests back-to-back in one session). Silently skipped,
-    # not even recorded, so an -Only run's summary only ever shows what was actually asked for.
-    if ($script:TestNameFilter -and $Name -notlike "*$script:TestNameFilter*") {
-        return
-    }
+    if (-not (Test-ShouldRunTest -Name $Name)) { return }
     $displayName = if ($script:CurrentPlatformLabel) { "[$script:CurrentPlatformLabel] $Name" } else { $Name }
     Write-Host "`n=== $displayName ===" -ForegroundColor Cyan
     $script:PendingDialogChecks = [System.Collections.Generic.List[object]]::new()
+    $script:PausedForCurrentFailure = $false
+    $script:TestErrorBaseline = $Error.Count
     $sw = [System.Diagnostics.Stopwatch]::StartNew()
     try {
         & $TestBody
@@ -129,6 +273,7 @@ function Invoke-Test {
         $sw.Stop()
         Add-TestResult -Name $Name -Result "FAIL" -DurationMs $sw.ElapsedMilliseconds -Reason $_.Exception.Message
         Write-Host "FAIL ($($sw.ElapsedMilliseconds) ms): $($_.Exception.Message)" -ForegroundColor Red
+        Wait-OnTestFailure -Reason $_.Exception.Message
         # Printed separately from the one-line summary above, and wrapped in its own try/catch:
         # for a genuine recursion bug (e.g. "call depth overflow") or any other real engine/COM
         # exception, ScriptStackTrace is exactly what pinpoints which function was calling which -
@@ -157,9 +302,7 @@ function Invoke-ManualTest {
         [Parameter(Mandatory = $true)][string]$Name,
         [Parameter(Mandatory = $true)][string]$Instructions
     )
-    if ($script:TestNameFilter -and $Name -notlike "*$script:TestNameFilter*") {
-        return
-    }
+    if (-not (Test-ShouldRunTest -Name $Name)) { return }
     $displayName = if ($script:CurrentPlatformLabel) { "[$script:CurrentPlatformLabel] $Name" } else { $Name }
     Write-Host "`n=== $displayName (MANUAL) ===" -ForegroundColor Yellow
     Write-Host $Instructions
@@ -204,7 +347,22 @@ function Format-Duration {
 
 function Show-TestSummary {
     Write-Host "`n`n========== TEST SUMMARY ==========" -ForegroundColor Cyan
-    $script:TestResults | Format-Table Name, Result, DurationMs, Reason -AutoSize | Out-Host
+    # One line per test, written directly (no Format-Table): Format-Table sizes its columns to the
+    # window width, and in a narrow console it dropped the Result/Duration columns entirely, leaving
+    # just a list of names. Names are truncated to fit; Result and duration always stay visible.
+    $width = try { $Host.UI.RawUI.WindowSize.Width } catch { 120 }
+    if (-not $width -or $width -lt 60) { $width = 120 }
+    $nameWidth = [Math]::Max(20, $width - 20)
+    Write-Host ("{0,-6} {1,8}  {2}" -f "Result", "Time", "Name")
+    Write-Host ("{0,-6} {1,8}  {2}" -f "------", "--------", "----")
+    foreach ($r in $script:TestResults) {
+        $name = [string]$r.Name
+        if ($name.Length -gt $nameWidth) { $name = $name.Substring(0, $nameWidth - 3) + "..." }
+        $time = if ($null -ne $r.DurationMs) { "{0:N1}s" -f ($r.DurationMs / 1000.0) } else { "" }
+        $rowColor = switch ($r.Result) { "PASS" { "Green" } "FAIL" { "Red" } default { "Yellow" } }
+        Write-Host ("{0,-6} {1,8}  {2}" -f $r.Result, $time, $name) -ForegroundColor $rowColor
+    }
+    Write-Host ""
 
     # @(...) forces an array even when exactly one result matches - see Assert-NoNewDialogs's own
     # comment on this same PowerShell gotcha. Without it, a run with exactly one pass/fail/skip (an
@@ -221,6 +379,7 @@ function Show-TestSummary {
         Write-Host "`nFailures:" -ForegroundColor Red
         $script:TestResults | Where-Object { $_.Result -eq "FAIL" } | ForEach-Object {
             Write-Host "  - $($_.Name): $($_.Reason)" -ForegroundColor Red
+            Write-Host ""   # blank line between failures - reasons can span several lines
         }
     }
 }
@@ -256,6 +415,7 @@ function Invoke-ElementClick {
     $rect = $Element.Current.BoundingRectangle
     [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point([int]($rect.X + $rect.Width / 2), [int]($rect.Y + $rect.Height / 2))
     Start-Sleep -Milliseconds 100
+    Clear-ConsoleFromClickTarget
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTDOWN, 0, 0, 0, [UIntPtr]::Zero)
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTUP, 0, 0, 0, [UIntPtr]::Zero)
 }
@@ -305,9 +465,11 @@ function Select-GridFirstCell {
     $clickY = [int]($rect.Y) + 10
     [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point($clickX, $clickY)
     Start-Sleep -Milliseconds 100
+    Clear-ConsoleFromClickTarget
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTDOWN, 0, 0, 0, [UIntPtr]::Zero)
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTUP, 0, 0, 0, [UIntPtr]::Zero)
     Start-Sleep -Milliseconds 100
+    Clear-ConsoleFromClickTarget
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTDOWN, 0, 0, 0, [UIntPtr]::Zero)
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTUP, 0, 0, 0, [UIntPtr]::Zero)
     Start-Sleep -Milliseconds 300
@@ -352,10 +514,12 @@ function Set-SafeRestorableEdit {
 
 # Polls the staging folder for Temp*-prefixed working copies (any extension - CONFIRMED this
 # session that the staged copy keeps the source file's own extension, not normalized to .eweaccdb).
+# Files only (-File): the legacy-import launcher's own "TempImport.<guid>" work FOLDERS live in the same
+# folder and are a different mechanism (cLegacyImportLauncher), not staged model working copies.
 function Get-StagedCopies {
     $stagingDir = Join-Path $env:LocalAppData "Ecopath with Ecosim\DBs"
     if (-not (Test-Path $stagingDir)) { return @() }
-    Get-ChildItem -Path $stagingDir -Filter "Temp*" -ErrorAction SilentlyContinue | Where-Object { $_.Extension -ne ".ldb" }
+    Get-ChildItem -Path $stagingDir -Filter "Temp*" -File -ErrorAction SilentlyContinue | Where-Object { $_.Extension -ne ".ldb" }
 }
 
 # Waits for a just-started process's main window, handling the "your model database will be
@@ -430,7 +594,24 @@ function Write-InstanceStarted {
 
 function Stop-TestInstance {
     param([Parameter(Mandatory = $true)][int]$ProcessId, [Parameter(Mandatory = $true)][string]$Label)
+    # A failure is propagating (a test's own finally/cleanup is stopping the app): pause first, so the
+    # window the failure left behind is still there to look at.
+    if ($env:EWE_TEST_PAUSE_ON_FAIL -eq "1" -and $Error.Count -gt $script:TestErrorBaseline -and
+        $Error.Count -gt 0 -and $Error[0].CategoryInfo.Category -eq "OperationStopped") {
+        Wait-OnTestFailure -Reason "Last error: $($Error[0].Exception.Message)"
+    }
     Write-Host "[PID $ProcessId] Stopping ($Label)..." -ForegroundColor DarkGray
+    # Child processes first (e.g. the legacy-import helper console the app launches): killing only the
+    # parent leaves them running, and a leftover EwEImportHelper.exe keeps its DLLs locked, which
+    # fails the next build of the helper.
+    function Stop-ChildProcessTree {
+        param([int]$ParentId)
+        foreach ($child in @(Get-CimInstance Win32_Process -Filter "ParentProcessId=$ParentId" -ErrorAction SilentlyContinue)) {
+            Stop-ChildProcessTree -ParentId $child.ProcessId
+            Stop-Process -Id $child.ProcessId -Force -ErrorAction SilentlyContinue
+        }
+    }
+    Stop-ChildProcessTree -ParentId $ProcessId
     Stop-Process -Id $ProcessId -Force -ErrorAction SilentlyContinue
     Write-Host "[PID $ProcessId] Stopped ($Label)." -ForegroundColor DarkGray
 }
@@ -558,11 +739,28 @@ function Open-ModelViaUI {
     }
     if ($null -eq $dialog) { throw "'Open' dialog did not appear - its real Name may differ from the assumed 'Open'." }
 
-    $label = Find-ByNameAndType -Root $dialog -Name "File name:" -ControlType ([System.Windows.Automation.ControlType]::Text)
-    if ($null -eq $label) { throw "Could not find the 'File name:' label in the Open dialog." }
+    # Polled: the dialog shell can be found before its children exist (seen again on a slow run), and
+    # on newer Windows the label may be exposed as something other than ControlType.Text - so fall back
+    # to any element with that Name.
+    $label = $null
+    $labelDeadline = (Get-Date).AddSeconds(8)
+    while ($null -eq $label -and (Get-Date) -lt $labelDeadline) {
+        $label = Find-ByNameAndType -Root $dialog -Name "File name:" -ControlType ([System.Windows.Automation.ControlType]::Text)
+        if ($null -eq $label) {
+            $label = $dialog.FindFirst([System.Windows.Automation.TreeScope]::Descendants,
+                (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::NameProperty, "File name:")))
+        }
+        if ($null -eq $label) { Start-Sleep -Milliseconds 250 }
+    }
+    if ($null -eq $label) {
+        Write-Host "`n    [diagnostic] 'File name:' label not found. Open dialog UIA tree:" -ForegroundColor Yellow
+        if (Get-Command Write-UiaTreeDump -ErrorAction SilentlyContinue) { Write-UiaTreeDump -Element $dialog }
+        throw "Could not find the 'File name:' label in the Open dialog."
+    }
     $labelRect = $label.Current.BoundingRectangle
     [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point([int]($labelRect.X + $labelRect.Width + 10), [int]($labelRect.Y + $labelRect.Height / 2))
     Start-Sleep -Milliseconds 150
+    Clear-ConsoleFromClickTarget
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTDOWN, 0, 0, 0, [UIntPtr]::Zero)
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTUP, 0, 0, 0, [UIntPtr]::Zero)
     Start-Sleep -Milliseconds 150
@@ -872,11 +1070,28 @@ function Open-LegacyModelViaUI {
     }
     if ($null -eq $dialog) { throw "'Open' dialog did not appear - its real Name may differ from the assumed 'Open'." }
 
-    $label = Find-ByNameAndType -Root $dialog -Name "File name:" -ControlType ([System.Windows.Automation.ControlType]::Text)
-    if ($null -eq $label) { throw "Could not find the 'File name:' label in the Open dialog." }
+    # Polled: the dialog shell can be found before its children exist (seen again on a slow run), and
+    # on newer Windows the label may be exposed as something other than ControlType.Text - so fall back
+    # to any element with that Name.
+    $label = $null
+    $labelDeadline = (Get-Date).AddSeconds(8)
+    while ($null -eq $label -and (Get-Date) -lt $labelDeadline) {
+        $label = Find-ByNameAndType -Root $dialog -Name "File name:" -ControlType ([System.Windows.Automation.ControlType]::Text)
+        if ($null -eq $label) {
+            $label = $dialog.FindFirst([System.Windows.Automation.TreeScope]::Descendants,
+                (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::NameProperty, "File name:")))
+        }
+        if ($null -eq $label) { Start-Sleep -Milliseconds 250 }
+    }
+    if ($null -eq $label) {
+        Write-Host "`n    [diagnostic] 'File name:' label not found. Open dialog UIA tree:" -ForegroundColor Yellow
+        if (Get-Command Write-UiaTreeDump -ErrorAction SilentlyContinue) { Write-UiaTreeDump -Element $dialog }
+        throw "Could not find the 'File name:' label in the Open dialog."
+    }
     $labelRect = $label.Current.BoundingRectangle
     [System.Windows.Forms.Cursor]::Position = New-Object System.Drawing.Point([int]($labelRect.X + $labelRect.Width + 10), [int]($labelRect.Y + $labelRect.Height / 2))
     Start-Sleep -Milliseconds 150
+    Clear-ConsoleFromClickTarget
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTDOWN, 0, 0, 0, [UIntPtr]::Zero)
     [Win32TestRunner]::mouse_event([Win32TestRunner]::MOUSEEVENTF_LEFTUP, 0, 0, 0, [UIntPtr]::Zero)
     Start-Sleep -Milliseconds 150
@@ -1060,23 +1275,57 @@ function Wait-ForEditControlText {
 # Finds and clicks a button by its exact Name within a window element - thin wrapper over the same
 # Find-ByNameAndType + Invoke-ElementClick pattern used throughout this file, named explicitly for
 # conversion-test call sites (clicking "Continue" on the import console, "OK" on a message dialog).
+# Finds a button by its exact Name: a genuine Button first, else - because PowerShell's UIA client
+# often exposes a WinForms button as a Pane (CONFIRMED: the import console's Continue and the
+# wizard's OK are both Pane name='...' class='WindowsForms10.BUTTON...') - any element with that
+# Name whose ClassName contains BUTTON. Returns $null when there is none.
+# Moved here from ConversionTestHelpers.ps1 so every runner can dump a dialog's UIA tree for diagnostics.
+function Write-UiaTreeDump {
+    param(
+        [Parameter(Mandatory = $true)]$Element,
+        [int]$MaxDepth = 8,
+        [int]$MaxNodes = 120
+    )
+    $walker = [System.Windows.Automation.TreeWalker]::ControlViewWalker
+    $script:uiaDumpCount = 0
+    function Write-UiaNode {
+        param($Node, [int]$Depth)
+        if ($script:uiaDumpCount -ge $MaxNodes -or $Depth -gt $MaxDepth) { return }
+        $script:uiaDumpCount++
+        $type = try { $Node.Current.ControlType.ProgrammaticName -replace '^ControlType\.', '' } catch { "?" }
+        $name = try { $Node.Current.Name } catch { "?" }
+        $cls = try { $Node.Current.ClassName } catch { "?" }
+        $rect = try { $Node.Current.BoundingRectangle } catch { "?" }
+        $focusable = try { $Node.Current.IsKeyboardFocusable } catch { "?" }
+        Write-Host ("    {0}{1} name='{2}' class='{3}' rect={4} focusable={5}" -f ("  " * $Depth), $type, $name, $cls, $rect, $focusable) -ForegroundColor DarkGray
+        $child = $walker.GetFirstChild($Node)
+        while ($null -ne $child) {
+            Write-UiaNode -Node $child -Depth ($Depth + 1)
+            $child = $walker.GetNextSibling($child)
+        }
+    }
+    Write-UiaNode -Node $Element -Depth 0
+}
+
+function Find-ButtonByName {
+    param($Root, [string]$Name)
+    $button = Find-ByNameAndType -Root $Root -Name $Name -ControlType ([System.Windows.Automation.ControlType]::Button)
+    if ($null -ne $button) { return $button }
+    $nameCondition = New-Object System.Windows.Automation.PropertyCondition(
+        [System.Windows.Automation.AutomationElement]::NameProperty, $Name)
+    foreach ($candidate in $Root.FindAll([System.Windows.Automation.TreeScope]::Descendants, $nameCondition)) {
+        $candidateClass = try { $candidate.Current.ClassName } catch { "" }
+        if ($candidateClass -like "*BUTTON*") { return $candidate }
+    }
+    $null
+}
+
 function Invoke-ButtonByName {
     param(
         [Parameter(Mandatory = $true)]$WindowElement,
         [Parameter(Mandatory = $true)][string]$Name
     )
-    $button = Find-ByNameAndType -Root $WindowElement -Name $Name -ControlType ([System.Windows.Automation.ControlType]::Button)
-    if ($null -eq $button) {
-        # PowerShell's UIA client often exposes a WinForms button as a Pane (CONFIRMED for the import
-        # console's Continue button: Pane name='Continue' class='WindowsForms10.BUTTON...'), where
-        # Accessibility Insights shows a Button. Fall back to matching by Name + ClassName.
-        $nameCondition = New-Object System.Windows.Automation.PropertyCondition(
-            [System.Windows.Automation.AutomationElement]::NameProperty, $Name)
-        foreach ($candidate in $WindowElement.FindAll([System.Windows.Automation.TreeScope]::Descendants, $nameCondition)) {
-            $candidateClass = try { $candidate.Current.ClassName } catch { "" }
-            if ($candidateClass -like "*BUTTON*") { $button = $candidate; break }
-        }
-    }
+    $button = Find-ButtonByName -Root $WindowElement -Name $Name
     if ($null -eq $button) { throw "Could not find a '$Name' button in this window." }
     Invoke-ElementClick -Element $button
 }

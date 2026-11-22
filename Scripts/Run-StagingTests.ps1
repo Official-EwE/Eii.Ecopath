@@ -195,7 +195,7 @@ Invoke-Test "2.x - Edit and Save completes, Save becomes disabled afterward" {
 # 2.3 runs BEFORE 6.1, deliberately: CONFIRMED that once Save As switches the app to a new file, the
 # ORIGINAL $ModelPath becomes stale - a later Save writes to the Save As target, not the original,
 # making this test's own lock a no-op if it ran after 6.1.
-if ($ModelPath -and (-not $script:TestNameFilter -or "2.3 - Lock-contention dialog" -like "*$script:TestNameFilter*")) {
+if ($ModelPath -and (Test-ShouldRunTest -Name "2.3 - Lock-contention dialog")) {
     Write-Host "`n=== 2.3 - Lock-contention dialog (long hold) shows OK/Cancel ===" -ForegroundColor Yellow
     Write-Host "Automating setup: edit, lock the real file ($ModelPath) for ~6s in the background, trigger Save."
 
@@ -316,7 +316,7 @@ if ($ModelPath -and (-not $script:TestNameFilter -or "2.3 - Lock-contention dial
             Remove-Job $lockJob -Force -ErrorAction SilentlyContinue
         }
     }
-} else {
+} elseif (-not $ModelPath) {
     Invoke-ManualTest "2.3 - Lock-contention dialog (long hold) shows OK/Cancel" `
         "No -ModelPath known - hold the open model's REAL file exclusively yourself (see the test plan's appendix script, ~5+ seconds), then trigger Save. Confirm the dialog appears."
 }

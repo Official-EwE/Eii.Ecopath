@@ -34,8 +34,15 @@ param(
     [ValidateSet("x64", "x86")]
     [string]$Platform = "x64",
     [string]$Only,
-    [int]$MainWindowTimeoutSeconds = 90
+    [int]$MainWindowTimeoutSeconds = 90,
+    # Pause on a failing test (app left open) until Enter is pressed.
+    [switch]$PauseOnFailure,
+    # Skip every test before the first one whose name contains this text.
+    [string]$From
 )
+
+if ($PauseOnFailure) { $env:EWE_TEST_PAUSE_ON_FAIL = "1" }
+if ($From) { $env:EWE_TEST_FROM = $From }
 
 . (Join-Path $PSScriptRoot "TestHelpers.ps1")
 . (Join-Path $PSScriptRoot "ConversionTestHelpers.ps1")
@@ -67,7 +74,7 @@ function Invoke-ConversionTestEntry {
         [Parameter(Mandatory = $true)][string]$FileName,
         [Parameter(Mandatory = $true)][scriptblock]$Test
     )
-    if ($script:TestNameFilter -and $Name -notlike "*$script:TestNameFilter*") { return }
+    if (-not (Test-ShouldRunTest -Name $Name)) { return }
 
     if ($prereqs.Bypassed -or ($prereqs.SkippedModels -contains $FileName)) {
         $displayName = if ($script:CurrentPlatformLabel) { "[$script:CurrentPlatformLabel] $Name" } else { $Name }
@@ -179,3 +186,8 @@ if ($Platform -eq "x64") {
 }
 
 Show-TestSummary
+
+# Standalone run only (not dot-sourced by Run-AllTests): don't leave these settings behind in the PowerShell session.
+if ($MyInvocation.InvocationName -ne '.') {
+    Remove-Item Env:\EWE_TEST_PAUSE_ON_FAIL, Env:\EWE_TEST_FROM -ErrorAction SilentlyContinue
+}

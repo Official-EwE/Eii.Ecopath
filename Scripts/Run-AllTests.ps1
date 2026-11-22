@@ -16,8 +16,16 @@
 #>
 param(
     [ValidateSet("x64", "x86")]
-    [string[]]$Platforms = @("x64", "x86")
+    [string[]]$Platforms = @("x64", "x86"),
+    # Pause on a failing test (app left open) until Enter is pressed - sets EWE_TEST_PAUSE_ON_FAIL for every runner.
+    [switch]$PauseOnFailure,
+    # Skip every test before the first one whose name contains this text (restarts for each platform).
+    [string]$From
 )
+
+if ($PauseOnFailure) { $env:EWE_TEST_PAUSE_ON_FAIL = "1" }
+if ($From) { $env:EWE_TEST_FROM = $From }
+if ($From) { Write-Host "Skipping every test until one whose name contains '$From'." -ForegroundColor Yellow }
 
 . (Join-Path $PSScriptRoot "TestHelpers.ps1")
 # Named distinctly from $runStopwatch, which every dot-sourced runner below declares for itself -
@@ -38,6 +46,7 @@ $runners = @(
 
 foreach ($platform in $Platforms) {
     $script:CurrentPlatformLabel = $platform
+    $script:FromStarted = $false
     $platformStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
     foreach ($runner in $runners) {
         Write-Host "`n`n################ $runner ($platform) ################" -ForegroundColor Magenta
@@ -58,3 +67,5 @@ Show-TestSummary
 $overallStopwatch.Stop()
 Write-Host "`nGrand total (all platforms): $(Format-Duration $overallStopwatch.Elapsed)" -ForegroundColor Cyan
 Clear-TestArtifacts
+
+Remove-Item Env:\EWE_TEST_PAUSE_ON_FAIL, Env:\EWE_TEST_FROM -ErrorAction SilentlyContinue
