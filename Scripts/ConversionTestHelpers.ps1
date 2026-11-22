@@ -283,32 +283,6 @@ function Invoke-ReferralDialogTest {
 # Selects the model at -Index (0 = first, 1 = second, ...) in the wizard's grid. The checkbox itself isn't addressable, so (as
 # confirmed manually) clicking the top-left corner of the grid's value pane toggles it. That pane is
 # the first Pane sibling right after the grid's scroll bar in the UIA tree.
-function Write-UiaTreeDump {
-    param(
-        [Parameter(Mandatory = $true)]$Element,
-        [int]$MaxDepth = 8,
-        [int]$MaxNodes = 120
-    )
-    $walker = [System.Windows.Automation.TreeWalker]::ControlViewWalker
-    $script:uiaDumpCount = 0
-    function Write-UiaNode {
-        param($Node, [int]$Depth)
-        if ($script:uiaDumpCount -ge $MaxNodes -or $Depth -gt $MaxDepth) { return }
-        $script:uiaDumpCount++
-        $type = try { $Node.Current.ControlType.ProgrammaticName -replace '^ControlType\.', '' } catch { "?" }
-        $name = try { $Node.Current.Name } catch { "?" }
-        $cls = try { $Node.Current.ClassName } catch { "?" }
-        $rect = try { $Node.Current.BoundingRectangle } catch { "?" }
-        $focusable = try { $Node.Current.IsKeyboardFocusable } catch { "?" }
-        Write-Host ("    {0}{1} name='{2}' class='{3}' rect={4} focusable={5}" -f ("  " * $Depth), $type, $name, $cls, $rect, $focusable) -ForegroundColor DarkGray
-        $child = $walker.GetFirstChild($Node)
-        while ($null -ne $child) {
-            Write-UiaNode -Node $child -Depth ($Depth + 1)
-            $child = $walker.GetNextSibling($child)
-        }
-    }
-    Write-UiaNode -Node $Element -Depth 0
-}
 
 # Selects the model at -Index (0 = first, 1 = second, ...) in the wizard's grid. The checkbox itself isn't addressable, so (as
 # confirmed manually) clicking the top-left corner of the grid's value pane toggles it. That pane is
