@@ -54,7 +54,6 @@ Namespace Database
 
         ''' <summary>File name to access database.</summary>
         Private m_strFileName As String = ""
-        Private ReadOnly m_logger As ILogger = LoggingContext.CreateLogger(Of cEwEAccessDatabase)()
 
         ''' <summary>
         ''' Accumulates messages logged by Open()/Create() on a failure path - Shared (process-wide),

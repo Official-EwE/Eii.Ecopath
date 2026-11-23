@@ -591,15 +591,8 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Opt-in switch for the local working-copy staging mechanism below.
-        ''' Defaults to False: EwECore.dll is used by more than just the
-        ''' interactive ScientificInterface app (e.g. EwERunConsole, or any
-        ''' other future console/API consumer, per cCoreService), and
-        ''' staging is pure cost with no possible benefit for a caller that
-        ''' never calls Save() - it pays for a File.Copy on every open to
-        ''' guard against a corruption scenario (a live editing session
-        ''' colliding with a cloud sync client) that can't occur if nothing
-        ''' ever writes back to the source file at all.
+        ''' Opt-in switch for local working-copy staging (see below). Default False: other EwECore consumers (e.g.
+        ''' EwERunConsole) never save, so staging would only cost a File.Copy per open.
         ''' </summary>
         ''' <remarks>
         ''' One application-level flag, set once at startup by the interactive host (EwE6ApplicationFramework.Main),
@@ -632,16 +625,11 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Stages a local, disposable working copy of strRealPath. Only the
-        ''' file NAME of strRealPath is used - its directory is discarded, so
-        ''' the working folder stays flat regardless of where models are
-        ''' actually stored, per this feature's specification.
+        ''' Stages a local, disposable working copy of strRealPath. Only the file name is used, so the working folder
+        ''' stays flat.
         ''' </summary>
-        ''' <param name="strRealPath">The real (possibly cloud-synced) file
-        ''' to stage a working copy of.</param>
-        ''' <returns>The local working copy's full path. Callers should open
-        ''' their actual database connection against THIS path, not
-        ''' strRealPath.</returns>
+        ''' <param name="strRealPath">The real (possibly cloud-synced) file to copy.</param>
+        ''' <returns>The working copy's full path; open the connection against this, not strRealPath.</returns>
         ''' -------------------------------------------------------------------
         Protected Function StageLocalWorkingCopy(strRealPath As String) As String
             cEwEDatabase.CleanUpOrphanedWorkingCopies()
@@ -665,7 +653,7 @@ Namespace Database
         ' other IO errors (disk full, path too long) fail at once.
         ''' <summary>HRESULT for ERROR_SHARING_VIOLATION (0x80070020), as the signed Integer .NET exceptions actually report.</summary>
         Private Const HR_ERROR_SHARING_VIOLATION As Integer = -2147024864
-        ''' <summary>HRESULT for ERROR_LOCK_VIOLATION (0x80070021), as the signed Integer .NET exceptions actually report.</summary>
+        ''' <summary>HRESULT for ERROR_LOCK_VIOLATION (0x80070021), as .NET reports it (signed).</summary>
         Private Const HR_ERROR_LOCK_VIOLATION As Integer = -2147024863
         Private Const cPublishRetryAttempts As Integer = 6
         Private Const cPublishRetryDelayMs As Integer = 500
@@ -916,23 +904,13 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Maps a raw Ecopath database version number to a compatibility
-        ''' verdict, using the exact same thresholds Compatibility() itself
-        ''' uses.
+        ''' Maps a raw Ecopath database version to a compatibility verdict, using the thresholds of Compatibility().
         ''' </summary>
-        ''' <param name="sVersion">The raw version number (0.0 for "could
-        ''' not be determined").</param>
-        ''' <param name="sMaxDBVersion">The caller's own MaxDBVersion() -
-        ''' passed in rather than read directly, so this needs no live
-        ''' instance of its own.</param>
+        ''' <param name="sVersion">The raw version number (0.0 when it could not be determined).</param>
+        ''' <param name="sMaxDBVersion">The caller's MaxDBVersion(), passed in so no live instance is needed.</param>
         ''' <remarks>
-        ''' Extracted out of Compatibility() specifically so a version
-        ''' number obtained through a DIFFERENT route than a normal,
-        ''' connected read - e.g. from the x86 EwEImportHelper process, for
-        ''' a legacy Jet3 file ACE itself cannot open at all on a 64-bit
-        ''' process - still reaches the exact same verdict, from the exact
-        ''' same thresholds, rather than a second, separately-maintained
-        ''' copy of this comparison.
+        ''' Shared so a version obtained another way (e.g. from the x86 EwEImportHelper for a legacy Jet3 file) reaches
+        ''' the same verdict as a normal read.
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Shared Function CompatibilityFromVersion(sVersion As Single, sMaxDBVersion As Single) As eCompatibilityTypes
