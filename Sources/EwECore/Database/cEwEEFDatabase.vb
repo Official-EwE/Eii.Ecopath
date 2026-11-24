@@ -149,38 +149,29 @@ Namespace Database
                     Return eDatasourceAccessType.Failed_CannotSave
                 End If
 
-                Dim bIsStaged As Boolean = Not String.IsNullOrEmpty(Me.m_strLocalWorkingCopyPath)
-
-                ' Write the current data to the new target - this becomes
-                ' the new real/source location. If this session was never
-                ' staged (EnableLocalStaging was False, or this is a
-                ' read-only session), m_dbContext is already connected
-                ' directly to m_strFileName, so that IS the up-to-date data
-                ' to copy from - there is no separate working copy to read
-                ' instead.
-                File.Copy(If(bIsStaged, Me.m_strLocalWorkingCopyPath, Me.m_strFileName), strDatabaseTo, True)
-
-                If Not bIsStaged Then
-                    ' Not staged: reconnect directly to the new target,
-                    ' exactly as a normal non-staged Open() would - no
-                    ' working copy, matching this session's existing
-                    ' unprotected mode.
-                    EnsureDbContext(strDatabaseTo)
+                If Not String.IsNullOrEmpty(Me.m_strLocalWorkingCopyPath) Then
+                    ' Staged: keep working on the same working copy and only re-target where it publishes to. Nothing is
+                    ' closed or reopened, so a failure leaves this session exactly as it was (still targeting the
+                    ' original, still modified), and the caller can simply retry.
+                    Dim strOldTarget As String = Me.m_strRealFilePath
+                    Me.m_strRealFilePath = strDatabaseTo
+                    If Not Me.PublishLocalCopyToSource() Then
+                        Me.m_strRealFilePath = strOldTarget
+                        m_logger.LogError("SaveAs('{0}'): cannot publish the working copy there.", strDatabaseTo)
+                        Return eDatasourceAccessType.Failed_CannotSave
+                    End If
                     m_strFileName = strDatabaseTo
                     Return eDatasourceAccessType.Success
                 End If
 
-                ' Re-stage: continue working locally against a fresh working
-                ' copy of the new target, exactly as a normal Open() would.
-                ' SaveAs re-points this instance without going through
-                ' Open(), so this has to be handled here too.
-                Me.CleanUpLocalWorkingCopy()
-                Dim strWorkingCopy As String = Me.StageLocalWorkingCopy(strDatabaseTo)
-
-                EnsureDbContext(strWorkingCopy)
+                ' Not staged (EnableLocalStaging off, or read-only): the context is bound to the file itself, so copy it
+                ' and reconnect to the copy.
+                File.Copy(Me.m_strFileName, strDatabaseTo, True)
+                EnsureDbContext(strDatabaseTo)
                 m_strFileName = strDatabaseTo
                 Return eDatasourceAccessType.Success
             Catch ex As Exception
+                m_logger.LogError(ex, "SaveAs('{0}') failed: {1}", strDatabaseTo, ex.Message)
                 Return eDatasourceAccessType.Failed_Unknown
             End Try
         End Function
@@ -498,6 +489,26 @@ Namespace Database
         Public Overrides Function HasTable(strTableName As String) As Boolean
             If m_dbContext Is Nothing Then Return False
             Return m_dbContext.GetEntityTypeByTableName(strTableName) IsNot Nothing
+        End Function
+
+        Protected Overrides Function ReadVersion() As Single
+            Dim sMax As Single = 0.0!
+            Using reader As IDataReader = Me.GetReader("SELECT Version FROM UpdateLog")
+                If reader IsNot Nothing Then
+                    While reader.Read()
+                        If reader.IsDBNull(0) Then Continue While
+                        Dim dRaw As Double = Convert.ToDouble(reader.GetValue(0), Globalization.CultureInfo.InvariantCulture)
+                        ' Same rule as the Access query: above 10, restore the decimal point after the first digit.
+                        Dim s As Single = CSng(If(dRaw > 10, dRaw / Math.Pow(10, dRaw.ToString(Globalization.CultureInfo.InvariantCulture).Length - 1), dRaw))
+                        If s > sMax Then sMax = s
+                    End While
+                End If
+            End Using
+            If sMax = 0.0! Then
+                Dim v As Object = Me.GetValue("SELECT MAX(Version) FROM [Database specifications]")
+                If v IsNot Nothing Then sMax = CSng(Convert.ToDouble(v, Globalization.CultureInfo.InvariantCulture))
+            End If
+            Return sMax            
         End Function
 
         Public Overrides Function GetReader(strSQL As String) As IDataReader

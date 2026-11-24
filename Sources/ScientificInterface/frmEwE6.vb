@@ -1,6 +1,6 @@
 ' SPDX-License-Identifier: EUPL-1.2
 ' This file is part of Ecopath with Ecosim (EwE).
-' Copyright © 1991– Ecopath International Initiative (EII)
+' Copyright ï¿½ 1991ï¿½ Ecopath International Initiative (EII)
 
 Imports System.ComponentModel
 Imports System.IO
@@ -5225,8 +5225,16 @@ Public Class frmEwE6
                     Do
                         Try
                             ' Explicit output path: deriving it from the staged copy would write to the staging folder.
-                            cMdb2SqliteConverter.ConvertMdbToSqlite(strStagedCopy, strSqlitePath)
+                            cMdb2SqliteConverter.ConvertMdbToSqlite(strStagedCopy, strSqlitePath,
+                                Function(proc As Process) As Boolean
+                                    Using dlg As New Import.cImportProgressDialog(proc, "Converting to SQLite...", True)
+                                        dlg.ShowDialog(Me)
+                                        Return dlg.Aborted
+                                    End Using
+                                End Function)
                             bConverted = True
+                        Catch ex As cMdb2SqliteAbortedException
+                            Return   ' User cancelled; nothing was converted and the partial output is already removed.                            
                         Catch ex As cMdb2SqliteNetworkException
                             ' Todo: localize the message
                             If Me.AskFeedback("Converting this database to SQLite requires an internet connection (only needed once, to download the conversion tool). Please connect to the internet, then click OK to retry, or Cancel to stop.",

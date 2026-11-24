@@ -544,6 +544,19 @@ Invoke-Test "6.1 - Save As creates a new file holding the model's data" {
     $ModelPath = $script:freshInstance.ModelPath
     $script:CurrentProc = $Proc
 
+    # Looked for BEFORE the baseline below: a dialog already open at startup (e.g. a model-open error) would
+    # otherwise be absorbed into the baseline and never reported - the test would only fail later, obscurely.
+    Write-Step "Checking the fresh instance for a startup dialog" {
+        if ($script:freshInstance.StartupDialogText) {
+            throw "Unexpected dialog while opening the fresh instance's model ($ModelPath): $($script:freshInstance.StartupDialogText)"
+        }
+        $startupDialogs = @(Get-OpenWindows -ProcessId $Proc.Id | Where-Object { $_.Name -eq "Ecopath with Ecosim" })
+        if ($startupDialogs.Count -gt 0) {
+            $details = ($startupDialogs | ForEach-Object { "'$($_.Name)' ($($_.ControlType)) - '$($_.TextContent)'" }) -join "; "
+            throw "Unexpected dialog at startup of the fresh instance (model $ModelPath): $details"
+        }
+    }
+
     # Registered here, with the app freshly launched and known idle - Invoke-Test automatically
     # checks for any new dialog once this test body finishes, no explicit call needed at the end.
     Register-DialogCheck -ProcessId $Proc.Id -Baseline (Get-WindowBaseline -ProcessId $Proc.Id)
@@ -568,7 +581,11 @@ Invoke-Test "6.1 - Save As creates a new file holding the model's data" {
         $menu
     }
     $window = $script:window
-    Assert-True ($null -ne $fileMenu) "Could not find the File menu."
+    if ($null -eq $fileMenu) {
+        # Usually a modal dialog is in the way: say which, instead of a bare "not found".
+        $open = (Get-OpenWindows -ProcessId $Proc.Id | ForEach-Object { "'$($_.Name)' ($($_.ControlType)) '$($_.TextContent)'" }) -join "; "
+        Assert-True $false "Could not find the File menu. Open windows: $open"
+    }
 
     $saveAsItem = Write-Step "Clicking Save Model As..." {
         $item = Find-ByNameAndType -Root $window -Name "Save Model As..." -ControlType ([System.Windows.Automation.ControlType]::MenuItem)

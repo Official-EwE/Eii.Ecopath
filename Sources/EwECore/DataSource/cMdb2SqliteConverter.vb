@@ -40,11 +40,19 @@ Namespace Database
         ''' the staged copy's path instead of the real target, silently
         ''' writing the result to the wrong location.
         ''' </param>
+        ''' <param name="processHost">
+        ''' Optional. When given, the tool runs hidden with stdout/stderr/stdin redirected, and this callback is handed
+        ''' the started process to show its output (e.g. a progress window). It must block until the process has
+        ''' finished and return True if the user aborted it. Without it the tool runs in its own visible console.
+        ''' </param>
+        ''' <exception cref="cMdb2SqliteAbortedException">The host reported that the user aborted the conversion.</exception>
         ''' <exception cref="FileNotFoundException">The source file or mdb2sqlite.exe itself could not be found.</exception>
         ''' <exception cref="cMdb2SqliteNetworkException">mdb2sqlite.exe could not download mdbtools-win due to a network failure (first-time setup on this machine only).</exception>
         ''' <exception cref="cMdb2SqliteConversionException">mdb2sqlite.exe exited with any other non-zero code, or could not be started.</exception>
         ''' -------------------------------------------------------------------
-        Public Shared Sub ConvertMdbToSqlite(strMdbFilename As String, Optional strSqliteOutputPath As String = Nothing)
+        Public Shared Sub ConvertMdbToSqlite(strMdbFilename As String,
+                                             Optional strSqliteOutputPath As String = Nothing,
+                                             Optional processHost As Func(Of Process, Boolean) = Nothing)
 
             If Not File.Exists(strMdbFilename) Then
                 Throw New FileNotFoundException($"File not found: {strMdbFilename}", strMdbFilename)
@@ -69,32 +77,47 @@ Namespace Database
             Dim strMdbPathEscaped As String = strMdbFilename.Replace("""", "\""")
             Dim strOutPathEscaped As String = strEffectiveOutputPath.Replace("""", "\""")
 
+            Dim bHosted As Boolean = (processHost IsNot Nothing)
+            Dim strWhere As String = If(bHosted, "see the conversion window", "see console output above")
+            ' A half-written output is useless and would later be mistaken for a converted model; only remove what
+            ' this call could have created (the tool itself refuses to overwrite an existing file).
+            Dim bOutputExisted As Boolean = File.Exists(strEffectiveOutputPath)
+
             Dim psi As New ProcessStartInfo() With {
                 .FileName = strToolPath,
                 .Arguments = $"-inDatabase ""{strMdbPathEscaped}"" -outDatabase ""{strOutPathEscaped}""",
                 .UseShellExecute = False,
-                .RedirectStandardOutput = False,
-                .RedirectStandardError = False,
-                .CreateNoWindow = False,
+                .RedirectStandardOutput = bHosted,
+                .RedirectStandardError = bHosted,
+                .RedirectStandardInput = bHosted,
+                .CreateNoWindow = bHosted,
                 .WorkingDirectory = Path.GetDirectoryName(strToolPath)
             }
 
             Try
                 Using proc As Process = Process.Start(psi)
+                    If bHosted Then
+                        ' The tool has no prompt we answer (its overwrite question would otherwise wait forever):
+                        ' end of input makes Read-Host return empty, which the tool treats as "no".
+                        proc.StandardInput.Close()
+                        If processHost(proc) Then Throw New cMdb2SqliteAbortedException()
+                    End If
                     proc.WaitForExit()
 
                     If proc.ExitCode = ExitCode_NetworkFailure Then
                         Throw New cMdb2SqliteNetworkException(
-                            "mdb2sqlite.exe could not download mdbtools-win - an internet connection is required for first-time setup on this machine (see console output above).",
+                            $"mdb2sqlite.exe could not download mdbtools-win - an internet connection is required for first-time setup on this machine ({strWhere}).",
                             proc.ExitCode)
                     ElseIf proc.ExitCode <> 0 Then
                         Throw New cMdb2SqliteConversionException(
-                            $"mdb2sqlite.exe exited with code {proc.ExitCode} (see console output above)", proc.ExitCode)
+                            $"mdb2sqlite.exe exited with code {proc.ExitCode} ({strWhere})", proc.ExitCode)
                     End If
                 End Using
             Catch ex As cMdb2SqliteConversionException
+                DeletePartialOutput(strEffectiveOutputPath, bOutputExisted)
                 Throw
             Catch ex As Exception
+                DeletePartialOutput(strEffectiveOutputPath, bOutputExisted)
                 Throw New cMdb2SqliteConversionException(ex.Message, -1, ex)
             End Try
 
@@ -144,6 +167,15 @@ Namespace Database
             '     Throw New cMdb2SqliteConversionException(ex.Message, -1, ex)
             ' End Try
 
+        End Sub
+
+        Private Shared Sub DeletePartialOutput(strPath As String, bExistedBefore As Boolean)
+            If bExistedBefore Then Return
+            Try
+                If File.Exists(strPath) Then File.Delete(strPath)
+            Catch
+                ' Best effort.
+            End Try
         End Sub
 
     End Class

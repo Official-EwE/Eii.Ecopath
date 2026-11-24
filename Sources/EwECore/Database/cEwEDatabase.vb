@@ -1717,13 +1717,7 @@ Namespace Database
 
             If Me.m_sVersion = 0.0 Then
                 Try
-                    ' Try EwE6 version first
-                    ' Because of a historical bug, versions above 10 are read with the decimal point restored after the first digit; stored values are unchanged.
-                    Me.m_sVersion = CSng(Me.GetValue("SELECT MAX(IIf([Version]>10,[Version]/(10^(Len(CStr([Version]))-1)),[Version])) FROM [UpdateLog]"))
-                    If (Me.m_sVersion = 0.0) Then
-                        ' Try EwE5 version
-                        Me.m_sVersion = CSng(Me.GetValue("Select Max(Version) FROM [Database specifications]"))
-                    End If
+                    Me.m_sVersion = Me.ReadVersion()
                 Catch ex As Exception
                     Me.m_sVersion = 0.0
                 End Try
@@ -1732,6 +1726,9 @@ Namespace Database
 
         End Function
 
+        ''' <summary>Reads the raw database version using this database's own SQL dialect; 0 when unknown.</summary>
+        Protected MustOverride Function ReadVersion() As Single
+        
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Returns the current version of the connected EwE database.

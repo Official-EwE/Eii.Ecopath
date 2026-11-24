@@ -119,7 +119,7 @@ Namespace Database
         End Function
 
         Public Overrides Function MaxDBVersion() As Single
-            Throw New NotImplementedException
+            Return Me.dbAccessDatabase.MaxDBVersion()
         End Function
 
         Public Overrides Function Compact(strFileFrom As String, strFileTo As String) As eDatasourceAccessType
@@ -175,6 +175,10 @@ Namespace Database
                 m_logger)
             writer.RefCount += 1
             Return writer
+        End Function
+
+        Protected Overrides Function ReadVersion() As Single
+            Return Me.dbAccessDatabase.GetVersion()
         End Function
 
         ' Add methods to compare data retrieval between dbPrimary and dbSecondary as needed

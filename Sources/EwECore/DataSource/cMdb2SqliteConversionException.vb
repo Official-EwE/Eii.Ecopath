@@ -43,6 +43,21 @@ Namespace Database
 
     End Class
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Thrown when the user aborted a conversion that was running in a host-provided progress window.
+    ''' Not a failure: callers should simply stop, without an error message.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Class cMdb2SqliteAbortedException
+        Inherits cMdb2SqliteConversionException
+
+        Public Sub New()
+            MyBase.New("The conversion was aborted by the user.", -1)
+        End Sub
+
+    End Class
+
 End Namespace
 
 #End If

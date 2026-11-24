@@ -11,6 +11,7 @@
       1.20        Conversion with the mdb2sqlite tool folder missing -> clear error
       2.1         Save round-trip of a .ewesqlite
       2.2         Save As to an Access extension is refused
+      2.3         Save As to a .ewesqlite keeps the data and re-targets the staged working copy
       4.4         cDataSourceFactory.GetSupportedType per extension
       9.3         CanCompact is False for SQLite
       3.4         Legacy update chain under nl-NL vs en-US gives identical data
@@ -339,6 +340,33 @@ Invoke-Test "2.2 - Save As to an Access extension is refused" {
         Assert-True ($threw -or $result -eq $false -or -not (Test-Path $target)) "Save As to '$target' appears to have succeeded."
         Assert-True (-not (Test-Path $target)) "An Access file was written: $target"
     } finally { Close-Model $core }
+}
+
+Invoke-Test "2.3 - Save As to a .ewesqlite keeps the data and re-targets the working copy" {
+    $c = Get-ConvertedFixture -Fixture $firstFixture
+    $work = New-WorkCopy -Source $c.SqlitePath -Label "saveas-ok"
+    $target = Join-Path (Split-Path -Parent $work) "saved-as.ewesqlite"
+    $hashBefore = (Get-FileHash $work -Algorithm SHA256).Hash
+    # Staging is off by default in this headless host; the staged path (re-target, no reopen) needs it on.
+    $stagingProp = (Get-EwEType 'cEwEDatabase').GetProperty('EnableLocalStaging')
+    $stagingProp.SetValue($null, $true)
+    try {
+        $core = Write-Step "Loading a copy (staging on)" { Open-Model -Path $work }
+        try {
+            $before = Get-TableCounts -Core $core
+            $ok = Write-Step "Save As" { $core.Save($target) }
+            Assert-True $ok "Save($target) returned False."
+            Assert-True (Test-Path $target) "No file at the Save As target."
+            $afterSame = Get-TableCounts -Core $core
+            $diff = $before.Keys | Where-Object { $afterSame[$_] -ne $before[$_] }
+            Assert-True (-not $diff) ("The open session changed after Save As in: " + ($diff -join ", "))
+        } finally { Close-Model $core }
+    } finally { $stagingProp.SetValue($null, $false) }
+    $core = Write-Step "Reopening the Save As target" { Open-Model -Path $target }
+    try { $inTarget = Get-TableCounts -Core $core } finally { Close-Model $core }
+    $diff = $before.Keys | Where-Object { $inTarget[$_] -ne $before[$_] }
+    Assert-True (-not $diff) ("The Save As target differs from the source in: " + ($diff -join ", "))
+    Assert-True ((Get-FileHash $work -Algorithm SHA256).Hash -eq $hashBefore) "The original file was modified by Save As."
 }
 
 Invoke-Test "9.3 - CanCompact is False for SQLite" {

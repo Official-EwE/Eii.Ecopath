@@ -631,6 +631,16 @@ Namespace Database
 
         End Function
 
+        Protected Overrides Function ReadVersion() As Single
+            ' Try EwE6 version first
+            ' Because of a historical bug, versions above 10 are read with the decimal point restored after the first digit; stored values are unchanged.
+            Dim sVersion As Single = CSng(Me.GetValue("SELECT MAX(IIf([Version]>10,[Version]/(10^(Len(CStr([Version]))-1)),[Version])) FROM [UpdateLog]"))
+            If (sVersion = 0.0) Then
+                sVersion = CSng(Me.GetValue("Select Max(Version) FROM [Database specifications]"))
+            End If
+            Return sVersion
+        End Function
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Returns the current M$ Access database connection.
