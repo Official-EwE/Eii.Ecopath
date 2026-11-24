@@ -126,6 +126,11 @@ Namespace Database
                 bSucces = Me.PerformImport()
             Catch ex As Exception
                 bSucces = False
+                ' Logs the real exception, not just a generic failure - does not cover a
+                ' PerformImport() override that handles its own errors and just returns False;
+                ' that path needs its own LogMessage call where it decides to return False.
+                Me.LogMessage($"Import failed with an unhandled exception: {ex.GetType().Name}: {ex.Message}", eMessageType.DataImport, eMessageImportance.Critical, True)
+                m_logger.LogError(ex, "PerformImport threw an unhandled exception importing model '{ModelName}': {Message}", Me.m_strModelName, ex.Message)
             End Try
             Me.Close()
 
@@ -147,8 +152,14 @@ Namespace Database
             strLogfileName += "_import_log"
             strLogfileName = Path.ChangeExtension(strLogfileName, "txt")
 
-            ' Write log to text file with the same file name as the destination db name
-            'cLog.WriteTextToFile(strLogfileName, Me.m_sbLog)
+            ' Writes the full in-memory log to disk under the destination db's own name.
+            Try
+                File.WriteAllText(strLogfileName, Me.m_sbLog.ToString())
+            Catch ex As Exception
+                ' A failed log write must never mask the import's own real success/failure (bSucces,
+                ' already determined above).
+                m_logger.LogError(ex, $"Could not write import log file '{strLogfileName}': {ex.Message}")
+            End Try
 
             Return bSucces
 

@@ -4347,6 +4347,15 @@ Namespace My.Resources
         End Property
 
         '''<summary>
+        '''  Looks up a localized string similar to Outdated Ecopath 5 database.
+        '''</summary>
+        Public ReadOnly Property PROMPT_ERROR_IMPORT_EWE5_TOO_OLD_CAPTION() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_ERROR_IMPORT_EWE5_TOO_OLD_CAPTION", resourceCulture)
+            End Get
+        End Property
+
+        '''<summary>
         '''  Looks up a localized string similar to This database was last accessed by a newer release of Ecopath with Ecosim. It is advised to &lt;a href=&quot;{0}&quot;&gt;download and install a new version of EwE&lt;/a&gt;, and try again.
         '''
         '''EwE can attempt to continue and load the model in read-only mode. Be advised that important input parameters may be missing, and that you may get incomplete results. Do you wish to open the model in read-only mode?.

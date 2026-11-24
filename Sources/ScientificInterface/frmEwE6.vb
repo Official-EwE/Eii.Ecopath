@@ -974,7 +974,7 @@ Public Class frmEwE6
 
 #Region " Messages "
 
-    Private Delegate Sub SendMessageDelegate(strMsg As String, importance As eMessageImportance, component As eCoreComponentType)
+    Private Delegate Sub SendMessageDelegate(strMsg As String, importance As eMessageImportance, component As eCoreComponentType, strHyperlink As String, strCaption As String)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -983,20 +983,26 @@ Public Class frmEwE6
     ''' <param name="strMsg">Message text to send.</param>
     ''' <param name="importance">Message importance.</param>
     ''' <param name="component">Core component to represent as message origin.</param>
+    ''' <param name="strHyperlink">Optional hyperlink to include with the message.</param>
+    ''' <param name="strCaption">Optional dialog/message box caption to use for this message,
+    ''' overriding the default main-window-caption title. Leave empty to fall back to
+    ''' the normal title.</param>
     ''' -----------------------------------------------------------------------
     Public Sub SendMessage(strMsg As String,
                            Optional importance As eMessageImportance = eMessageImportance.Warning,
                            Optional component As eCoreComponentType = eCoreComponentType.External,
-                           Optional strHyperlink As String = "")
+                           Optional strHyperlink As String = "",
+                           Optional strCaption As String = "")
 
         If Me.InvokeRequired() Then
             Me.Invoke(New SendMessageDelegate(AddressOf Me.SendMessage),
-                                              New Object() {strMsg, importance, component})
+                                              New Object() {strMsg, importance, component, strHyperlink, strCaption})
             Return
         End If
 
         Dim msg As New cMessage(strMsg, eMessageType.Any, component, importance)
         msg.Hyperlink = strHyperlink
+        msg.Caption = strCaption
 
         Me.Core.Messages.SendMessage(msg)
 
@@ -1440,21 +1446,39 @@ Public Class frmEwE6
         Dim links As New cWebLinks(Me.Core)
 
         ' Get compatibility
-        comp = cDataSourceFactory.GetCompatibility(strFileName, access)
+        Dim strDetectionPath As String = ""
+        comp = cDataSourceFactory.GetCompatibility(strFileName, access, strDetectionPath)
 
-        ' Has access problems?
-        If (access <> eDatasourceAccessType.Opened) Then
+        ' A confirmed legacy Jet3 file on 64-bit never reaches access = Opened (ACE cannot open it;
+        ' GetCompatibility reads the real version via the x86 helper instead) - exempt TooOld/Importable
+        ' from the generic access-error check below for that specific case only, so the real message/
+        ' import path isn't masked. An ordinary non-Jet3 Importable file that genuinely failed to open
+        ' still reports as an access error.
+        Dim bLegacyJet3On64Bit As Boolean = cEwEAccessDatabase.IsLegacyJetFormat(strFileName) AndAlso cSystemUtils.Is64BitProcess()
+        Dim bExemptFromAccessCheck As Boolean =
+            (comp = cEwEDatabase.eCompatibilityTypes.TooOld) OrElse
+            (comp = cEwEDatabase.eCompatibilityTypes.Importable AndAlso bLegacyJet3On64Bit)
+        If (access <> eDatasourceAccessType.Opened) AndAlso Not bExemptFromAccessCheck Then
             ' #Yes: report access error
             Me.ReportFileAccessError(access, strFileName)
             Return cEwEDatabase.eCompatibilityTypes.Unknown
         End If
 
+        ' Which exact detection/routing path this file took - reported to the status
+        ' bar at the end of this function via ReportDetectedModelKind, purely as a
+        ' diagnostic aid for finding/recognizing real sample files for each distinct
+        ' branch while building automated tests for them. Not user-facing behavior;
+        ' safe to remove once that test coverage exists and this is no longer needed.
+        Dim strModelKindTag As String = ""
+
         ' Able to access ok; assess compatibility next
         Select Case comp
 
             Case cEwEDatabase.eCompatibilityTypes.TooOld
+                strModelKindTag = "TooOld-" & strDetectionPath
                 Me.SendMessage(cStringUtils.Localize(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD, links.GetURL(cWebLinks.eLinkType.Home)),
-                               strHyperlink:=links.GetURL(cWebLinks.eLinkType.Home))
+                               strHyperlink:=links.GetURL(cWebLinks.eLinkType.Home),
+                               strCaption:=My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD_CAPTION)
 
             Case cEwEDatabase.eCompatibilityTypes.Importable
 
@@ -1462,17 +1486,57 @@ Public Class frmEwE6
                     Me.AddModelMRU(strFileName)
                 End If
 
-                Dim dlg As New Import.dlgImportDatabase(Me.UIContext, strFileName)
-                If dlg.ShowDialog(Me) = DialogResult.OK Then
-                    ' Update file name
-                    strFileName = dlg.ImportedFileName
-                    comp = cEwEDatabase.eCompatibilityTypes.EwE6
+                ' A confirmed legacy Jet3 file on 64-bit cannot be opened by Import.dlgImportDatabase/
+                ' cImportWizard (same ACE mechanism this already worked around above) - route to the
+                ' x86 helper instead, which creates the target and performs the whole import itself.
+                If bLegacyJet3On64Bit Then
+
+                    strModelKindTag = "Import-x64Helper"
+                    Dim strImportedFileName As String = ""
+                    Dim strImportError As String = ""
+                    If Import.cLegacyImportLauncher.TryRunFullImport(strFileName, strImportedFileName, strImportError) Then
+                        strFileName = strImportedFileName
+                        comp = cEwEDatabase.eCompatibilityTypes.EwE6
+                    Else
+                        Dim strHyperlink As String = ""
+                        If strImportError.IndexOf("ACE.OLEDB", StringComparison.OrdinalIgnoreCase) >= 0 Then
+                            ' Missing 32-bit Access Database Engine - see EwEImportHelper's Program.vb.
+                            ' URL may need refreshing if Microsoft retires this download ID.
+                            strHyperlink = "https://www.microsoft.com/en-us/download/details.aspx?id=54920"
+                        End If
+                        Me.SendMessage(strImportError, eMessageImportance.Critical, eCoreComponentType.DataSource, strHyperlink:=strHyperlink)
+
+                        ' A partially converted target may still exist despite the overall failure -
+                        ' see TryRunFullImport's own doc comment for when strImportedFileName is set.
+                        If Not String.IsNullOrWhiteSpace(strImportedFileName) AndAlso File.Exists(strImportedFileName) Then
+                            strFileName = strImportedFileName
+                            comp = cEwEDatabase.eCompatibilityTypes.EwE6
+                        End If
+                    End If
+
+                Else
+
+                    ' Captured here, BEFORE the dialog runs, not derived from comp
+                    ' afterward: comp becomes EwE6 on a successful import, which
+                    ' would otherwise make a successful "32-bit Jet3" import
+                    ' indistinguishable from a successful "non-Jet3" one.
+                    strModelKindTag = If(cEwEAccessDatabase.IsLegacyJetFormat(strFileName), "Import-Wizard32bitJet3", "Import-WizardNonJet3")
+
+                    Dim dlg As New Import.dlgImportDatabase(Me.UIContext, strFileName)
+                    If dlg.ShowDialog(Me) = DialogResult.OK Then
+                        ' Update file name
+                        strFileName = dlg.ImportedFileName
+                        comp = cEwEDatabase.eCompatibilityTypes.EwE6
+                    End If
+
                 End If
 
             Case cEwEDatabase.eCompatibilityTypes.EwE6
+                strModelKindTag = "Current-EwE6"
                 ' Yippee
 
             Case cEwEDatabase.eCompatibilityTypes.Future
+                strModelKindTag = "Future-NewerVersion"
                 If Me.AskFeedback(cStringUtils.Localize(My.Resources.PROMPT_ERROR_IMPORT_EWE6_TOO_NEW, links.GetURL(cWebLinks.eLinkType.Home)),
                                   eMessageImportance.Question,
                                   eCoreComponentType.DataSource,
@@ -1482,6 +1546,7 @@ Public Class frmEwE6
                 End If
 
             Case cEwEDatabase.eCompatibilityTypes.Unknown
+                strModelKindTag = "Invalid-Unknown"
                 Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_INVALIDDB)
 
             Case Else
@@ -1491,9 +1556,50 @@ Public Class frmEwE6
 
         End Select
 
+        Me.ReportDetectedModelKind(strModelKindTag)
+
         Return comp
 
     End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' DIAGNOSTIC AID, not permanent product behavior: writes a short, unique,
+    ''' greppable tag to the status bar identifying exactly which detection/
+    ''' routing branch CovertToEwE6 just took for the file being opened (see its
+    ''' own strModelKindTag assignments for the full set of possible values).
+    ''' Lets a tester - human, eyeballing the status bar, or a UI-automation
+    ''' script reading it the same way this suite already reads dialog text
+    ''' elsewhere - quickly confirm which branch a given sample model file
+    ''' actually exercises, to help build out per-branch automated test
+    ''' coverage. Safe to remove once that coverage exists. Only compiled into
+    ''' DEBUG builds - a no-op in Release.
+    ''' </summary>
+    ''' <param name="strTag">One of CovertToEwE6's own strModelKindTag values;
+    ''' a blank tag (the "already this model" early-return, or a hard access
+    ''' error reported separately) is a no-op.</param>
+    ''' <remarks>
+    ''' Uses Me.m_ssMain.SetStatusText directly, NOT ShowProgress/ SendMessage:
+    ''' ShowProgress's own wait-cursor-stack bookkeeping (see "Status feedback"
+    ''' region above) can clear or overwrite arbitrary status text shortly
+    ''' after this runs, as part of the surrounding Open-model flow's own
+    ''' normal Start/Finished pair - a real risk this diagnostic accepts,
+    ''' since checking it immediately after triggering an open (the same way
+    ''' this suite already checks transient dialog text elsewhere) is the
+    ''' intended use, not relying on it staying visible indefinitely.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Private Sub ReportDetectedModelKind(strTag As String)
+        If String.IsNullOrEmpty(strTag) Then Return
+#If DEBUG Then
+        Try
+            Me.m_ssMain.SetStatusText("[ModelKind] " & strTag, 0)
+        Catch ex As Exception
+            ' Diagnostic only - never let a status-bar write become a reason
+            ' the actual model-open flow fails.
+        End Try
+#End If
+    End Sub
 
     Private Sub ReportFileAccessError(atResult As eDatasourceAccessType, strFileName As String)
 
