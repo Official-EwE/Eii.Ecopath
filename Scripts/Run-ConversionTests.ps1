@@ -72,13 +72,18 @@ param(
     # Pause on a failing test (app left open) until Enter is pressed.
     [switch]$PauseOnFailure,
     # Skip every test before the first one whose name contains this text.
-    [string]$From
+    [string]$From,
+    # Rebuild the app on the first launch, even if this PowerShell session already built it (e.g. after a branch switch).
+    [switch]$ForceBuild
 )
 
 if ($PauseOnFailure) { $env:EWE_TEST_PAUSE_ON_FAIL = "1" }
 if ($From) { $env:EWE_TEST_FROM = $From }
 
 . (Join-Path $PSScriptRoot "TestHelpers.ps1")
+# -ForceBuild: forget what this session already built, so the first launch below rebuilds once. Runners started
+# from Run-AllTests.ps1 never get the switch themselves, so they reuse the build made there.
+if ($ForceBuild) { $global:EwEBuiltProjects = @{} }
 . (Join-Path $PSScriptRoot "ConversionTestHelpers.ps1")
 $script:TestNameFilter = $Only
 $startInstanceScript = Join-Path $PSScriptRoot "Start-TestInstance.ps1"

@@ -20,7 +20,9 @@ param(
     # Pause on a failing test (app left open) until Enter is pressed - sets EWE_TEST_PAUSE_ON_FAIL for every runner.
     [switch]$PauseOnFailure,
     # Skip every test before the first one whose name contains this text (restarts for each platform).
-    [string]$From
+    [string]$From,
+    # Rebuild the app on the first launch, even if this PowerShell session already built it (e.g. after a branch switch).
+    [switch]$ForceBuild
 )
 
 if ($PauseOnFailure) { $env:EWE_TEST_PAUSE_ON_FAIL = "1" }
@@ -28,6 +30,8 @@ if ($From) { $env:EWE_TEST_FROM = $From }
 if ($From) { Write-Host "Skipping every test until one whose name contains '$From'." -ForegroundColor Yellow }
 
 . (Join-Path $PSScriptRoot "TestHelpers.ps1")
+# -ForceBuild here clears the build cache once; every runner below then builds each platform at most once.
+if ($ForceBuild) { $global:EwEBuiltProjects = @{} }
 # Named distinctly from $runStopwatch, which every dot-sourced runner below declares for itself -
 # since dot-sourcing shares scope, reusing that same name here would get clobbered the moment the
 # next runner starts.

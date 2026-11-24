@@ -21,10 +21,15 @@ param(
     [ValidateSet("x64", "x86")]
     [string]$Platform = "x64",
     [string]$Only,
-    [int]$MainWindowTimeoutSeconds = 90
+    [int]$MainWindowTimeoutSeconds = 90,
+    # Rebuild the app on the first launch, even if this PowerShell session already built it (e.g. after a branch switch).
+    [switch]$ForceBuild
 )
 
 . (Join-Path $PSScriptRoot "TestHelpers.ps1")
+# -ForceBuild: forget what this session already built, so the first launch below rebuilds once. Runners started
+# from Run-AllTests.ps1 never get the switch themselves, so they reuse the build made there.
+if ($ForceBuild) { $global:EwEBuiltProjects = @{} }
 $runStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 $script:TestNameFilter = $Only
 $startInstanceScript = Join-Path $PSScriptRoot "Start-TestInstance.ps1"
