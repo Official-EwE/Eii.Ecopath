@@ -22,6 +22,10 @@
     How long to wait for the app's main window to appear when auto-launching. Default 90 - raise
     this on a slower machine if launches are timing out before the window ever appears.
 
+.PARAMETER ForceBuild
+    Rebuild the app even if this PowerShell session already built it - needed after switching branches or
+    editing source, since the build is otherwise skipped once per session.
+
 .EXAMPLE
     .\Run-StagingTests.ps1 -Platform x86
 
@@ -39,10 +43,15 @@ param(
     [ValidateSet("x64", "x86")]
     [string]$Platform = "x64",
     [string]$Only,
-    [int]$MainWindowTimeoutSeconds = 90
+    [int]$MainWindowTimeoutSeconds = 90,
+    # Rebuild the app on the first launch, even if this PowerShell session already built it (e.g. after a branch switch).
+    [switch]$ForceBuild
 )
 
 . (Join-Path $PSScriptRoot "TestHelpers.ps1")
+# -ForceBuild: forget what this session already built, so the first launch below rebuilds once. Runners started
+# from Run-AllTests.ps1 never get the switch themselves, so they reuse the build made there.
+if ($ForceBuild) { $global:EwEBuiltProjects = @{} }
 $runStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 $script:TestNameFilter = $Only
 $repoRoot = Split-Path -Parent $PSScriptRoot
@@ -472,7 +481,10 @@ function Get-ModelStats {
     param([string]$Path)
     $stats = [pscustomobject]@{ Size = (Get-Item $Path).Length; Counts = $null }
     $tables = "EcopathGroup", "EcopathFleet", "EcopathCatch", "EcopathDietComp"
-    foreach ($provider in "Microsoft.ACE.OLEDB.12.0", "Microsoft.Jet.OLEDB.4.0") {
+    # OLE DB only reads Access files; other formats (e.g. .ewesqlite) fall back to the size check.
+    $isAccess = [IO.Path]::GetExtension($Path).ToLower() -in ".mdb", ".accdb", ".ewemdb", ".eweaccdb"
+    $providers = if ($isAccess) { @("Microsoft.ACE.OLEDB.12.0", "Microsoft.Jet.OLEDB.4.0") } else { @() }
+    foreach ($provider in $providers) {
         $conn = $null
         try {
             $conn = New-Object System.Data.OleDb.OleDbConnection("Provider=$provider;Data Source=$Path;Mode=Read;")
@@ -536,29 +548,10 @@ Invoke-Test "6.1 - Save As creates a new file holding the model's data" {
     # checks for any new dialog once this test body finishes, no explicit call needed at the end.
     Register-DialogCheck -ProcessId $Proc.Id -Baseline (Get-WindowBaseline -ProcessId $Proc.Id)
 
-    # No extension typed into the dialog, and none hardcoded here: CONFIRMED (reproducible on both
-    # platforms) that "Save Model As..." only allows saving in the SAME format the model was
-    # originally loaded in - typing a different extension doesn't produce a file at that exact path,
-    # the dialog applies the correct one regardless of what's typed.
-    #
-    # That "same format" is NOT simply the source file's own extension, though - confirmed directly
-    # from cDataSourceFactory.vb's own source: GetSupportedType() checks cSystemUtils.Is64BitProcess()
-    # specifically inside the ".mdb"/".ewemdb" case, resolving to Access2007 (-> .eweaccdb, via
-    # GetDefaultExtension) on a 64-bit process, but Access2003 (-> .ewemdb) on a 32-bit one. An
-    # .accdb/.eweaccdb source has no such branch - always Access2007 (-> .eweaccdb). This mirrors
-    # that exact logic rather than assuming the source extension carries straight through, which is
-    # what an earlier version of this test got wrong for x64.
-    $targetExtension = Write-Step "Determining the target extension Save As will actually use" {
-        $sourceExtension = [IO.Path]::GetExtension($ModelPath).ToLower()
-        switch ($sourceExtension) {
-            { $_ -in ".mdb", ".ewemdb" } { if ($Platform -eq "x64") { ".eweaccdb" } else { ".ewemdb" } }
-            { $_ -in ".accdb", ".eweaccdb" } { ".eweaccdb" }
-            default { throw "Don't know what Save As would target for source extension '$sourceExtension' - update this test's mirror of cDataSourceFactory's own logic." }
-        }
-    }
+    # No extension typed into the dialog, and none predicted here: "Save Model As..." applies the extension of
+    # the format the model was loaded in, whatever is typed. The created file is located by its base name.
     $targetPathNoExt = Join-Path $env:TEMP "EwE-TestRun\SaveAs-$(Get-Random)"
-    $targetPath = "$targetPathNoExt$targetExtension"
-    if (Test-Path $targetPath) { Remove-Item $targetPath -Force }
+    $targetPath = $null
 
     # Taken before the Save As: the app works on a staged copy, so the real source file is free to read.
     $sourceStats = Write-Step "Reading the source model's size and row counts" { Get-ModelStats -Path $ModelPath }
@@ -618,14 +611,21 @@ Invoke-Test "6.1 - Save As creates a new file holding the model's data" {
         [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
     }
 
-    # Polling, not a single fixed-delay check: the x86 build has shown this needing more time than
-    # x64 did in the same spot - rather than just guessing a bigger fixed number (which could still
-    # be wrong on some other machine), poll for up to 10 seconds.
+    # Polled, not a fixed delay: the x86 build has needed more time than x64 here (up to 10 seconds).
     Write-Step "Confirming the model was saved to the target path" {
-        $targetDeadline = (Get-Date).AddSeconds(10)
-        while (-not (Test-Path $targetPath) -and (Get-Date) -lt $targetDeadline) { Start-Sleep -Milliseconds 300 }
-        Assert-True (Test-Path $targetPath) "Expected file was not created after ~10 seconds: $targetPath"
+        $targetFolder = Split-Path $targetPathNoExt
+        $targetLeaf = Split-Path -Leaf $targetPathNoExt
+        $deadline = (Get-Date).AddSeconds(10)
+        do {
+            $found = Get-ChildItem -Path $targetFolder -Filter "$targetLeaf.*" -File -ErrorAction SilentlyContinue |
+                Where-Object { $_.Extension -notin ".marker", ".publishing" } | Select-Object -First 1
+            if (-not $found) { Start-Sleep -Milliseconds 300 }
+        } while (-not $found -and (Get-Date) -lt $deadline)
+        Assert-True ($null -ne $found) "No file named '$targetLeaf.*' was created after ~10 seconds in $targetFolder"
+        $script:targetPath = $found.FullName
     }
+    $targetPath = $script:targetPath
+    Write-Host "    Target file: $targetPath"
 
     # The target file exists as soon as Save As creates an empty template, so existence proves nothing: the
     # model's own data has to be in it. Polled, since the copy and the follow-up save finish after the file appears.

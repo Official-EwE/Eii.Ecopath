@@ -37,10 +37,15 @@ param(
     [string]$Platform = "x64",
     [string]$Configuration = "Debug",
     [string]$SourceModelPath,
-    [string]$Only
+    [string]$Only,
+    # Rebuild the app on the first launch, even if this PowerShell session already built it (e.g. after a branch switch).
+    [switch]$ForceBuild
 )
 
 . (Join-Path $PSScriptRoot "TestHelpers.ps1")
+# -ForceBuild: forget what this session already built, so the first launch below rebuilds once. Runners started
+# from Run-AllTests.ps1 never get the switch themselves, so they reuse the build made there.
+if ($ForceBuild) { $global:EwEBuiltProjects = @{} }
 $runStopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 $script:TestNameFilter = $Only
 
@@ -55,7 +60,7 @@ $binFolder = Join-Path $RepoRoot "Sources\EwECore\bin\$Platform\$Configuration\n
 $coreDllPath = Join-Path $binFolder "EwECore.dll"
 
 Invoke-Test "1.3 - A caller that never sets EnableLocalStaging creates no working copy" {
-    if (-not (Test-Path $coreDllPath)) {
+    if ($ForceBuild -or -not (Test-Path $coreDllPath)) {
         Write-Step "Building EwECore.dll ($Configuration|$Platform)" {
             $vbproj = Join-Path $RepoRoot "Sources\EwECore\EwECore.vbproj"
             dotnet build $vbproj -c $Configuration -p:Platform=$Platform | ForEach-Object { Write-Host $_ }
