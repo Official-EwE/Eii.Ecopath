@@ -229,9 +229,12 @@ above.)
   Save As to a path another session already has open as its own target -
   expect the same no-degrade behavior as §1.2, just reached via Save
   As instead of Open.
-  - *Automated: the new target file gets created successfully ("6.1"),
-    and Save As onto a path another instance already has open completes
-    with no degrade ("6.2").*
+  - *Automated: the new target file gets created and holds the source
+    model's data - file size and, where an OLE DB provider is available,
+    row counts of the group, fleet, catch and diet tables must match the
+    source, so an empty template fails ("6.1"). Save As onto a path
+    another instance already has open completes with no degrade
+    ("6.2").*
   - *Not automated: confirming the OLD working copy is actually cleaned
     up after Save As, and that the original file remains openable by a
     second instance afterward.*

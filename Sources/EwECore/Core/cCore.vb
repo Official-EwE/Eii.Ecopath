@@ -3611,7 +3611,8 @@ Public Class cCore
                 ' #Success! The data source has been changed this new location, now save data in memory to the new data source.
                 bSucces = Me.SaveChanges(True)
             Else
-                bSucces = False ' SaveAs failed (e.g. unsupported target): do not report success
+                ' Save As failed: the session still targets the original and stays modified, so Save remains available
+                bSucces = False
             End If
         Else
             bSucces = Me.SaveChanges(True)
