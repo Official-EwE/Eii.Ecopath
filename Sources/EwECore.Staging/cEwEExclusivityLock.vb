@@ -10,22 +10,12 @@ Namespace Database
 
     ''' =======================================================================
     ''' <summary>
-    ''' OS-level exclusivity guard, based on a lock file opened with
-    ''' <see cref="FileShare.None"/>. Used both as the write-exclusivity
-    ''' lock for a shared data file, and as the liveness marker for a
-    ''' session's local staged working copy of that file - see
-    ''' cEwEAccessDatabase.StageLocalWorkingCopy.
+    ''' Liveness marker for a staged working copy: the "{copy}.marker" file, held open with
+    ''' <see cref="FileShare.None"/> while the owner is alive, so the orphan sweep leaves the copy alone.
     ''' </summary>
     ''' <remarks>
-    ''' <para>This deliberately does NOT use SQLite's own file locking
-    ''' (<c>PRAGMA locking_mode</c>). Guarding against genuinely external
-    ''' tools (e.g. DB Browser for SQLite) opening the file concurrently is
-    ''' out of scope for this class. This class
-    ''' only arbitrates between multiple EwECore-based sessions.</para>
-    ''' <para>Recovery from a crashed holder is automatic: the OS releases
-    ''' the file handle the instant the holding process dies, so the next
-    ''' <see cref="TryAcquire"/> call from anywhere just succeeds. No
-    ''' PID/heartbeat bookkeeping is needed.</para>
+    ''' Deliberately not SQLite's own locking, and it never guards the data file itself. A crashed holder needs no
+    ''' cleanup: the OS releases the handle when the process dies, so the next TryAcquire simply succeeds.
     ''' </remarks>
     ''' =======================================================================
     Public Class cEwEExclusivityLock
@@ -39,10 +29,8 @@ Namespace Database
         ''' <summary>
         ''' Attempt to become the exclusive holder of <paramref name="strLockFilePath"/>.
         ''' </summary>
-        ''' <param name="strLockFilePath">Full path of the lock file itself
-        ''' (caller decides the name/suffix - e.g. "model.ewesqlite.lock" for
-        ''' a write-exclusivity lock, or "{copy}.marker" for a read-only-copy
-        ''' liveness marker).</param>
+        ''' <param name="strLockFilePath">Full path of the marker file itself,
+        ''' i.e. "{staged copy}.marker".</param>
         ''' <returns>True if the lock was acquired (or was already held by
         ''' this instance); False if another session currently holds it.</returns>
         ''' -------------------------------------------------------------------
@@ -56,21 +44,19 @@ Namespace Database
                 Try
                     File.SetAttributes(Me.m_strLockPath, FileAttributes.Hidden)
                 Catch
-                    ' Cosmetic only (keeps the lock file out of the way on a
-                    ' shared folder) - never let this fail the actual lock.
+                    ' Cosmetic only; must never fail the lock.
                 End Try
                 Return True
 
             Catch ex As IOException
                 ' Sharing violation: someone else already holds it.
-                m_logger.LogInformation("Exclusivity lock '{0}' is currently held by another session.", strLockFilePath)
+                m_logger.LogInformation("Marker '{0}' is currently held by another session.", strLockFilePath)
                 Me.m_lockStream = Nothing
                 Return False
 
             Catch ex As UnauthorizedAccessException
-                ' e.g. a read-only share/permissions issue - treat the same
-                ' as "cannot claim exclusivity", not as a hard error.
-                m_logger.LogWarning(ex, "Unable to create exclusivity lock file '{0}': {1}", strLockFilePath, ex.Message)
+                ' e.g. read-only share: same as "cannot claim", not a hard error.
+                m_logger.LogWarning(ex, "Unable to create marker file '{0}': {1}", strLockFilePath, ex.Message)
                 Me.m_lockStream = Nothing
                 Return False
             End Try
@@ -100,9 +86,7 @@ Namespace Database
                 Me.m_lockStream = Nothing
             End Try
             Try
-                ' Best-effort tidy-up. If this fails, an inert leftover lock
-                ' file is harmless - the next TryAcquire on any machine just
-                ' reopens and truncates it via OpenOrCreate.
+                ' Best-effort; a leftover marker is inert and reopened by the next TryAcquire.
                 If Not String.IsNullOrEmpty(Me.m_strLockPath) AndAlso File.Exists(Me.m_strLockPath) Then
                     File.Delete(Me.m_strLockPath)
                 End If

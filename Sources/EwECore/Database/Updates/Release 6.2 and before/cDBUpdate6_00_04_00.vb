@@ -1,6 +1,6 @@
 ' SPDX-License-Identifier: EUPL-1.2
 ' This file is part of Ecopath with Ecosim (EwE).
-' Copyright © 1991– Ecopath International Initiative (EII)
+' Copyright ï¿½ 1991ï¿½ Ecopath International Initiative (EII)
 
 Imports EwECore.Database
 
@@ -28,7 +28,7 @@ Friend Class cDBUpdate6_00_04_00
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
 
         Dim reader As IDataReader = Nothing
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim writer As IEwEDbWriter = Nothing
         Dim drow As DataRow = Nothing
         Dim strDataset As String = ""
         Dim strDatasetLast As String = ""

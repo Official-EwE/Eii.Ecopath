@@ -193,14 +193,14 @@ Namespace Database
         Private Function ImportModel() As Boolean
 
             Dim md As Ecobase.cModelData = Me.m_data.Model
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim strUnit As String = ""
             Dim unitCurrency As eUnitCurrencyType = 0
             Dim unitTime As eUnitTimeType = 0
             Dim bSucces As Boolean = True
 
-            Me.m_dbTarget.Execute("DELETE * FROM EcopathModel")
+            Me.m_dbTarget.Execute("DELETE FROM EcopathModel")
             writer = Me.m_dbTarget.GetWriter("EcopathModel")
 
             Try
@@ -265,12 +265,12 @@ Namespace Database
         Private Function ImportGroups() As Boolean
 
             Dim gd As Ecobase.cGroupData = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim sTemp As Single = 0.0
             Dim bSucces As Boolean = True
 
-            Me.m_dbTarget.Execute("DELETE * FROM EcopathGroup")
+            Me.m_dbTarget.Execute("DELETE FROM EcopathGroup")
             writer = Me.m_dbTarget.GetWriter("EcopathGroup")
 
             Try
@@ -339,7 +339,7 @@ Namespace Database
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
-            Me.m_dbTarget.Execute("DELETE * FROM Stanza")
+            Me.m_dbTarget.Execute("DELETE FROM Stanza")
 
             writerStanza = Me.m_dbTarget.GetWriter("Stanza")
             writerLifeStages = Me.m_dbTarget.GetWriter("StanzaLifeStage")
@@ -397,11 +397,11 @@ Namespace Database
 
             Dim pred As Ecobase.cGroupData = Nothing
             Dim diet As Ecobase.cDietData = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
-            Me.m_dbTarget.Execute("DELETE * FROM EcopathDietComp")
+            Me.m_dbTarget.Execute("DELETE FROM EcopathDietComp")
             writer = Me.m_dbTarget.GetWriter("EcopathDietComp")
 
             Try
@@ -435,12 +435,12 @@ Namespace Database
         Private Function ImportFleets() As Boolean
 
             Dim fd As Ecobase.cFleetData = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim i As Integer = 0
             Dim bSucces As Boolean = True
 
-            Me.m_dbTarget.Execute("DELETE * FROM EcopathFleet")
+            Me.m_dbTarget.Execute("DELETE FROM EcopathFleet")
             writer = Me.m_dbTarget.GetWriter("EcopathFleet")
 
             Try
@@ -474,7 +474,7 @@ Namespace Database
 
             Dim fd As Ecobase.cFleetData = Nothing
             Dim cd As Ecobase.cCatchData = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
@@ -502,7 +502,7 @@ Namespace Database
                 Next
             Next
 
-            Me.m_dbTarget.Execute("DELETE * FROM EcopathCatch")
+            Me.m_dbTarget.Execute("DELETE FROM EcopathCatch")
             writer = Me.m_dbTarget.GetWriter("EcopathCatch")
 
             Try
@@ -541,11 +541,11 @@ Namespace Database
 
             Dim fd As Ecobase.cFleetData = Nothing
             Dim dd As Ecobase.cDiscardFateData = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
-            Me.m_dbTarget.Execute("DELETE * FROM EcopathDiscardFate")
+            Me.m_dbTarget.Execute("DELETE FROM EcopathDiscardFate")
             writer = Me.m_dbTarget.GetWriter("EcopathDiscardFate")
 
             Try
@@ -576,12 +576,12 @@ Namespace Database
             Dim md As Ecobase.cModelData = Me.m_data.Model
             Dim pd As Ecobase.cPedigreeData = Nothing
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim i As Integer = 0
             Dim bSucces As Boolean = True
 
-            Me.m_dbTarget.Execute("DELETE * FROM Pedigree")
+            Me.m_dbTarget.Execute("DELETE FROM Pedigree")
             writer = Me.m_dbTarget.GetWriter("Pedigree")
 
             Try
@@ -621,11 +621,11 @@ Namespace Database
             Dim gd As Ecobase.cGroupData = Nothing
             Dim pd As Ecobase.cPedigreeAssignmentData = Nothing
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
-            bSucces = Me.m_dbTarget.Execute("DELETE * FROM EcopathGroupPedigree")
+            bSucces = Me.m_dbTarget.Execute("DELETE FROM EcopathGroupPedigree")
             writer = Me.m_dbTarget.GetWriter("EcopathGroupPedigree")
 
             Try

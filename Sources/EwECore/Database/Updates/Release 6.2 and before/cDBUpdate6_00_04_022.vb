@@ -1,6 +1,6 @@
 ' SPDX-License-Identifier: EUPL-1.2
 ' This file is part of Ecopath with Ecosim (EwE).
-' Copyright © 1991– Ecopath International Initiative (EII)
+' Copyright ï¿½ 1991ï¿½ Ecopath International Initiative (EII)
 
 Imports EwECore.Database
 
@@ -62,7 +62,7 @@ Friend Class cDBUpdate6_00_04_022
 
     Private Function AddDiscardMortality(db As cEwEDatabase) As Boolean
 
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim writer As IEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
         Dim bSucces As Boolean = True
 
@@ -88,7 +88,7 @@ Friend Class cDBUpdate6_00_04_022
 
     Private Function UpdateEcosimFleets(db As cEwEDatabase) As Boolean
 
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim writer As IEwEDbWriter = Nothing
         Dim dt As DataTable = Nothing
         Dim bSucces As Boolean = True
 
@@ -145,7 +145,7 @@ Friend Class cDBUpdate6_00_04_022
     Private Function FlipVulMult(db As cEwEDatabase) As Boolean
 
         Dim reader As IDataReader = Nothing
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim writer As IEwEDbWriter = Nothing
         Dim drow As DataRow = Nothing
         Dim entry As cVulRowRecord = Nothing
         Dim lEntries As New List(Of cVulRowRecord)
@@ -164,7 +164,7 @@ Friend Class cDBUpdate6_00_04_022
                 End While
                 db.ReleaseReader(reader)
 
-                db.Execute("DELETE * FROM EcosimScenarioForcingMatrix")
+                db.Execute("DELETE FROM EcosimScenarioForcingMatrix")
 
                 writer = db.GetWriter("EcoSimScenarioForcingMatrix")
                 For Each entry In lEntries
@@ -204,7 +204,7 @@ Friend Class cDBUpdate6_00_04_022
     Private Function FlipPredPreyShapes(db As cEwEDatabase) As Boolean
 
         Dim reader As IDataReader = Nothing
-        Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+        Dim writer As IEwEDbWriter = Nothing
         Dim drow As DataRow = Nothing
         Dim entry As cPredPreyShapeRowRecord = Nothing
         Dim lEntries As New List(Of cPredPreyShapeRowRecord)
@@ -224,7 +224,7 @@ Friend Class cDBUpdate6_00_04_022
                 End While
                 db.ReleaseReader(reader)
 
-                db.Execute("DELETE * FROM EcosimScenarioPredPreyShape")
+                db.Execute("DELETE FROM EcosimScenarioPredPreyShape")
 
                 writer = db.GetWriter("EcosimScenarioPredPreyShape")
                 For Each entry In lEntries

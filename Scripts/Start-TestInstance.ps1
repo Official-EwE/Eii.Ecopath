@@ -156,12 +156,32 @@ if ($SkipMainWindowWait) {
     # the exact same GUID reappeared across two separate runs, which is what exposed this.
     $stagedCopyPath = $null
     $stagedDeadline = (Get-Date).AddSeconds(30)
+    $startupDialogText = $null
     while ($null -eq $stagedCopyPath -and (Get-Date) -lt $stagedDeadline) {
         $newMatch = Get-StagedCopies | Where-Object { $_.Name -like "Temp$baseName*" -and $_.FullName -notin $copiesBefore } | Select-Object -First 1
-        if ($newMatch) { $stagedCopyPath = $newMatch.FullName }
-        else { Start-Sleep -Milliseconds 300 }
+        if ($newMatch) { $stagedCopyPath = $newMatch.FullName; break }
+        # A modal dialog (e.g. a model-open error) means no staged copy will ever appear: report it now, with its
+        # text, instead of waiting out the full 30 seconds.
+        try {
+            $dlg = [System.Windows.Automation.AutomationElement]::RootElement.FindFirst(
+                [System.Windows.Automation.TreeScope]::Children,
+                (New-Object System.Windows.Automation.AndCondition(@(
+                    (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ProcessIdProperty, $proc.Id)),
+                    (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::NameProperty, "Ecopath with Ecosim")),
+                    (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::Window))))))
+            if ($null -ne $dlg) {
+                $texts = $dlg.FindAll([System.Windows.Automation.TreeScope]::Descendants,
+                    (New-Object System.Windows.Automation.PropertyCondition([System.Windows.Automation.AutomationElement]::ControlTypeProperty, [System.Windows.Automation.ControlType]::Text)))
+                $startupDialogText = (@($texts | ForEach-Object { $_.Current.Name }) -join " ")
+                break
+            }
+        } catch { }
+        Start-Sleep -Milliseconds 300
     }
-    if (-not $stagedCopyPath) {
+    if ($null -ne $startupDialogText) {
+        Write-Host "Unexpected dialog while opening '$workingModelPath': $startupDialogText" -ForegroundColor Red
+        Write-Host "No staged copy will appear while it is open - StagedCopyPath will be `$null." -ForegroundColor Yellow
+    } elseif (-not $stagedCopyPath) {
         Write-Host "Could not confirm a NEW staged copy for '$baseName' within 30 seconds - StagedCopyPath will be `$null." -ForegroundColor Yellow
     }
 }
@@ -171,4 +191,5 @@ return [PSCustomObject]@{
     ModelPath              = $workingModelPath
     InitialModelTimestamp  = $initialModelTimestamp
     StagedCopyPath         = $stagedCopyPath
+    StartupDialogText      = $startupDialogText   # text of an unexpected modal dialog seen while opening, else $null
 }

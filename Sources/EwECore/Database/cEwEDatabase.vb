@@ -6,6 +6,7 @@ Imports System.Data.OleDb
 Imports System.Data.SqlClient
 Imports System.Diagnostics
 Imports System.IO
+Imports System.Reflection
 Imports System.Runtime.InteropServices
 Imports EwEUtils.Utilities
 Imports Microsoft.Extensions.Logging
@@ -35,7 +36,17 @@ Namespace Database
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Class cEwEDbWriter
-            Implements IDisposable
+            Implements IDisposable, IEwEDbWriter
+
+            ''' <summary>Reference count, used by GetWriter/ReleaseWriter bookkeeping.</summary>
+            Public Property RefCount As Integer Implements IEwEDbWriter.RefCount
+                Get
+                    Return Me.m_refcount
+                End Get
+                Set(value As Integer)
+                    Me.m_refcount = value
+                End Set
+            End Property
 
             ''' <summary>Database to write to</summary>
             Private m_db As cEwEDatabase = Nothing
@@ -155,7 +166,7 @@ Namespace Database
             ''' the writer; the writer is left open for further database operations.
             ''' </summary>
             ''' ---------------------------------------------------------------
-            Public Function Commit() As Boolean
+            Public Function Commit() As Boolean Implements IEwEDbWriter.Commit
 
                 ' Optimizations
                 If Not Me.IsConnected Then Return False
@@ -181,7 +192,7 @@ Namespace Database
             ''' <param name="bSaveChanges">States whether changes need to be saved (true)
             ''' or discarded (false).</param>
             ''' ---------------------------------------------------------------
-            Public Function Disconnect(Optional bSaveChanges As Boolean = True) As Boolean
+            Public Function Disconnect(Optional bSaveChanges As Boolean = True) As Boolean Implements IEwEDbWriter.Disconnect
 
                 Dim bSucces As Boolean = False
                 If Not Me.IsConnected Then Return bSucces
@@ -211,7 +222,7 @@ Namespace Database
             ''' </summary>
             ''' <returns>True if connected.</returns>
             ''' ---------------------------------------------------------------
-            Public Function IsConnected() As Boolean
+            Public Function IsConnected() As Boolean Implements IEwEDbWriter.IsConnected
                 Return Me.m_apt IsNot Nothing
             End Function
 
@@ -221,7 +232,7 @@ Namespace Database
             ''' ''' </summary>
             ''' <returns>True if disposed.</returns>
             ''' ---------------------------------------------------------------
-            Public Function IsDisposed() As Boolean
+            Public Function IsDisposed() As Boolean Implements IEwEDbWriter.IsDisposed
                 Return Me.m_bDisposed
             End Function
 
@@ -230,11 +241,11 @@ Namespace Database
             ''' Returns an empty row for the given table to populate values into.
             ''' </summary>
             ''' <returns>An empty row</returns>
-            ''' <remarks>Note that this empty row is not yet added to the table. 
+            ''' <remarks>Note that this empty row is not yet added to the table.
             ''' If the row is populated to satisfaction, call <see cref="AddRow">AddRow</see>
             ''' to add it to the the list of rows waiting to be added to the database.</remarks>
             ''' ---------------------------------------------------------------
-            Public Function NewRow() As DataRow
+            Public Function NewRow() As DataRow Implements IEwEDbWriter.NewRow
                 Try
                     Return Me.m_dt.NewRow()
                 Catch ex As Exception
@@ -255,7 +266,7 @@ Namespace Database
             ''' row sequence during deletes.</para>
             ''' </remarks>
             ''' ---------------------------------------------------------------
-            Public Sub AddRow(drow As DataRow)
+            Public Sub AddRow(drow As DataRow) Implements IEwEDbWriter.AddRow
                 'Me.FixStringLengths(drow)
                 Me.m_dt.Rows.Add(drow)
             End Sub
@@ -273,7 +284,7 @@ Namespace Database
             ''' row sequence during additions.</para>
             ''' </remarks>
             ''' ---------------------------------------------------------------
-            Public Function RemoveRow(drow As DataRow) As Boolean
+            Public Function RemoveRow(drow As DataRow) As Boolean Implements IEwEDbWriter.RemoveRow
                 Me.m_dt.Rows.Remove(drow)
                 Return True
             End Function
@@ -286,7 +297,7 @@ Namespace Database
             ''' <returns>The row</returns>
             ''' <remarks>This method might not be necessary?</remarks>
             ''' ---------------------------------------------------------------
-            Public Function GetRow(nRow As Integer) As DataRow
+            Public Function GetRow(nRow As Integer) As DataRow Implements IEwEDbWriter.GetRow
                 Return Me.m_dt.Rows(nRow)
             End Function
 
@@ -318,7 +329,7 @@ Namespace Database
             ''' </summary>
             ''' <returns></returns>
             ''' ---------------------------------------------------------------
-            Public Function GetDataTable() As DataTable
+            Public Function GetDataTable() As DataTable Implements IEwEDbWriter.GetDataTable
                 Return Me.m_dt
             End Function
 
@@ -328,14 +339,14 @@ Namespace Database
             ''' </summary>
             ''' <returns></returns>
             ''' ---------------------------------------------------------------
-            Public Function GetTableName() As String
+            Public Function GetTableName() As String Implements IEwEDbWriter.GetTableName
                 Return Me.m_strTable
             End Function
 
             ''' ---------------------------------------------------------------
             ''' <summary>
-            ''' Helper method; replaces DBNull values that are specified as not 
-            ''' Nullable in the underlying Access database schema with the default 
+            ''' Helper method; replaces DBNull values that are specified as not
+            ''' Nullable in the underlying Access database schema with the default
             ''' value in the schema.
             ''' </summary>
             ''' <param name="drow">The row to fix.</param>
@@ -444,8 +455,8 @@ Namespace Database
 
             ''' ---------------------------------------------------------------
             ''' <summary>
-            ''' Helper method; replaces DBNull values that are specified as not 
-            ''' nullable in the underlying Access database schema with the default 
+            ''' Helper method; replaces DBNull values that are specified as not
+            ''' nullable in the underlying Access database schema with the default
             ''' value in the schema.
             ''' </summary>
             ''' <param name="drow">The row to fix.</param>
@@ -585,7 +596,7 @@ Namespace Database
         ''' </summary>
         ''' <remarks>
         ''' One application-level flag, set once at startup by the interactive host (EwE6ApplicationFramework.Main),
-        ''' rather than a parameter on every Open() call.
+        ''' rather than a parameter on every Open() call. Other EwECore consumers keep the default: no staging.
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Shared Property EnableLocalStaging As Boolean = False
@@ -597,7 +608,7 @@ Namespace Database
         ''' <remarks>
         ''' <para>Cloud-sync clients (OneDrive, Dropbox) can rewrite an open file and corrupt a database mid-save. When
         ''' EnableLocalStaging is True, every Open() for writing connects to a private copy under
-        ''' "%LocalAppData%\Ecopath with Ecosim\DBs\" instead of the real file; when False it uses the real file.</para>
+        ''' "%LocalAppData%\Ecopath with Ecosim\DBs\" instead of the real file. When False, Open() uses the real file.</para>
         ''' <para>Save publishes the copy back over the real file (PublishLocalCopyToSource).</para>
         ''' <para>There is no multi-session protection, by design: no lock on the real file, no conflict check.
         ''' If two sessions open the same file, the last save wins.</para>
@@ -640,7 +651,7 @@ Namespace Database
 
         ' Only sharing/lock violations are retried (e.g. a sync client briefly holding the real file);
         ' other IO errors (disk full, path too long) fail at once.
-        ''' <summary>HRESULT for ERROR_SHARING_VIOLATION (0x80070020), as .NET reports it (signed).</summary>
+        ''' <summary>HRESULT for ERROR_SHARING_VIOLATION (0x80070020), as the signed Integer .NET exceptions actually report.</summary>
         Private Const HR_ERROR_SHARING_VIOLATION As Integer = -2147024864
         ''' <summary>HRESULT for ERROR_LOCK_VIOLATION (0x80070021), as .NET reports it (signed).</summary>
         Private Const HR_ERROR_LOCK_VIOLATION As Integer = -2147024863
@@ -671,17 +682,13 @@ Namespace Database
 
             For iAttempt As Integer = 1 To cPublishRetryAttempts
                 Try
-                    ' 1. Write the new content next to the real file, never
-                    ' in place of it - the real file is untouched by this
-                    ' step regardless of outcome.
+                    ' 1. Write the new content next to the real file; the real file stays untouched.
                     File.Copy(Me.m_strLocalWorkingCopyPath, strSidecar, True)
 
                     ' 2. Remove the real file (net48 File.Move has no overwrite overload). No-op on a first publish.
                     If File.Exists(Me.m_strRealFilePath) Then File.Delete(Me.m_strRealFilePath)
 
-                    ' 3. Atomic rename, same volume - either this fully
-                    ' completes or it doesn't happen at all; there is no
-                    ' partially-renamed state for it to be interrupted into.
+                    ' 3. Atomic rename on the same volume.
                     File.Move(strSidecar, Me.m_strRealFilePath)
 
                     Return True
@@ -765,7 +772,16 @@ Namespace Database
                         Continue For
                     End If
 
-                    Dim strMarkerFile As String = strFile & ".marker"
+                    ' SQLite side files ("...ewesqlite-journal") have no marker: judge them by their base copy's marker.
+                    Dim strBaseFile As String = strFile
+                    For Each strSuffix As String In New String() {"-journal", "-wal", "-shm"}
+                        If strFile.EndsWith(strSuffix, StringComparison.OrdinalIgnoreCase) Then
+                            strBaseFile = strFile.Substring(0, strFile.Length - strSuffix.Length)
+                            Exit For
+                        End If
+                    Next
+
+                    Dim strMarkerFile As String = strBaseFile & ".marker"
                     Using probe As New cEwEExclusivityLock()
                         If probe.TryAcquire(strMarkerFile) Then
                             ' Marker was free - nobody's using this copy; it's an orphan from a crash.
@@ -828,6 +844,7 @@ Namespace Database
                         "    if errorlevel 1 (" & vbCrLf & ' PID no longer found - process has exited
                         "        for %%f in (""" & strFolder & "\*"") do (" & vbCrLf &
                         "            echo %%~xf | findstr /I /X "".marker"" >NUL" & vbCrLf &
+                        "            if errorlevel 1 echo %%f| findstr /I /R ""\-journal$ \-wal$ \-shm$"" >NUL" & vbCrLf &
                         "            if errorlevel 1 if not exist ""%%f.marker"" del /F /Q ""%%f""" & vbCrLf &
                         "        )" & vbCrLf &
                         "        del /F /Q ""%~f0""" & vbCrLf &
@@ -847,7 +864,7 @@ Namespace Database
                         "    if ! kill -0 " & iPid & " 2>/dev/null; then" & vbLf & ' PID no longer exists - process has exited
                         "        for f in """ & strFolder & """/*; do" & vbLf &
                         "            case ""$f"" in" & vbLf &
-                        "                *.marker) continue ;;" & vbLf &
+                        "                *.marker|*-journal|*-wal|*-shm) continue ;;" & vbLf &
                         "            esac" & vbLf &
                         "            [ -f ""$f.marker"" ] || rm -f ""$f""" & vbLf &
                         "        done" & vbLf &
@@ -925,6 +942,25 @@ Namespace Database
 
         Public MustOverride Function MaxDBVersion() As Single
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' States whether this database supports being driven through the
+        ''' legacy cDBUpdate update chain (see cDatabaseUpdater.RunAllUpdates).
+        ''' </summary>
+        ''' <remarks>
+        ''' The legacy update chain was written for, and is only guaranteed to
+        ''' be compatible with, Access/OleDb SQL syntax - several historical
+        ''' updates use statements SQLite does not support (ALTER COLUMN, ADD/
+        ''' DROP CONSTRAINT, ADD PRIMARY KEY/FOREIGN KEY via ALTER TABLE). This
+        ''' defaults to True here so existing (Access) behavior is unchanged;
+        ''' override to return False for any database type that should never
+        ''' have this update chain run against it.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Overridable Function SupportsLegacyDatabaseUpdates() As Boolean
+            Return True
+        End Function
+
 #End Region ' Compatibility
 
 #Region " Maintenance "
@@ -934,7 +970,7 @@ Namespace Database
         ''' Compact an EwE database.
         ''' </summary>
         ''' <param name="strFileFrom">Source database to compact.</param>
-        ''' <param name="strFileTo">Target database to compact to. If left 
+        ''' <param name="strFileTo">Target database to compact to. If left
         ''' blank, the source database is replaced with a compacted version.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
@@ -947,7 +983,7 @@ Namespace Database
         ''' </summary>
         ''' <param name="strConnectionFrom">Compact source.</param>
         ''' <param name="strConnectionTo">Compact target.</param>
-        ''' <returns>True if a compact engine is available for the underlying 
+        ''' <returns>True if a compact engine is available for the underlying
         ''' database.</returns>
         ''' -------------------------------------------------------------------
         Public MustOverride Function CanCompact(strConnectionFrom As String,
@@ -1113,7 +1149,7 @@ Namespace Database
         ''' <param name="strSQL">Query to create the IDbCommand with.</param>
         ''' <returns>Nothing if an error occurred.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function CreateDBCommand(strSQL As String) As IDbCommand
+        Protected Overridable Function CreateDBCommand(strSQL As String) As IDbCommand
 
             Dim conn As IDbConnection = Me.GetConnection()
             Dim cmd As IDbCommand = Nothing
@@ -1188,10 +1224,10 @@ Namespace Database
         ''' </summary>
         ''' <param name="strTable">The table to connect the EwEDbWriter to.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Function GetWriter(strTable As String) As cEwEDbWriter
+        Public Overridable Function GetWriter(strTable As String) As IEwEDbWriter
 
             Dim key As String = strTable.ToLower()
-            Dim writer As cEwEDbWriter = Nothing
+            Dim writer As IEwEDbWriter = Nothing
             Dim bIsValid As Boolean = False
 
             ' The writer may have perished due to a rollback 
@@ -1205,7 +1241,7 @@ Namespace Database
                 writer = New cEwEDbWriter(Me, strTable)
             End If
 
-            writer.m_refcount += 1
+            writer.RefCount += 1
             Return writer
 
         End Function
@@ -1219,11 +1255,11 @@ Namespace Database
         ''' <param name="bSaveChanges">States whether changes should be written (true) or discarded (false).</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function ReleaseWriter(writer As cEwEDbWriter, Optional bSaveChanges As Boolean = True) As Boolean
+        Public Overridable Function ReleaseWriter(writer As IEwEDbWriter, Optional bSaveChanges As Boolean = True) As Boolean
 
             Dim bSuccess As Boolean = False
 
-            writer.m_refcount -= 1
+            writer.RefCount -= 1
             bSuccess = writer.Disconnect(bSaveChanges)
             writer.Dispose()
 
@@ -1303,14 +1339,32 @@ Namespace Database
         ''' <summary>
         ''' Executes a SQL command that does not return any information.
         ''' </summary>
-        ''' <param name="strSQL">The query to execute.</param>
+        ''' <param name="strSQL">The query to execute. When SQLParams is provided,
+        ''' this should contain the provider-appropriate positional placeholder
+        ''' syntax for the target connection (e.g. "?" for OleDb) in place of any
+        ''' parameter values.</param>
+        ''' <param name="SQLParams">Optional array of values to bind as real,
+        ''' typed command parameters, in the same order as the placeholders in
+        ''' strSQL. Use this instead of formatting values directly into the SQL
+        ''' text - embedding numbers or dates as string literals leaves them open
+        ''' to being misinterpreted by the database engine's own locale-sensitive
+        ''' text-to-value conversion (e.g. a decimal point being read as a
+        ''' thousands separator on a non-US-formatted machine). A Nothing element
+        ''' is bound as DBNull.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function Execute(strSQL As String) As Boolean
+        Public Overridable Function Execute(strSQL As String, Optional SQLParams As Object() = Nothing) As Boolean
 
             Dim bSucces As Boolean = True
             Try
                 Using command As IDbCommand = Me.CreateDBCommand(strSQL)
+                    If SQLParams IsNot Nothing Then
+                        For Each objParam In SQLParams
+                            Dim param As IDbDataParameter = command.CreateParameter()
+                            param.Value = If(objParam, DBNull.Value)
+                            command.Parameters.Add(param)
+                        Next
+                    End If
                     command.ExecuteNonQuery()
                 End Using
             Catch ex As Exception
@@ -1535,7 +1589,7 @@ Namespace Database
         ''' <param name="strColumn">The name of the column to remove.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function DropColumn(strTable As String, strColumn As String) As Boolean
+        Public Overridable Function DropColumn(strTable As String, strColumn As String) As Boolean
 
             Dim bSuccess As Boolean = True
 
@@ -1632,7 +1686,7 @@ Namespace Database
         ''' <param name="strTableName">The table to check.</param>
         ''' <returns>True if the table exists in the open connection.</returns>
         ''' -------------------------------------------------------------------
-        Public Function HasTable(strTableName As String) As Boolean
+        Public Overridable Function HasTable(strTableName As String) As Boolean
 
             If (Me.GetConnection() Is Nothing) Then Return False
 
@@ -1663,13 +1717,7 @@ Namespace Database
 
             If Me.m_sVersion = 0.0 Then
                 Try
-                    ' Try EwE6 version first
-                    ' Because of a historical bug, versions above 10 are read with the decimal point restored after the first digit; stored values are unchanged.
-                    Me.m_sVersion = CSng(Me.GetValue("SELECT MAX(IIf([Version]>10,[Version]/(10^(Len(CStr([Version]))-1)),[Version])) FROM [UpdateLog]"))
-                    If (Me.m_sVersion = 0.0) Then
-                        ' Try EwE5 version
-                        Me.m_sVersion = CSng(Me.GetValue("Select Max(Version) FROM [Database specifications]"))
-                    End If
+                    Me.m_sVersion = Me.ReadVersion()
                 Catch ex As Exception
                     Me.m_sVersion = 0.0
                 End Try
@@ -1678,6 +1726,9 @@ Namespace Database
 
         End Function
 
+        ''' <summary>Reads the raw database version using this database's own SQL dialect; 0 when unknown.</summary>
+        Protected MustOverride Function ReadVersion() As Single
+        
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Returns the current version of the connected EwE database.
@@ -1729,17 +1780,18 @@ Namespace Database
             Dim version As Version = cAssemblyUtils.GetVersion()
             Dim dtNow As Date = Date.Now()
             Dim strSQL As String = ""
+            Dim SQLParams As Object()
 
             If (sVersion < 6.120003!) Then
-                strSQL = String.Format("INSERT INTO UpdateLog ([Version], [Remark], [Date]) VALUES({0}, '{1}', '{2}')",
-                                                 cStringUtils.FormatSingle(sVersion), strRemark, dtNow.ToShortDateString())
+                strSQL = "INSERT INTO UpdateLog ([Version], [Remark], [Date]) VALUES (?, ?, ?)"
+                SQLParams = New Object() {sVersion, strRemark, dtNow.Date}
             Else
-                strSQL = String.Format("INSERT INTO UpdateLog ([Version], [Remark], [Date], [EwEVersion]) VALUES({0}, '{1}', '{2}', '{3}')",
-                                                 cStringUtils.FormatSingle(sVersion), strRemark, dtNow.ToShortDateString(), version.ToString())
+                strSQL = "INSERT INTO UpdateLog ([Version], [Remark], [Date], [EwEVersion]) VALUES (?, ?, ?, ?)"
+                SQLParams = New Object() {sVersion, strRemark, dtNow.Date, version.ToString()}
             End If
             Dim bSucces As Boolean = True
             Try
-                bSucces = Me.Execute(strSQL)
+                bSucces = Me.Execute(strSQL, SQLParams)
                 Me.m_sVersion = sVersion
             Catch ex As Exception
                 bSucces = False

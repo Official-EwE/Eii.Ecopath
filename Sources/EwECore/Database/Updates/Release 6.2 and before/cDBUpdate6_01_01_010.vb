@@ -83,7 +83,7 @@ Friend Class cDBUpdate6_01_01_010
         Dim astrColumns As String() = New String() {"TaxonID", "CodeISCAAP", "CodeTaxon", "Code3A", "ClassName", "OrderName", "FamilyName", "GenusName", "SpeciesName", "CommonName", "SourceName", "SourceKey", "LastUpdated"}
 
         Dim reader As IDataReader = db.GetReader("SELECT * FROM EcopathGroupTaxon")
-        Dim writer As cEwEDatabase.cEwEDbWriter = db.GetWriter("EcopathTaxon")
+        Dim writer As IEwEDbWriter = db.GetWriter("EcopathTaxon")
         Dim drow As DataRow = Nothing
 
         While reader.Read

@@ -74,7 +74,7 @@ Friend Class cDBUpdate6_50_00_09
         End If
         db.ReleaseReader(reader)
 
-        Dim writer As cEwEDatabase.cEwEDbWriter = db.GetWriter("EcospaceScenarioGroup")
+        Dim writer As IEwEDbWriter = db.GetWriter("EcospaceScenarioGroup")
         Dim dt As DataTable = writer.GetDataTable()
         For Each drow As DataRow In dt.Rows
             iScenario = Array.IndexOf(iScenarioDBID, CInt(drow("ScenarioID")))

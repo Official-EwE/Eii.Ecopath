@@ -47,6 +47,18 @@ Namespace Import
         ''' this window needs to kill a still-running process first.</summary>
         Private m_bProcessExited As Boolean = False
 
+        ''' <summary>Close automatically once the process exits with code 0 (failures stay open to be read).</summary>
+        Private ReadOnly m_bAutoCloseOnSuccess As Boolean
+
+        ''' <summary>True when the user closed the window while the process was still running and confirmed the abort.</summary>
+        Private m_bAborted As Boolean = False
+
+        Public ReadOnly Property Aborted As Boolean
+            Get
+                Return m_bAborted
+            End Get
+        End Property
+
         ''' <summary>
         ''' Builds the window and starts draining the given, already-started process's output.
         ''' </summary>
@@ -54,10 +66,17 @@ Namespace Import
         ''' by the caller - this class only subscribes to its events, writes to its input, and reads
         ''' its ExitCode.</param>
         Public Sub New(proc As Process)
+            Me.New(proc, "Importing legacy Ecopath 5 model...", False)
+        End Sub
+
+        ''' <param name="strTitle">Window title.</param>
+        ''' <param name="bAutoCloseOnSuccess">Close by itself when the process exits with code 0.</param>
+        Public Sub New(proc As Process, strTitle As String, bAutoCloseOnSuccess As Boolean)
 
             Me.m_proc = proc
+            Me.m_bAutoCloseOnSuccess = bAutoCloseOnSuccess
 
-            Me.Text = "Importing legacy Ecopath 5 model..."
+            Me.Text = strTitle
             Me.StartPosition = FormStartPosition.CenterParent
             Me.Width = 720
             Me.Height = 480
@@ -228,6 +247,7 @@ Namespace Import
             m_txtInput.Enabled = False
             m_btnContinue.Enabled = True
             m_btnContinue.Focus()
+            If m_bAutoCloseOnSuccess AndAlso m_proc.ExitCode = 0 Then Me.Close()
         End Sub
 
         ''' <summary>
@@ -245,6 +265,7 @@ Namespace Import
                 Return
             End If
 
+            m_bAborted = True
             Try
                 If Not m_proc.HasExited Then
                     m_proc.Kill()

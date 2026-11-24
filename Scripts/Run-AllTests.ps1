@@ -45,7 +45,8 @@ $runners = @(
     "Run-StagingTests.ps1",
     "Run-CrashRecoveryTests.ps1",
     "Run-MultiInstanceTests.ps1",
-    "Run-NoStagingCallerTests.ps1"
+    "Run-NoStagingCallerTests.ps1",
+    "Run-SqliteTests.ps1"
 )
 
 foreach ($platform in $Platforms) {

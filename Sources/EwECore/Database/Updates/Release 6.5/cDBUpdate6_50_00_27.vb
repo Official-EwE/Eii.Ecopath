@@ -253,7 +253,7 @@ Friend Class cDBUpdate6_50_00_27
 
         If (iDriverID <= 0) Then Return True
 
-        Dim writer As cEwEDatabase.cEwEDbWriter = db.GetWriter("EcosimScenarioCapacityDrivers")
+        Dim writer As IEwEDbWriter = db.GetWriter("EcosimScenarioCapacityDrivers")
         Dim drow As DataRow = writer.NewRow()
 
         drow("ScenarioID") = iScenarioID
@@ -275,7 +275,7 @@ Friend Class cDBUpdate6_50_00_27
     ''' <remarks></remarks>
     Private Sub UpdateResponseFunctions(db As cEwEDatabase)
 
-        Dim writer As cEwEDatabase.cEwEDbWriter = db.GetWriter("EcosimShapeMediation")
+        Dim writer As IEwEDbWriter = db.GetWriter("EcosimShapeMediation")
         Dim dt As DataTable = writer.GetDataTable()
         Dim Mean As Single, SDLeft As Single, SDRight As Single, DataWidth As Single
         Dim XMin As Single, XMax As Single
