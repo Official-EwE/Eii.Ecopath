@@ -1,6 +1,6 @@
 ' SPDX-License-Identifier: EUPL-1.2
 ' This file is part of Ecopath with Ecosim (EwE).
-' Copyright © 1991– Ecopath International Initiative (EII)
+' Copyright Â© 1991â€“ Ecopath International Initiative (EII)
 
 Imports System.Data.OleDb
 Imports System.Data.SqlClient
@@ -754,8 +754,16 @@ Namespace Database
         Private Shared Sub CleanUpOrphanedWorkingCopies()
             Try
                 For Each strFile As String In System.IO.Directory.GetFiles(cEwEDatabase.GetWorkingCopyFolder())
-                    If strFile.EndsWith(".marker", StringComparison.OrdinalIgnoreCase) Then Continue For
                     If Not Path.GetFileName(strFile).StartsWith("Temp", StringComparison.OrdinalIgnoreCase) Then Continue For
+                    If strFile.EndsWith(".marker", StringComparison.OrdinalIgnoreCase) Then
+                        ' A marker whose copy is gone (e.g. removed by hand) is litter; drop it unless a live session holds it.
+                        If Not File.Exists(strFile.Substring(0, strFile.Length - ".marker".Length)) Then
+                            Using probe As New cEwEExclusivityLock()
+                                If probe.TryAcquire(strFile) Then probe.Release() ' Release deletes the marker
+                            End Using
+                        End If
+                        Continue For
+                    End If
 
                     Dim strMarkerFile As String = strFile & ".marker"
                     Using probe As New cEwEExclusivityLock()

@@ -3610,6 +3610,9 @@ Public Class cCore
             If (DirectCast(DataSource, cDBDataSource).SaveAs(strFileName, Me.m_EwEModel.Name)) = eDatasourceAccessType.Success Then
                 ' #Success! The data source has been changed this new location, now save data in memory to the new data source.
                 bSucces = Me.SaveChanges(True)
+            Else
+                ' Save As failed: the session still targets the original and stays modified, so Save remains available
+                bSucces = False
             End If
         Else
             bSucces = Me.SaveChanges(True)

@@ -70,6 +70,10 @@ Invoke-Test "1.1 - A staged working copy is created on open" {
     Register-DialogCheck -ProcessId $Proc.Id -Baseline (Get-WindowBaseline -ProcessId $Proc.Id)
     $copies = Write-Step "Waiting for a staged working copy to appear" { Wait-ForStagedCopy -TimeoutSeconds 30 }
     Assert-True ($copies.Count -gt 0) "No Temp* working copy found after ~30 seconds."
+    # Confirms WHICH kind of file is being staged on this branch (Access original vs .ewesqlite).
+    Write-Host ("    Real model file : {0}  (extension '{1}')" -f $ModelPath, [IO.Path]::GetExtension($ModelPath)) -ForegroundColor Cyan
+    foreach ($c in $copies) { Write-Host ("    Staged copy     : {0}  (extension '{1}')" -f $c.Name, $c.Extension) -ForegroundColor Cyan }
+    if ($StagedCopyPath) { Write-Host ("    This instance's staged copy extension matches the real file's: {0}" -f ([IO.Path]::GetExtension($StagedCopyPath) -eq [IO.Path]::GetExtension($ModelPath))) -ForegroundColor Cyan }
 }
 
 Invoke-Test "7.1 - Opening a file needing legacy updates never touches its own timestamp" {
@@ -163,6 +167,7 @@ Invoke-Test "2.x - Edit and Save completes, Save becomes disabled afterward" {
         Assert-True ($null -ne $StagedCopyPath) "No confirmed staged copy path for this instance - it may not have been found within 30 seconds at launch time."
     }
     $stagedCopyPath = $StagedCopyPath
+    Write-Host ("    Comparing real '{0}' ({1}) against staged '{2}' ({3})" -f (Split-Path -Leaf $ModelPath), [IO.Path]::GetExtension($ModelPath), (Split-Path -Leaf $stagedCopyPath), [IO.Path]::GetExtension($stagedCopyPath)) -ForegroundColor Cyan
 
     Write-Step "Closing the app to release its own lock on the staged copy" {
         Stop-Process -Id $Proc.Id -Force -ErrorAction SilentlyContinue
@@ -460,8 +465,54 @@ if ($ModelPath) {
     }
 }
 
+# Size and row counts of a model file, for comparing a Save As target with its source. Row counts need an
+# OLE DB provider matching this PowerShell's bitness (ACE, or Jet 4.0 in 32-bit PowerShell); when none works
+# they are $null and callers fall back to the file size alone.
+function Get-ModelStats {
+    param([string]$Path)
+    $stats = [pscustomobject]@{ Size = (Get-Item $Path).Length; Counts = $null }
+    $tables = "EcopathGroup", "EcopathFleet", "EcopathCatch", "EcopathDietComp"
+    foreach ($provider in "Microsoft.ACE.OLEDB.12.0", "Microsoft.Jet.OLEDB.4.0") {
+        $conn = $null
+        try {
+            $conn = New-Object System.Data.OleDb.OleDbConnection("Provider=$provider;Data Source=$Path;Mode=Read;")
+            $conn.Open()
+            $counts = [ordered]@{}
+            foreach ($t in $tables) {
+                $cmd = $conn.CreateCommand()
+                $cmd.CommandText = "SELECT COUNT(*) FROM [$t]"
+                $counts[$t] = [int]$cmd.ExecuteScalar()
+            }
+            $stats.Counts = $counts
+            break
+        } catch {
+            # try the next provider
+        } finally {
+            if ($conn) { $conn.Close(); $conn.Dispose() }
+        }
+    }
+    [System.Data.OleDb.OleDbConnection]::ReleaseObjectPool()
+    return $stats
+}
+
+function Test-SameModelStats {
+    param($Source, $Target)
+    if ($Source.Counts -and $Target.Counts) {
+        foreach ($k in $Source.Counts.Keys) { if ($Source.Counts[$k] -ne $Target.Counts[$k]) { return $false } }
+        return $true
+    }
+    # No row counts available: a template is far smaller than a real model, so require roughly the source size.
+    return ($Target.Size -ge ($Source.Size * 0.9))
+}
+
+function Format-ModelStats {
+    param($Stats)
+    $c = if ($Stats.Counts) { ($Stats.Counts.Keys | ForEach-Object { "$_=$($Stats.Counts[$_])" }) -join ", " } else { "row counts unavailable" }
+    return "$([math]::Round($Stats.Size / 1MB, 2)) MB; $c"
+}
+
 # Runs LAST, deliberately - see the comment above the 2.3 block for why.
-Invoke-Test "6.1 - Save As creates a new file at the target path" {
+Invoke-Test "6.1 - Save As creates a new file holding the model's data" {
     # Starts with a completely FRESH app instance, rather than reusing the one every test above
     # shares: CONFIRMED that running this right after 8.1 (a cancelled save) can throw a real,
     # unhandled exception ("Cannot find existing row for group 2" in SaveEcopathGroups(), surfaced
@@ -508,6 +559,10 @@ Invoke-Test "6.1 - Save As creates a new file at the target path" {
     $targetPathNoExt = Join-Path $env:TEMP "EwE-TestRun\SaveAs-$(Get-Random)"
     $targetPath = "$targetPathNoExt$targetExtension"
     if (Test-Path $targetPath) { Remove-Item $targetPath -Force }
+
+    # Taken before the Save As: the app works on a staged copy, so the real source file is free to read.
+    $sourceStats = Write-Step "Reading the source model's size and row counts" { Get-ModelStats -Path $ModelPath }
+    Write-Host "    Source: $(Format-ModelStats $sourceStats)"
 
     $fileMenu = Write-Step "Opening the File menu" {
         Set-AppForeground -Proc $Proc
@@ -571,6 +626,19 @@ Invoke-Test "6.1 - Save As creates a new file at the target path" {
         while (-not (Test-Path $targetPath) -and (Get-Date) -lt $targetDeadline) { Start-Sleep -Milliseconds 300 }
         Assert-True (Test-Path $targetPath) "Expected file was not created after ~10 seconds: $targetPath"
     }
+
+    # The target file exists as soon as Save As creates an empty template, so existence proves nothing: the
+    # model's own data has to be in it. Polled, since the copy and the follow-up save finish after the file appears.
+    $targetStats = Write-Step "Waiting for the target to hold the source model's data" {
+        $dataDeadline = (Get-Date).AddSeconds(15)
+        do {
+            Start-Sleep -Milliseconds 500
+            $stats = Get-ModelStats -Path $targetPath
+        } while (-not (Test-SameModelStats $sourceStats $stats) -and (Get-Date) -lt $dataDeadline)
+        $stats
+    }
+    Write-Host "    Target: $(Format-ModelStats $targetStats)"
+    Assert-True (Test-SameModelStats $sourceStats $targetStats) "Save As target is not the source model's data (an empty template?). Source: $(Format-ModelStats $sourceStats) - Target: $(Format-ModelStats $targetStats)"
     Remove-Item $targetPath -Force -ErrorAction SilentlyContinue
 }
 

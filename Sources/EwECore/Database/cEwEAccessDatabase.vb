@@ -193,9 +193,7 @@ Namespace Database
                 Optional bOverwrite As Boolean = False,
                 Optional databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
 
-            Dim datResult As eDatasourceAccessType = eDatasourceAccessType.Success
             Dim strDatabaseFrom As String = Me.Name
-            Dim bSucces As Boolean = True
 
             If databaseType = eDataSourceTypes.NotSet Then
                 databaseType = cDataSourceFactory.GetSupportedType(strDatabaseTo)
@@ -207,52 +205,42 @@ Namespace Database
                 Return eDatasourceAccessType.Failed_TransferTypes
             End If
 
-            ' This session's actual, up-to-date data lives in the local
-            ' working copy (if any was staged - a write-intent open always
-            ' has one); strDatabaseFrom is stale, frozen at whatever it was
-            ' when the working copy was staged. Close() below deletes the
-            ' working copy via CleanUpLocalWorkingCopy(), so detach it from
-            ' Me first - this leaves the file in place on disk for the copy
-            ' further down, instead of losing this session's only
-            ' up-to-date copy of the data before we can use it.
-            Dim strDataToCarryOver As String = If(String.IsNullOrEmpty(Me.m_strLocalWorkingCopyPath), strDatabaseFrom, Me.m_strLocalWorkingCopyPath)
-            Dim strLeftoverWorkingCopy As String = Me.m_strLocalWorkingCopyPath
-            Me.m_strLocalWorkingCopyPath = ""
+            If File.Exists(strDatabaseTo) AndAlso Not bOverwrite Then Return eDatasourceAccessType.Failed_CannotSave
 
-            Me.Close()
+            If Not String.IsNullOrEmpty(Me.m_strLocalWorkingCopyPath) Then
 
-            ' Test if we can create a new DB at the intended location
-            datResult = Me.Create(strDatabaseTo, strModelName, bOverwrite)
-
-            ' Success?
-            If (datResult = eDatasourceAccessType.Success) Then
-
-                ' #Yes: this is painful... File Copy the current DB on top of the newly created DB
-                Try
-                    ' Can copy database from old to new MDB?
-                    System.IO.File.Copy(strDataToCarryOver, strDatabaseTo, True)
-                Catch ex As Exception
-                    ' #Failure
-                    datResult = eDatasourceAccessType.Failed_CannotSave
-                End Try
-
-                datResult = Me.Open(strDatabaseTo, databaseType)
-                'Able to open?
-                If datResult = eDatasourceAccessType.Opened Then
-                    ' #Yes: Fix model name after copying
-                    Me.Execute(cStringUtils.Localize("UPDATE EcopathModel SET NAME='{0}' WHERE (ModelID=1)", strModelName))
-                Else
-                    ' #No: Open ye olde database
-                    Me.Open(strDatabaseFrom)
+                ' Staged: keep working on the same working copy and only re-target where it publishes to. Nothing is
+                ' closed or reopened, so a failure leaves this session exactly as it was (still targeting the
+                ' original, still modified), and the caller can simply retry.
+                Dim strOldTarget As String = Me.m_strRealFilePath
+                Me.m_strRealFilePath = strDatabaseTo
+                If Not Me.PublishLocalCopyToSource() Then
+                    Me.m_strRealFilePath = strOldTarget
+                    m_logger.LogError("SaveAs('{0}'): cannot publish the working copy there.", strDatabaseTo)
+                    Return eDatasourceAccessType.Failed_CannotSave
                 End If
+                Me.m_strFileName = strDatabaseTo
+                Me.Execute(cStringUtils.Localize("UPDATE EcopathModel SET NAME='{0}' WHERE (ModelID=1)", strModelName))
+                Return eDatasourceAccessType.Success
             End If
 
-            ' Now safe to remove the detached working copy, if there was one.
-            If Not String.IsNullOrEmpty(strLeftoverWorkingCopy) Then
-                Try
-                    If File.Exists(strLeftoverWorkingCopy) Then File.Delete(strLeftoverWorkingCopy)
-                Catch
-                End Try
+            ' Not staged: the connection is bound to the file itself, so copy it and reconnect to the copy.
+            Try
+                If Not String.Equals(strDatabaseFrom, strDatabaseTo, StringComparison.OrdinalIgnoreCase) Then
+                    File.Copy(strDatabaseFrom, strDatabaseTo, True)
+                End If
+            Catch ex As Exception
+                m_logger.LogError(ex, "SaveAs('{0}'): cannot copy '{1}': {2}", strDatabaseTo, strDatabaseFrom, ex.Message)
+                Return eDatasourceAccessType.Failed_CannotSave
+            End Try
+
+            Me.Close()
+            Dim datResult As eDatasourceAccessType = Me.Open(strDatabaseTo, databaseType)
+            If datResult = eDatasourceAccessType.Opened Then
+                Me.Execute(cStringUtils.Localize("UPDATE EcopathModel SET NAME='{0}' WHERE (ModelID=1)", strModelName))
+            Else
+                m_logger.LogError("SaveAs('{0}'): cannot open the copy ({1}), reopening the original.", strDatabaseTo, datResult)
+                Me.Open(strDatabaseFrom)
             End If
 
             Return datResult
@@ -754,7 +742,14 @@ Namespace Database
             ' Cannot compact when connected
             Debug.Assert(Me.IsConnected = False)
 
+            ' With staging on, compact a local working copy and publish it back, so DAO never writes to the real
+            ' (possibly cloud-synced) file; the same copy, publish and retry path as Save.
+            Dim bStaged As Boolean = bCompactToOriginal AndAlso cEwEDatabase.EnableLocalStaging
+            Dim strCompactSource As String = strFileFrom
+
             Try
+
+                If bStaged Then strCompactSource = Me.StageLocalWorkingCopy(strFileFrom)
 
                 ' #Yes: try to compact
                 Dim strDBToOrg As String = strFileTo
@@ -773,11 +768,11 @@ Namespace Database
                 End If
 
                 ' Set up connections
-                strConnectionFrom = cStringUtils.Localize(strConnection, strFileFrom)
+                strConnectionFrom = cStringUtils.Localize(strConnection, strCompactSource)
                 strConnectionTo = cStringUtils.Localize(strConnection, strFileTo)
 
                 ' Attempt to Compact
-                result = comp.Compact(strFileFrom, strConnectionFrom, strFileTo, strConnectionTo)
+                result = comp.Compact(strCompactSource, strConnectionFrom, strFileTo, strConnectionTo)
                 ' Is successful?
                 If (result <> eDatasourceAccessType.Success) Then
                     ' #No: report compact failure
@@ -788,16 +783,21 @@ Namespace Database
                 If File.Exists(strFileTo) Then
                     ' #Yes: Need to copy from temp location?
                     If (bCompactToOriginal) Then
-                        ' #Yes: Overwrite original db with compacted db
-                        File.Copy(strFileTo, strDBToOrg, True)
+                        ' #Yes: Overwrite original db (or its working copy, then publish) with compacted db
+                        File.Copy(strFileTo, If(bStaged, strCompactSource, strDBToOrg), True)
                         ' Delete temp location compacted database
                         File.Delete(strFileTo)
+                        If bStaged AndAlso Not Me.PublishLocalCopyToSource() Then
+                            Return eDatasourceAccessType.Failed_CannotSave
+                        End If
                     End If
                 End If
                 Return eDatasourceAccessType.Success
 
             Catch ex As Exception
-                ' Wow
+                m_logger.LogError(ex, "Compact('{0}') failed: {1}", strFileFrom, ex.Message)
+            Finally
+                If bStaged Then Me.CleanUpLocalWorkingCopy()
             End Try
 
             Return eDatasourceAccessType.Failed_Unknown
