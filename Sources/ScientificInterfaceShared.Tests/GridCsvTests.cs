@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.ExceptionServices;
 using System.Threading;
+using FluentAssertions;
 using ScientificInterfaceShared.Controls.EwEGrid;
 using ScientificInterfaceShared.Style;
 using SourceGrid2;
@@ -76,20 +77,20 @@ public class GridCsvTests
                 bool changes = false;
                 float expected = (float)grid[1, 2].Value;
 
-                // Act
-                Assert.True(csv.Write(output, ref error), error);
+                // Act & Assert: export must succeed before importing its output.
+                csv.Write(output, ref error).Should().BeTrue("export failed: {0}", error);
                 string text = output.ToString();
                 grid[1, 0].Value = "changed";
                 grid[1, 2].Value = 7f;
                 bool success = csv.Read(new StringReader(text), ref error, ref changes);
 
                 // Assert
-                Assert.True(success, error);
-                Assert.Contains("0.08001234", text);
-                Assert.Equal("A, \"quoted\"\nname", grid[1, 0].Value);
-                Assert.Equal(expected, (float)grid[1, 2].Value);
-                Assert.Equal(44f, (float)grid[1, 1].Value);
-                Assert.Equal(0f, (float)grid[1, 3].Value);
+                success.Should().BeTrue("import failed: {0}", error);
+                text.Should().Contain("0.08001234");
+                grid[1, 0].Value.Should().Be("A, \"quoted\"\nname");
+                ((float)grid[1, 2].Value).Should().Be(expected);
+                ((float)grid[1, 1].Value).Should().Be(44f);
+                ((float)grid[1, 3].Value).Should().Be(0f);
             }
         });
     }
@@ -111,11 +112,11 @@ public class GridCsvTests
                                         ref error, ref changes);
 
                 // Assert
-                Assert.False(success);
-                Assert.False(changes);
-                Assert.Contains("row 2, column 3", error);
-                Assert.Equal("initial", grid[1, 0].Value);
-                Assert.Equal(0.08001234f, (float)grid[1, 2].Value);
+                success.Should().BeFalse();
+                changes.Should().BeFalse();
+                error.Should().Contain("row 2, column 3");
+                grid[1, 0].Value.Should().Be("initial");
+                ((float)grid[1, 2].Value).Should().Be(0.08001234f);
             }
         });
     }
@@ -140,11 +141,11 @@ public class GridCsvTests
                 bool success = csv.Read(new StringReader(text), ref error, ref changes);
 
                 // Assert
-                Assert.False(success);
-                Assert.False(changes);
-                Assert.Contains("row 2, column 2", error);
-                Assert.Equal("initial", grid[1, 0].Value);
-                Assert.Equal(0.08001234f, (float)grid[1, 2].Value);
+                success.Should().BeFalse();
+                changes.Should().BeFalse();
+                error.Should().Contain("row 2, column 2");
+                grid[1, 0].Value.Should().Be("initial");
+                ((float)grid[1, 2].Value).Should().Be(0.08001234f);
             }
         });
     }
@@ -166,9 +167,9 @@ public class GridCsvTests
                                         ref error, ref changes);
 
                 // Assert
-                Assert.False(success);
-                Assert.False(changes);
-                Assert.Equal("initial", grid[1, 0].Value);
+                success.Should().BeFalse();
+                changes.Should().BeFalse();
+                grid[1, 0].Value.Should().Be("initial");
             }
         });
     }
@@ -192,9 +193,9 @@ public class GridCsvTests
                                         ref error, ref changes);
 
                 // Assert
-                Assert.False(success);
-                Assert.False(changes);
-                Assert.Equal(0.08001234f, (float)grid[1, 2].Value);
+                success.Should().BeFalse();
+                changes.Should().BeFalse();
+                ((float)grid[1, 2].Value).Should().Be(0.08001234f);
             }
         });
     }
@@ -216,9 +217,9 @@ public class GridCsvTests
                                         ref error, ref changes);
 
                 // Assert
-                Assert.False(success);
-                Assert.False(changes);
-                Assert.Equal("initial", grid[1, 0].Value);
+                success.Should().BeFalse();
+                changes.Should().BeFalse();
+                grid[1, 0].Value.Should().Be("initial");
             }
         });
     }
@@ -243,9 +244,9 @@ public class GridCsvTests
                 bool success = csv.Read(new StringReader(text), ref error, ref changes);
 
                 // Assert
-                Assert.True(success, error);
-                Assert.Equal((float)EwECore.cCore.NULL_VALUE, (float)grid[1, 2].Value);
-                Assert.Equal(0f, (float)grid[1, 3].Value);
+                success.Should().BeTrue("import failed: {0}", error);
+                ((float)grid[1, 2].Value).Should().Be((float)EwECore.cCore.NULL_VALUE);
+                ((float)grid[1, 3].Value).Should().Be(0f);
             }
         });
     }
