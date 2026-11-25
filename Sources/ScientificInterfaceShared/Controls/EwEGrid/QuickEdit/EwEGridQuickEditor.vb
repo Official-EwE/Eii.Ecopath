@@ -601,48 +601,50 @@ Namespace Controls.EwEGrid
 
             Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim cmdOF As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
-            Dim msg As cMessage = Nothing
-            Dim fs As Stream = Nothing
-            Dim sr As StreamReader = Nothing
-            Dim bSuccess As Boolean = True
+            Dim errorMessage As String = Nothing
+            Dim bSuccess As Boolean = False
+            Dim readStarted As Boolean = False
 
             cmdOF.Invoke(Me.GetCSVFileName(), My.Resources.FILEFILTER_CSV)
-            If (cmdOF.Result <> System.Windows.Forms.DialogResult.OK) Then Return bSuccess
+            If (cmdOF.Result <> System.Windows.Forms.DialogResult.OK) Then Return True
 
             Try
-                fs = New FileStream(cmdOF.FileName,
-                                    FileMode.Open,
-                                    FileAccess.Read,
-                                    FileShare.ReadWrite Or FileShare.Delete Or FileShare.Inheritable)
+                Using fs As New FileStream(cmdOF.FileName, FileMode.Open, FileAccess.Read,
+                                           FileShare.ReadWrite Or FileShare.Delete Or FileShare.Inheritable),
+                      sr As New StreamReader(fs)
+                    If Me.m_uic.Core.SetBatchLock(cCore.eBatchLockType.Update) Then
+                        Try
+                            Me.m_grid.BeginBatchEdit()
+                            Try
+                                readStarted = True
+                                bSuccess = Me.m_grid.ReadContent(sr, errorMessage)
+                            Finally
+                                Me.m_grid.EndBatchEdit()
+                            End Try
+                        Finally
+                            Me.m_uic.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
+                        End Try
+                    Else
+                        errorMessage = My.Resources.GRID_CSV_LOCK_FAILURE
+                    End If
+                End Using
             Catch ex As Exception
-                msg = New cMessage(String.Format(My.Resources.GENERIC_FILELOAD_FAILURE, Me.m_grid.DataName, cmdOF.FileName, ex.Message),
-                                  eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
                 bSuccess = False
+                errorMessage = ex.Message
             End Try
 
-            If (fs IsNot Nothing) Then
-
-                sr = New StreamReader(fs)
-
-                If Not Me.m_uic.Core.SetBatchLock(cCore.eBatchLockType.Update) Then Return False
-                Me.m_grid.BeginBatchEdit()
-                Try
-                    Me.m_grid.ReadContent(sr)
-                Catch ex As Exception
-
-                End Try
-                Me.m_grid.EndBatchEdit()
-                Me.m_uic.Core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
-                sr.Close()
-                fs.Close()
-
+            Dim msg As cMessage
+            If bSuccess Then
                 msg = New cMessage(String.Format(My.Resources.GENERIC_FILELOAD_SUCCES, Me.m_grid.DataName, cmdOF.FileName),
-                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(cmdOF.FileName)
-
+            Else
+                Dim text As String = String.Format(My.Resources.GENERIC_FILELOAD_FAILURE, Me.m_grid.DataName, cmdOF.FileName, errorMessage)
+                If readStarted Then text &= Environment.NewLine & Environment.NewLine & My.Resources.GRID_CSV_PARTIAL_IMPORT
+                msg = New cFeedbackMessage(text, eCoreComponentType.External, eMessageType.DataExport,
+                                           eMessageImportance.Warning, eMessageReplyStyle.OK)
             End If
 
-            ' Log!
             Me.m_uic.Core.Messages.SendMessage(msg)
             Return bSuccess
 

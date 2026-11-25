@@ -2346,6 +2346,27 @@ Namespace My.Resources
             End Get
         End Property
 
+        '''<summary>Looks up the CSV cell error description.</summary>
+        Public ReadOnly Property GRID_CSV_CELL_FAILURE() As String
+            Get
+                Return ResourceManager.GetString("GRID_CSV_CELL_FAILURE", resourceCulture)
+            End Get
+        End Property
+
+        '''<summary>Looks up the CSV import lock failure description.</summary>
+        Public ReadOnly Property GRID_CSV_LOCK_FAILURE() As String
+            Get
+                Return ResourceManager.GetString("GRID_CSV_LOCK_FAILURE", resourceCulture)
+            End Get
+        End Property
+
+        '''<summary>Looks up the CSV partial import warning.</summary>
+        Public ReadOnly Property GRID_CSV_PARTIAL_IMPORT() As String
+            Get
+                Return ResourceManager.GetString("GRID_CSV_PARTIAL_IMPORT", resourceCulture)
+            End Get
+        End Property
+
         '''<summary>
         '''  Looks up a localized string similar to {0} loaded from &apos;{1}&apos;..
         '''</summary>

@@ -1535,13 +1535,24 @@ Namespace Controls.EwEGrid
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Function ReadContent(sr As StreamReader) As Boolean
+            Dim errorMessage As String = Nothing
+            Return Me.ReadContent(sr, errorMessage)
+        End Function
 
+        ''' <summary>Populate the grid and return a description if reading fails.</summary>
+        ''' <param name="sr">The stream reader containing the grid content.</param>
+        ''' <param name="errorMessage">Receives the reason for a failed read.</param>
+        ''' <returns>True if successful.</returns>
+        Public Function ReadContent(sr As StreamReader, ByRef errorMessage As String) As Boolean
+
+            errorMessage = Nothing
             Dim strLine As String = ""
             Dim values As String()
             Dim cell As ICell = Nothing
-            Dim cellValue As Object = Nothing
             Dim iRow As Integer = 0
             Dim iCol As Integer = 0
+            Dim readingCell As Boolean = False
+            Dim failure As Exception = Nothing
             Dim ci As CultureInfo = Thread.CurrentThread.CurrentUICulture
             Dim nfi As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
             Dim cSplit As Char = ","c
@@ -1556,6 +1567,7 @@ Namespace Controls.EwEGrid
                     End If
                     values = strLine.Split(cSplit)
                     For iCol = 0 To Math.Min(Me.ColumnsCount, values.Length) - 1
+                        readingCell = True
                         cell = Me(iRow, iCol)
                         If cell IsNot Nothing Then
                             If cell.DataModel IsNot Nothing Then
@@ -1594,13 +1606,23 @@ Namespace Controls.EwEGrid
                             End If
                         End If
                     Next
+                    readingCell = False
                     iRow += 1
                 End While
+                Return True
+            Catch ex As FormatException When readingCell
+                failure = ex
+            Catch ex As OverflowException When readingCell
+                failure = ex
             Catch ex As Exception
                 m_logger.LogError(ex, "EwEGrid::ReadContent(" & Me.ToString & ")")
-                Return False
+                failure = ex
             End Try
-            Return True
+
+            errorMessage = If(readingCell,
+                              String.Format(My.Resources.GRID_CSV_CELL_FAILURE, iRow + 1, iCol + 1, failure.Message),
+                              failure.Message)
+            Return False
 
         End Function
 
