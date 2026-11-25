@@ -2388,6 +2388,16 @@
     <value>CSV row {0}, column {1}: {2}</value>
     <comment>{0}: one-based row, including the header. {1}: one-based column. {2}: error reason.</comment>
   </data>
+  <data name="GRID_CSV_LAYOUT_FAILURE" xml:space="preserve">
+    <value>The CSV layout does not match the visible grid</value>
+  </data>
+  <data name="GRID_CSV_VALUE_REJECTED" xml:space="preserve">
+    <value>The model rejected this value</value>
+  </data>
+  <data name="GRID_CSV_UNSUPPORTED_TYPE" xml:space="preserve">
+    <value>CSV import does not support editable values of type {0}</value>
+    <comment>{0}: value type name.</comment>
+  </data>
   <data name="GRID_CSV_LOCK_FAILURE" xml:space="preserve">
     <value>The model could not be locked for updating</value>
   </data>

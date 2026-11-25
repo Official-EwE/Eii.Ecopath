@@ -2353,6 +2353,27 @@ Namespace My.Resources
             End Get
         End Property
 
+        '''<summary>Looks up the CSV layout failure description.</summary>
+        Public ReadOnly Property GRID_CSV_LAYOUT_FAILURE() As String
+            Get
+                Return ResourceManager.GetString("GRID_CSV_LAYOUT_FAILURE", resourceCulture)
+            End Get
+        End Property
+
+        '''<summary>Looks up the CSV value rejection description.</summary>
+        Public ReadOnly Property GRID_CSV_VALUE_REJECTED() As String
+            Get
+                Return ResourceManager.GetString("GRID_CSV_VALUE_REJECTED", resourceCulture)
+            End Get
+        End Property
+
+        '''<summary>Looks up the unsupported CSV value type description.</summary>
+        Public ReadOnly Property GRID_CSV_UNSUPPORTED_TYPE() As String
+            Get
+                Return ResourceManager.GetString("GRID_CSV_UNSUPPORTED_TYPE", resourceCulture)
+            End Get
+        End Property
+
         '''<summary>Looks up the CSV import lock failure description.</summary>
         Public ReadOnly Property GRID_CSV_LOCK_FAILURE() As String
             Get

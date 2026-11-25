@@ -1530,8 +1530,8 @@ Namespace Controls.EwEGrid
         ''' read the grid content from.</param>
         ''' <returns>True if successful.</returns>
         ''' <remarks>
-        ''' This method does not affect read-only cells, and attempts to convert 
-        ''' values encountered in the stream reader to the proper cell value types. 
+        ''' Imports the visible layout through <see cref="cEwEGridCsv"/> without changing read-only cells.
+        ''' Values are validated before application, but an application failure may leave partial changes.
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Function ReadContent(sr As StreamReader) As Boolean
@@ -1539,149 +1539,28 @@ Namespace Controls.EwEGrid
             Return Me.ReadContent(sr, errorMessage)
         End Function
 
-        ''' <summary>Populate the grid and return a description if reading fails.</summary>
-        ''' <param name="sr">The stream reader containing the grid content.</param>
+        ''' <summary>Populate the visible grid and return a description if reading fails.</summary>
+        ''' <param name="sr">The stream reader containing the CSV grid content; remains open after the call.</param>
         ''' <param name="errorMessage">Receives the reason for a failed read.</param>
-        ''' <returns>True if successful.</returns>
+        ''' <returns>True if successful; a failure during application may leave partial changes.</returns>
+        ''' <remarks>See <see cref="cEwEGridCsv.Read"/> for the CSV format and validation rules.</remarks>
         Public Function ReadContent(sr As StreamReader, ByRef errorMessage As String) As Boolean
 
-            errorMessage = Nothing
-            Dim strLine As String = ""
-            Dim values As String()
-            Dim cell As ICell = Nothing
-            Dim iRow As Integer = 0
-            Dim iCol As Integer = 0
-            Dim readingCell As Boolean = False
-            Dim failure As Exception = Nothing
-            Dim ci As CultureInfo = Thread.CurrentThread.CurrentUICulture
-            Dim nfi As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
-            Dim cSplit As Char = ","c
-
-            nfi.NumberDecimalSeparator = "."
-
-            Try
-                While Not sr.EndOfStream And iRow < Me.RowsCount
-                    strLine = sr.ReadLine()
-                    If (iRow = 0) Then
-                        cSplit = cStringUtils.FindStringDelimiter(strLine)
-                    End If
-                    values = strLine.Split(cSplit)
-                    For iCol = 0 To Math.Min(Me.ColumnsCount, values.Length) - 1
-                        readingCell = True
-                        cell = Me(iRow, iCol)
-                        If cell IsNot Nothing Then
-                            If cell.DataModel IsNot Nothing Then
-                                If (cell.DataModel.EnableEdit = True) And (cell.DataModel.EditableMode <> SourceGrid2.EditableMode.None) Then
-                                    If (cell.DataModel.ValueType Is GetType(String)) Then
-                                        cell.Value = values(iCol)
-                                    Else
-                                        values(iCol) = values(iCol).Trim()
-                                        If Not Me.InterceptNewValue(values(iCol), New Position(iRow, iCol), cell) Then
-                                            If String.IsNullOrEmpty(values(iCol)) Then
-                                                values(iCol) = CStr(cCore.NULL_VALUE)
-                                            End If
-                                            If (cell.DataModel.ValueType Is GetType(Single)) Then
-                                                ' Parse using UI default number formatting
-                                                cell.Value = Single.Parse(values(iCol), nfi)
-                                            ElseIf (cell.DataModel.ValueType Is GetType(Double)) Then
-                                                ' Parse using UI default number formatting
-                                                cell.Value = Double.Parse(values(iCol), nfi)
-                                            ElseIf (cell.DataModel.ValueType Is GetType(Integer)) Then
-                                                ' Parse using UI default number formatting
-                                                cell.Value = Integer.Parse(values(iCol), nfi)
-                                            ElseIf (cell.DataModel.ValueType Is GetType(Boolean)) Then
-                                                ' Booleans can occur as string or integer representations, 
-                                                ' which both require separate conversion strategies
-                                                Dim strVal As String = values(iCol).Trim
-                                                Dim iValTest As Integer
-                                                If Integer.TryParse(strVal, iValTest) Then
-                                                    cell.Value = Convert.ToBoolean(iValTest)
-                                                Else
-                                                    cell.Value = Boolean.Parse(strVal)
-                                                End If
-                                            End If
-                                        End If
-                                    End If
-                                End If
-                            End If
-                        End If
-                    Next
-                    readingCell = False
-                    iRow += 1
-                End While
-                Return True
-            Catch ex As FormatException When readingCell
-                failure = ex
-            Catch ex As OverflowException When readingCell
-                failure = ex
-            Catch ex As Exception
-                m_logger.LogError(ex, "EwEGrid::ReadContent(" & Me.ToString & ")")
-                failure = ex
-            End Try
-
-            errorMessage = If(readingCell,
-                              String.Format(My.Resources.GRID_CSV_CELL_FAILURE, iRow + 1, iCol + 1, failure.Message),
-                              failure.Message)
-            Return False
+            Dim changesStarted As Boolean = False
+            Return New cEwEGridCsv(Me).Read(sr, errorMessage, changesStarted)
 
         End Function
 
         ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Write the content of the grid content to a stream writer. Note that
-        ''' content will be written with north-american decimal separators.
-        ''' </summary>
-        ''' <param name="sw">The <see cref="StreamWriter">stream writer</see> to
-        ''' write grid values to.</param>
-        ''' <returns>True if successful.</returns>
+        ''' <summary>Write the visible grid content as comma-separated CSV with invariant numeric formatting.</summary>
+        ''' <param name="sw">The stream writer for grid values; remains open after the call.</param>
+        ''' <returns>True if successful; a failure may leave partial output.</returns>
+        ''' <remarks>See <see cref="cEwEGridCsv.Write"/> for export formatting.</remarks>
         ''' -------------------------------------------------------------------
         Public Function WriteContent(sw As StreamWriter) As Boolean
 
-            Dim cell As ICell = Nothing
-            Dim cellValue As Object = Nothing
-            Dim cellText As String = ""
-
-            Try
-                For iRow As Integer = 0 To Me.RowsCount - 1
-                    If Me.Rows(iRow).Visible Then
-                        Dim iVals As Integer = 0
-                        For iCol As Integer = 0 To Me.ColumnsCount - 1
-                            If Me.Columns(iCol).Visible Then
-                                If (iVals > 0) Then sw.Write(",")
-                                cell = Me(iRow, iCol)
-                                If (cell IsNot Nothing) Then
-                                    cellValue = cell.Value
-                                    cellText = cell.DisplayText
-                                    If (cellValue Is Nothing) Then
-                                        Try
-                                            sw.Write(cStringUtils.ToCSVField(cellText))
-                                        Catch ex As Exception
-
-                                        End Try
-                                    Else
-                                        Try
-                                            If TypeOf (cellValue) Is Object Then
-                                                sw.Write(cStringUtils.ToCSVField(cellText))
-                                            Else
-                                                sw.Write(cStringUtils.ToCSVField(cellValue))
-                                            End If
-                                        Catch ex As Exception
-                                            ' Ignore value graciously
-                                        End Try
-                                    End If
-                                End If
-                                iVals += 1
-                            End If
-                        Next
-                        sw.WriteLine()
-                    End If
-                Next
-
-            Catch ex As Exception
-                Return False
-            End Try
-
-            Return True
+            Dim errorMessage As String = Nothing
+            Return New cEwEGridCsv(Me).Write(sw, errorMessage)
 
         End Function
 
@@ -1759,6 +1638,11 @@ Namespace Controls.EwEGrid
         ''' <returns>True if the value has been received, and no further processing is needed</returns>
         Protected Overridable Function InterceptNewValue(strValue As String, pos As Position, cell As ICell) As Boolean
             Return False
+        End Function
+
+        ' Preserve the grid's protected value interception hook for the CSV adapter.
+        Friend Function InterceptCsvValue(strValue As String, pos As Position, cell As ICell) As Boolean
+            Return Me.InterceptNewValue(strValue, pos, cell)
         End Function
 
 #End Region ' Experimental

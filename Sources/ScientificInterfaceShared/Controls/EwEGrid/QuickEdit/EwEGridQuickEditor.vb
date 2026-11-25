@@ -597,13 +597,16 @@ Namespace Controls.EwEGrid
 
         End Function
 
+        ''' <summary>Prompts for a CSV file and imports it while holding the model update lock.</summary>
+        ''' <returns>True on success or if the file dialog is cancelled; false on import failure.</returns>
+        ''' <remarks>Reports failures through the core message system and warns when changes may have been applied.</remarks>
         Public Function ImportGridFromCSV() As Boolean
 
             Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim cmdOF As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
             Dim errorMessage As String = Nothing
             Dim bSuccess As Boolean = False
-            Dim readStarted As Boolean = False
+            Dim changesStarted As Boolean = False
 
             cmdOF.Invoke(Me.GetCSVFileName(), My.Resources.FILEFILTER_CSV)
             If (cmdOF.Result <> System.Windows.Forms.DialogResult.OK) Then Return True
@@ -612,12 +615,12 @@ Namespace Controls.EwEGrid
                 Using fs As New FileStream(cmdOF.FileName, FileMode.Open, FileAccess.Read,
                                            FileShare.ReadWrite Or FileShare.Delete Or FileShare.Inheritable),
                       sr As New StreamReader(fs)
+                    Dim csv As New cEwEGridCsv(Me.m_grid)
                     If Me.m_uic.Core.SetBatchLock(cCore.eBatchLockType.Update) Then
                         Try
                             Me.m_grid.BeginBatchEdit()
                             Try
-                                readStarted = True
-                                bSuccess = Me.m_grid.ReadContent(sr, errorMessage)
+                                bSuccess = csv.Read(sr, errorMessage, changesStarted)
                             Finally
                                 Me.m_grid.EndBatchEdit()
                             End Try
@@ -640,9 +643,8 @@ Namespace Controls.EwEGrid
                 msg.Hyperlink = Path.GetDirectoryName(cmdOF.FileName)
             Else
                 Dim text As String = String.Format(My.Resources.GENERIC_FILELOAD_FAILURE, Me.m_grid.DataName, cmdOF.FileName, errorMessage)
-                If readStarted Then text &= Environment.NewLine & Environment.NewLine & My.Resources.GRID_CSV_PARTIAL_IMPORT
-                msg = New cFeedbackMessage(text, eCoreComponentType.External, eMessageType.DataExport,
-                                           eMessageImportance.Warning, eMessageReplyStyle.OK)
+                If changesStarted Then text &= Environment.NewLine & Environment.NewLine & My.Resources.GRID_CSV_PARTIAL_IMPORT
+                msg = New cMessage(text, eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
             End If
 
             Me.m_uic.Core.Messages.SendMessage(msg)
@@ -650,40 +652,40 @@ Namespace Controls.EwEGrid
 
         End Function
 
+        ''' <summary>Prompts for a CSV destination and reports the export result through the core message system.</summary>
+        ''' <remarks>Cancelling the file dialog does not produce a message.</remarks>
         Public Sub ExportGridToCSV()
 
             If (Me.m_uic Is Nothing) Then Return
 
             Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim cmdSF As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
-            Dim msg As cMessage = Nothing
-            Dim fs As Stream = Nothing
-            Dim sw As StreamWriter = Nothing
+            Dim msg As cMessage
+            Dim errorMessage As String = Nothing
+            Dim success As Boolean = False
 
             cmdSF.Invoke(Me.GetCSVFileName(), My.Resources.FILEFILTER_CSV)
             If (cmdSF.Result <> System.Windows.Forms.DialogResult.OK) Then Return
 
             Try
-                'Create the file
-                fs = New FileStream(cmdSF.FileName, FileMode.Create, FileAccess.Write, FileShare.None)
+                Using fs As New FileStream(cmdSF.FileName, FileMode.Create, FileAccess.Write, FileShare.None),
+                      sw As New StreamWriter(fs)
+                    success = New cEwEGridCsv(Me.m_grid).Write(sw, errorMessage)
+                End Using
             Catch ex As Exception
-                ' Woops!
-                msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_FAILURE, Me.m_grid.DataName, cmdSF.FileName, ex.Message),
-                                  eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
+                success = False
+                errorMessage = ex.Message
             End Try
 
-            If (fs IsNot Nothing) Then
-                sw = New StreamWriter(fs)
-                Me.m_grid.WriteContent(sw)
-                sw.Close()
-                fs.Close()
-
+            If success Then
                 msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_SUCCES, Me.m_grid.DataName, cmdSF.FileName),
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                 msg.Hyperlink = Path.GetDirectoryName(cmdSF.FileName)
+            Else
+                Dim text As String = String.Format(My.Resources.GENERIC_FILESAVE_FAILURE, Me.m_grid.DataName, cmdSF.FileName, errorMessage)
+                msg = New cMessage(text, eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
             End If
 
-            ' Log!
             Me.m_uic.Core.Messages.SendMessage(msg)
 
         End Sub
